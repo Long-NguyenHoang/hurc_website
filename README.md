@@ -60,11 +60,10 @@ CREATE DATABASE hurc_db;
 Mở terminal, di chuyển vào thư mục backend:
 cd backend
 
-# Cài đặt dependencies
+Cài đặt dependencies
 npm install
 
-# Sao chép file cấu hình môi trường (nếu có template) hoặc tự tạo file .env
-# Chạy server ở chế độ Development
+Chạy server ở chế độ Development
 npm run start:dev
 API sẽ khởi chạy tại: http://localhost:3000
 
@@ -72,23 +71,23 @@ API sẽ khởi chạy tại: http://localhost:3000
 Mở một tab terminal mới, di chuyển vào thư mục frontend:
 cd frontend
 
-# Cài đặt dependencies
+Cài đặt dependencies
 npm install
 
-# Chạy server ở chế độ Development
+Chạy server ở chế độ Development
 npm run dev
 Website sẽ khởi chạy tại: http://localhost:3001 (hoặc 3000 tùy port rảnh)
 
-⚙️ Environment Variables
+## ⚙️ Environment Variables
 Để chạy backend, hãy tạo file backend/.env với các cấu hình cơ bản sau:
-# Database Connection
+Database Connection
 DB_HOST=localhost
 DB_PORT=5432
 DB_USERNAME=postgres
 DB_PASSWORD=your_db_password
 DB_DATABASE=hurc_db
 
-🌿 Git Workflow & Convention
+## 🌿 Git Workflow & Convention
 Dự án áp dụng quy chuẩn Conventional Commits để quản lý lịch sử source code thống nhất và chuyên nghiệp.
 
 Commit Format:
