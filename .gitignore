@@ -1,0 +1,13 @@
+# Node
+node_modules/
+
+# Next.js
+frontend/.next/
+
+# NestJS
+backend/dist/
+
+# Environments (Rất quan trọng: Không bao giờ push file .env lên Git)
+*.env
+.env.*
+!.env.example
