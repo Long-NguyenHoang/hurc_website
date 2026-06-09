@@ -49,8 +49,9 @@ hurc.vn/
 ├── backend/        # NestJS (TypeORM, TypeScript)
 ├── .gitignore
 └── README.md
+```
 
-🚀 Getting Started
+## 🚀 Getting Started
 1. Database Setup
 Tạo một database trống trên PostgreSQL local của bạn:
 CREATE DATABASE hurc_db;
@@ -100,6 +101,6 @@ refactor: Tối ưu hoá code hiện tại, không thay đổi logic chức năn
 docs: Thêm/sửa tài liệu (vd: docs: update README with new env vars)
 (Lưu ý: Luôn tạo nhánh mới (branch) từ main khi làm tính năng mới và gộp code thông qua Pull Request).
 
-👨‍💻 Maintainer
+## 👨‍💻 Maintainer
 Developer: Nguyen Hoang Long
 Role: Senior Full-stack Developer
