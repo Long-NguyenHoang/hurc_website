@@ -14,7 +14,6 @@
 - [Getting Started](#-getting-started)
 - [Environment Variables](#-environment-variables)
 - [Git Workflow & Convention](#-git-workflow--convention)
-- [Maintainer](#-maintainer)
 
 ---
 
@@ -105,5 +104,4 @@ fix: Sửa lỗi (vd: fix: resolve banner display issue on mobile)
 chore: Cập nhật cấu hình, thư viện không ảnh hưởng code (vd: chore: update npm packages)
 refactor: Tối ưu hoá code hiện tại, không thay đổi logic chức năng
 docs: Thêm/sửa tài liệu (vd: docs: update README with new env vars)
-(Lưu ý: Luôn tạo nhánh mới (branch) từ main khi làm tính năng mới và gộp code thông qua Pull Request).
 ```
