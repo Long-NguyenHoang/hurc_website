@@ -53,10 +53,13 @@ hurc.vn/
 
 ## 🚀 Getting Started
 1. Database Setup
+```text
 Tạo một database trống trên PostgreSQL local của bạn:
 CREATE DATABASE hurc_db;
+```
 
 2. Backend Setup (NestJS)
+```text
 Mở terminal, di chuyển vào thư mục backend:
 cd backend
 
@@ -66,8 +69,10 @@ npm install
 Chạy server ở chế độ Development
 npm run start:dev
 API sẽ khởi chạy tại: http://localhost:3000
+```
 
 3. Frontend Setup (Next.js)
+```text
 Mở một tab terminal mới, di chuyển vào thư mục frontend:
 cd frontend
 
@@ -77,8 +82,10 @@ npm install
 Chạy server ở chế độ Development
 npm run dev
 Website sẽ khởi chạy tại: http://localhost:3001 (hoặc 3000 tùy port rảnh)
+```
 
 ## ⚙️ Environment Variables
+```text
 Để chạy backend, hãy tạo file backend/.env với các cấu hình cơ bản sau:
 Database Connection
 DB_HOST=localhost
@@ -86,10 +93,10 @@ DB_PORT=5432
 DB_USERNAME=postgres
 DB_PASSWORD=your_db_password
 DB_DATABASE=hurc_db
+```
 
 ## 🌿 Git Workflow & Convention
-Dự án áp dụng quy chuẩn Conventional Commits để quản lý lịch sử source code thống nhất và chuyên nghiệp.
-
+```text
 Commit Format:
 <type>[optional scope]: <description>
 Các <type> được phép sử dụng:
@@ -99,7 +106,4 @@ chore: Cập nhật cấu hình, thư viện không ảnh hưởng code (vd: cho
 refactor: Tối ưu hoá code hiện tại, không thay đổi logic chức năng
 docs: Thêm/sửa tài liệu (vd: docs: update README with new env vars)
 (Lưu ý: Luôn tạo nhánh mới (branch) từ main khi làm tính năng mới và gộp code thông qua Pull Request).
-
-## 👨‍💻 Maintainer
-Developer: Nguyen Hoang Long
-Role: Senior Full-stack Developer
+```
