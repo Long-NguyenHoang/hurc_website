@@ -3,6 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './modules/users/users.module';
+import { MediaModule } from './modules/media/media.module';
+import { BannersModule } from './modules/banners/banners.module';
+import { ArticlesModule } from './modules/articles/articles.module';
+import { JobsModule } from './modules/jobs/jobs.module';
+import { ContactsModule } from './modules/contacts/contacts.module';
 
 @Module({
   imports: [
@@ -31,6 +37,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         synchronize: true
       }),
     }),
+
+    UsersModule,
+
+    MediaModule,
+
+    BannersModule,
+
+    ArticlesModule,
+
+    JobsModule,
+
+    ContactsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
