@@ -9,6 +9,7 @@ import { BannersModule } from './modules/banners/banners.module';
 import { ArticlesModule } from './modules/articles/articles.module';
 import { JobsModule } from './modules/jobs/jobs.module';
 import { ContactsModule } from './modules/contacts/contacts.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -49,6 +50,8 @@ import { ContactsModule } from './modules/contacts/contacts.module';
     JobsModule,
 
     ContactsModule,
+
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
