@@ -92,6 +92,9 @@ DB_PORT=5432
 DB_USERNAME=postgres
 DB_PASSWORD=your_db_password
 DB_DATABASE=hurc_db
+
+JWT_SECRET=
+JWT_EXPIRATION=
 ```
 
 ## 🌿 Git Workflow & Convention
