@@ -10,5 +10,6 @@ import { Media } from 'common/entities/media.entity';
   ],
   controllers: [MediaController],
   providers: [MediaService],
+  exports: [MediaService],
 })
 export class MediaModule { }

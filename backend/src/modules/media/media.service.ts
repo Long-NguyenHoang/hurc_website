@@ -1,26 +1,89 @@
-import { Injectable } from '@nestjs/common';
-import { CreateMediaDto } from './dto/create-media.dto';
+// src/modules/media/media.service.ts
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PaginationDto } from 'common/dto/pagination.dto';
+import { Media } from 'common/entities/media.entity';
+import { UserRole } from 'common/enums';
+import { Repository } from 'typeorm';
 import { UpdateMediaDto } from './dto/update-media.dto';
 
 @Injectable()
 export class MediaService {
-  create(createMediaDto: CreateMediaDto) {
-    return 'This action adds a new media';
+  constructor(
+    @InjectRepository(Media)
+    private readonly mediaRepository: Repository<Media>,
+  ) { }
+
+  async uploadSingleFile(file: Express.Multer.File, userId: string) {
+    const newMedia = this.mediaRepository.create({
+      file_name: file.filename,
+      original_name: file.originalname,
+      mime_type: file.mimetype,
+      size: file.size,
+      url: `/uploads/${file.filename}`,
+      uploaded_by_user: { id: userId } as any,
+    });
+
+    // 2. Lưu vào Database và trả về kết quả
+    return await this.mediaRepository.save(newMedia);
   }
 
-  findAll() {
-    return `This action returns all media`;
+  async findAll(user: any, paginationDto: PaginationDto) {
+    const { page = 1, limit = 10 } = paginationDto;
+    const skip = (page - 1) * limit;
+
+    const whereCondition: any = {};
+
+    if (user.role !== UserRole.ADMIN) {
+      whereCondition.uploaded_by_user = { id: user.id };
+    }
+
+    const [mediaFiles, total] = await this.mediaRepository.findAndCount({
+      where: whereCondition,
+      skip: skip,
+      take: limit,
+      order: { created_at: 'DESC' },
+      relations: { uploaded_by_user: true },
+      select: {
+        uploaded_by_user: { id: true, full_name: true, email: true }
+      }
+    });
+
+    return {
+      data: mediaFiles,
+      meta: { total, page, limit, lastPage: Math.ceil(total / limit) },
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} media`;
+  async findOne(id: string, user: any) {
+    const media = await this.mediaRepository.findOne({
+      where: { id },
+      relations: { uploaded_by_user: true },
+    });
+
+    if (!media) {
+      throw new NotFoundException('Không tìm thấy file này');
+    }
+
+    if (user.role !== UserRole.ADMIN && media.uploaded_by_user.id !== user.id) {
+      throw new ForbiddenException('Bạn không có quyền truy cập file của người khác');
+    }
+
+    return media;
   }
 
-  update(id: number, updateMediaDto: UpdateMediaDto) {
-    return `This action updates a #${id} media`;
+  async update(id: string, updateMediaDto: UpdateMediaDto, user: any) {
+    const media = await this.findOne(id, user);
+
+    media.original_name = updateMediaDto.original_name;
+    return await this.mediaRepository.save(media);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} media`;
+  async remove(id: string, user: any) {
+    const media = await this.findOne(id, user);
+
+    await this.mediaRepository.softRemove(media);
+
+    return { messager: 'Đã xoá file thành công' };
   }
 }

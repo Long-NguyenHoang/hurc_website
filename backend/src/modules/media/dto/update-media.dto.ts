@@ -1,4 +1,8 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateMediaDto } from './create-media.dto';
+import { IsNotEmpty, IsString } from "class-validator";
 
-export class UpdateMediaDto extends PartialType(CreateMediaDto) {}
+
+export class UpdateMediaDto {
+    @IsNotEmpty({ message: 'Tên file không được để trống' })
+    @IsString()
+    original_name: string;
+}
