@@ -1,10 +1,10 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "common/entities/users.entity";
 import { Repository } from "typeorm";
 import * as bcrypt from 'bcrypt';
-import { UserRole } from "common/enums";
+import { BlacklistedToken } from "common/entities/blacklisted_token.entity";
 
 export type ValidatedUser = Omit<User, 'password'>;
 
@@ -13,7 +13,9 @@ export class AuthService {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        @InjectRepository(BlacklistedToken)
+        private readonly blacklistRepository: Repository<BlacklistedToken>,
     ) { }
 
     async validateUser(email: string, password: string): Promise<ValidatedUser | null> {
@@ -42,5 +44,33 @@ export class AuthService {
                 role: user.role
             }
         };
+    }
+
+    async logout(token: string) {
+        try {
+            // Giải mã token để lấy thời gian hết hạn gốc
+            const decoded = this.jwtService.decode(token) as any;
+
+            if (decoded && decoded.exp) {
+                // Chuyển đổi exp (dạng timestamp giây) thành đối tượng Date của JS
+                const expiresAt = new Date(decoded.exp * 1000);
+
+                // Lưu token này vào danh sách đen
+                const blacklisted = this.blacklistRepository.create({
+                    token: token,
+                    expires_at: expiresAt,
+                });
+                await this.blacklistRepository.save(blacklisted);
+            }
+
+            return { message: 'Đăng xuất thành công' }
+        } catch (error) {
+            throw new UnauthorizedException('Token không hợp lệ hoặc đã hết hạn');
+        }
+    }
+
+    async isTokenBlacklisted(token: string): Promise<boolean> {
+        const found = await this.blacklistRepository.findOne({ where: { token } });
+        return !!found;
     }
 }
