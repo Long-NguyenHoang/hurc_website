@@ -10,8 +10,6 @@ import { ArticlesModule } from './modules/articles/articles.module';
 import { JobsModule } from './modules/jobs/jobs.module';
 import { ContactsModule } from './modules/contacts/contacts.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 
 @Module({
   imports: [
