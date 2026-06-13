@@ -7,10 +7,11 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
 import { User } from 'common/entities/users.entity';
+import { BlacklistedToken } from 'common/entities/blacklisted_token.entity';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([User]), // Inject Entity User để truy vấn
+        TypeOrmModule.forFeature([User, BlacklistedToken]), // Inject Entity User để truy vấn
         PassportModule,
         // Cấu hình JWT đọc từ biến môi trường
         JwtModule.registerAsync({
