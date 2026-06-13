@@ -21,7 +21,6 @@ export class Media extends AbstractBaseEntity {
     @Column({ type: 'varchar' })
     url: string;
 
-
     // --- Foreign Keys ---
     @ManyToOne(() => User, (user) => user.uploaded_media)
     @JoinColumn({ name: 'uploaded_by' })
