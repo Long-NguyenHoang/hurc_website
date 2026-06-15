@@ -22,7 +22,7 @@ export class Article extends AbstractBaseEntity {
     status: ArticleStatus;
 
     @Column({ type: 'timestamp', nullable: true })
-    published_at: Date;
+    published_at: Date | null;
 
     // --- Foreign Keys ---
     @ManyToOne(() => Media, (media) => media.articles)
