@@ -10,6 +10,7 @@ import { ArticlesModule } from './modules/articles/articles.module';
 import { JobsModule } from './modules/jobs/jobs.module';
 import { ContactsModule } from './modules/contacts/contacts.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { StationsModule } from './modules/stations/stations.module';
 
 @Module({
   imports: [
@@ -52,6 +53,8 @@ import { AuthModule } from './modules/auth/auth.module';
     ContactsModule,
 
     AuthModule,
+
+    StationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
