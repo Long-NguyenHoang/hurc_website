@@ -13,7 +13,7 @@ export class CreateTicketFareDto {
     @IsOptional()
     @Type(() => Number)
     @IsInt()
-    display_orrder: number;
+    display_order?: number;
 
     @IsOptional()
     @Transform(({ value }) => value === 'true' || value === true)
