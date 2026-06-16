@@ -11,6 +11,7 @@ import { JobsModule } from './modules/jobs/jobs.module';
 import { ContactsModule } from './modules/contacts/contacts.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { StationsModule } from './modules/stations/stations.module';
+import { TicketFaresModule } from './modules/ticket-fares/ticket-fares.module';
 
 @Module({
   imports: [
@@ -55,6 +56,8 @@ import { StationsModule } from './modules/stations/stations.module';
     AuthModule,
 
     StationsModule,
+
+    TicketFaresModule,
   ],
   controllers: [AppController],
   providers: [AppService],
