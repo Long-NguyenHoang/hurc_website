@@ -1,26 +1,69 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
+import { Repository } from 'typeorm';
+import { Contact } from 'common/entities/contacts.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ContactStatus } from 'common/enums';
 
 @Injectable()
 export class ContactsService {
-  create(createContactDto: CreateContactDto) {
-    return 'This action adds a new contact';
+  constructor(
+    @InjectRepository(Contact)
+    private readonly contactsRepository: Repository<Contact>,
+  ) { }
+
+  async create(createContactDto: CreateContactDto) {
+    if (!createContactDto.email && !createContactDto.phone) {
+      throw new BadRequestException('Vui lòng cung cấp ít nhất Email hoặc số điện thoại')
+    }
+
+    const newContact = this.contactsRepository.create({
+      ...createContactDto,
+      status: ContactStatus.PENDING,
+    });
+
+    return await this.contactsRepository.save(newContact);
   }
 
-  findAll() {
-    return `This action returns all contacts`;
+  async findAllAdmin() {
+    return await this.contactsRepository.find({
+      order: { created_at: 'DESC' },
+      relations: { resolved_by_user: true },
+      select: {
+        resolved_by_user: { id: true, full_name: true, email: true }
+      }
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} contact`;
+  async findOne(id: string) {
+    const contact = await this.contactsRepository.findOne({
+      where: { id },
+      relations: { resolved_by_user: true },
+      select: {
+        resolved_by_user: { id: true, full_name: true, email: true }
+      }
+    });
+
+    if (!contact) throw new NotFoundException('Không tìm thấy thông tin liên hệ');
+    return contact;
   }
 
-  update(id: number, updateContactDto: UpdateContactDto) {
-    return `This action updates a #${id} contact`;
+  async update(id: string, updateContactDto: UpdateContactDto, userId: string) {
+    const contact = await this.findOne(id);
+
+    contact.status = updateContactDto.status;
+
+    if (updateContactDto.status === ContactStatus.RESOLVED) {
+      contact.resolved_by_user = { id: userId } as any;
+    }
+
+    return await this.contactsRepository.save(contact);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} contact`;
+  async remove(id: string) {
+    const contact = await this.findOne(id);
+    await this.contactsRepository.softRemove(contact)
+    return { message: 'Đã xoá liên hệ thành công' };
   }
 }

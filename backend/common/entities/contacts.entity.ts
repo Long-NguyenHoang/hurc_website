@@ -20,7 +20,7 @@ export class Contact extends AbstractBaseEntity {
     @Column({ type: 'text' })
     message: string;
 
-    @Column({ type: 'enum', enum: ContactStatus })
+    @Column({ type: 'enum', enum: ContactStatus, default: ContactStatus.PENDING })
     status: ContactStatus;
 
     // --- Foreign Keys ---
