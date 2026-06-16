@@ -12,6 +12,9 @@ import { ContactsModule } from './modules/contacts/contacts.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { StationsModule } from './modules/stations/stations.module';
 import { TicketFaresModule } from './modules/ticket-fares/ticket-fares.module';
+import { Station } from 'common/entities/stations.entity';
+import { User } from 'common/entities/users.entity';
+import { SeederService } from 'common/database/seeder.service';
 
 @Module({
   imports: [
@@ -40,6 +43,7 @@ import { TicketFaresModule } from './modules/ticket-fares/ticket-fares.module';
         synchronize: true
       }),
     }),
+    TypeOrmModule.forFeature([User, Station]),
 
     UsersModule,
 
@@ -60,6 +64,6 @@ import { TicketFaresModule } from './modules/ticket-fares/ticket-fares.module';
     TicketFaresModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SeederService],
 })
 export class AppModule { }
