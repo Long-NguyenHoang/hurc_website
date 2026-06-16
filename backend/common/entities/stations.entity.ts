@@ -10,7 +10,7 @@ export class Station extends AbstractBaseEntity {
     @Column({ type: 'varchar', unique: true })
     code: string;
 
-    @Column({ type: 'text' })
+    @Column({ type: 'text', nullable: true })
     content: string;
 
     @Column({ type: 'int', default: 0 })
