@@ -38,3 +38,9 @@ export enum Subject {
     FEEDBACK = 'FEEDBACK',
     LOST_ITEMS = 'LOST_ITEMS',
 }
+
+export enum AuditAction {
+    CREATE = 'CREATE',
+    UPDATE = 'UPDATE',
+    DELETE = 'DELETE',
+}
