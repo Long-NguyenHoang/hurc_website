@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Contact } from 'common/entities/contacts.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ContactStatus } from 'common/enums';
+import { PaginationDto } from 'common/dto/pagination.dto';
 
 @Injectable()
 export class ContactsService {
@@ -26,14 +27,19 @@ export class ContactsService {
     return await this.contactsRepository.save(newContact);
   }
 
-  async findAllAdmin() {
-    return await this.contactsRepository.find({
+  async findAllAdmin(paginationDto: PaginationDto) {
+    const { page = 1, limit = 20 } = paginationDto;
+    const [contacts, total] = await this.contactsRepository.findAndCount({
       order: { created_at: 'DESC' },
       relations: { resolved_by_user: true },
       select: {
         resolved_by_user: { id: true, full_name: true, email: true }
-      }
-    });
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+    })
+
+    return { data: contacts, meta: { total, page, limit, lastPage: Math.ceil(total / limit) } };
   }
 
   async findOne(id: string) {

@@ -35,7 +35,7 @@ export class UsersService {
   }
 
   async findAll(paginationDto: PaginationDto) {
-    const { page = 1, limit = 10 } = paginationDto;
+    const { page = 1, limit = 20 } = paginationDto;
     const skip = (page - 1) * limit;
 
     const [users, total] = await this.usersRepository.findAndCount({

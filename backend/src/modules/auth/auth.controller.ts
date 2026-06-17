@@ -32,13 +32,6 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @Post('logout')
     async logout(@Request() req, @Res({ passthrough: true }) res: express.Response) {
-        // const authHeader = req.headers.authorization;
-        // if (!authHeader) {
-        //     throw new UnauthorizedException('Không tìm thấy token xác thực');
-        // }
-
-        // const token = authHeader.split(' ')[1];
-
         const token = req?.cookies?.access_token;
 
         if (token) {

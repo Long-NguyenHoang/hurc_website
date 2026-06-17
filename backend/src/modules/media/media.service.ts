@@ -35,7 +35,7 @@ export class MediaService {
   }
 
   async findAll(user: any, paginationDto: PaginationDto) {
-    const { page = 1, limit = 10 } = paginationDto;
+    const { page = 1, limit = 20 } = paginationDto;
     const skip = (page - 1) * limit;
 
     const whereCondition: any = {};
