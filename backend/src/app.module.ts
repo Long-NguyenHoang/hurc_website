@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -15,6 +15,10 @@ import { TicketFaresModule } from './modules/ticket-fares/ticket-fares.module';
 import { Station } from 'common/entities/stations.entity';
 import { User } from 'common/entities/users.entity';
 import { SeederService } from 'common/database/seeder.service';
+import { ClsModule } from 'nestjs-cls';
+import { AuditLog } from 'common/entities/audit-log.entity';
+import { AuditLogSubscriber } from './modules/audit-logs/audit-log.subscriber';
+import { UserContextMiddleware } from 'common/middlewares/user-context.middleware';
 
 @Module({
   imports: [
@@ -22,6 +26,11 @@ import { SeederService } from 'common/database/seeder.service';
     ConfigModule.forRoot({
       isGlobal: true,   // Read file in every module
       envFilePath: '.env',
+    }),
+
+    ClsModule.forRoot({
+      global: true,
+      middleware: { mount: true }, // Cho phép CLS nhận diện HTTP Context
     }),
 
     // Config TypeOrmModule
@@ -43,7 +52,7 @@ import { SeederService } from 'common/database/seeder.service';
         synchronize: true
       }),
     }),
-    TypeOrmModule.forFeature([User, Station]),
+    TypeOrmModule.forFeature([User, Station, AuditLog]),
 
     UsersModule,
 
@@ -64,6 +73,12 @@ import { SeederService } from 'common/database/seeder.service';
     TicketFaresModule,
   ],
   controllers: [AppController],
-  providers: [AppService, SeederService],
+  providers: [AppService, SeederService, AuditLogSubscriber],
 })
-export class AppModule { }
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(UserContextMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+  }
+}
