@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
 import { ContactsService } from './contacts.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
@@ -6,6 +6,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from 'common/decorators/roles.decorator';
 import { UserRole } from 'common/enums';
+import { PaginationDto } from 'common/dto/pagination.dto';
 
 @Controller('contacts')
 export class ContactsController {
@@ -19,8 +20,8 @@ export class ContactsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.EDITOR)
   @Get('admin/all')
-  findAllAdmin() {
-    return this.contactsService.findAllAdmin();
+  findAllAdmin(@Query() paginationDto: PaginationDto) {
+    return this.contactsService.findAllAdmin(paginationDto);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

@@ -73,7 +73,7 @@ export class ArticlesService {
   }
 
   async findAllAdmin(paginationDto: PaginationDto) {
-    const { page = 1, limit = 10 } = paginationDto;
+    const { page = 1, limit = 20 } = paginationDto;
     const [articles, total] = await this.articleRepository.findAndCount({
       relations: { thumbnail: true, author: true },
       select: {

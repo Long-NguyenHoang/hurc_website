@@ -16,9 +16,8 @@ import { Station } from 'common/entities/stations.entity';
 import { User } from 'common/entities/users.entity';
 import { SeederService } from 'common/database/seeder.service';
 import { ClsModule } from 'nestjs-cls';
-import { AuditLog } from 'common/entities/audit-log.entity';
-import { AuditLogSubscriber } from './modules/audit-logs/audit-log.subscriber';
 import { UserContextMiddleware } from 'common/middlewares/user-context.middleware';
+import { AuditLogsModule } from './modules/audit-logs/audit-logs.module';
 
 @Module({
   imports: [
@@ -52,7 +51,7 @@ import { UserContextMiddleware } from 'common/middlewares/user-context.middlewar
         synchronize: true
       }),
     }),
-    TypeOrmModule.forFeature([User, Station, AuditLog]),
+    TypeOrmModule.forFeature([User, Station]),
 
     UsersModule,
 
@@ -71,9 +70,11 @@ import { UserContextMiddleware } from 'common/middlewares/user-context.middlewar
     StationsModule,
 
     TicketFaresModule,
+
+    AuditLogsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, SeederService, AuditLogSubscriber],
+  providers: [AppService, SeederService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
