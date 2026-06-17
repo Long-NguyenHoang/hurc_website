@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   // const app = await NestFactory.create(AppModule);
@@ -19,6 +20,19 @@ async function bootstrap() {
       transform: true,
     })
   );
+
+  app.use(cookieParser());
+  // --- CẤU HÌNH CORS ĐỂ CHỐNG CSRF VÀ CHO PHÉP ĐỌC COOKIE ---
+  app.enableCors({
+    // Chỉ cho phép các domain này được gọi API (Thay bằng domain thực tế khi lên Production)
+    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://cms.hurc.vn'],
+
+    // BẮT BUỘC PHẢI LÀ TRUE: Cho phép Frontend gửi HttpOnly Cookie lên Backend
+    credentials: true,
+
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Accept, Authorization',
+  });
 
   await app.listen(process.env.PORT ?? 3000);
 }
