@@ -19,7 +19,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         private readonly authService: AuthService,
     ) {
         super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: ExtractJwt.fromExtractors([
+                (request: Request) => {
+                    return request?.cookies?.access_token || null;
+                }
+            ]),
             ignoreExpiration: false,
             secretOrKey: configService.getOrThrow<string>('JWT_SECRET'),
             passReqToCallback: true,
@@ -27,8 +32,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(req: Request, payload: JwtPayload) {
-        const authHeader = req.headers.authorization;
-        const token = authHeader?.split(' ')[1];
+        // const authHeader = req.headers.authorization;
+        // const token = authHeader?.split(' ')[1];
+        const token = req?.cookies?.access_token;
 
         if (token) {
             const isBlacklisted = await this.authService.isTokenBlacklisted(token);
