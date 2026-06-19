@@ -7,6 +7,7 @@ import {
     ShieldAlert, Train, ChevronDown, LogOut
 } from 'lucide-react';
 import { authService } from '@/services/auth.service';
+import { Toaster } from 'react-hot-toast';
 
 
 
@@ -174,8 +175,18 @@ export default function AdminLayout({
                         {children}
                     </div>
                 </main>
-
             </div>
+            <Toaster
+                position="top-right"
+                toastOptions={{
+                    duration: 3000,
+                    style: {
+                        fontSize: '13px',
+                        fontWeight: '500',
+                        borderRadius: '12px',
+                    },
+                }}
+            />
         </div>
     );
 }
