@@ -90,6 +90,8 @@ export class BannersService {
   async remove(id: string) {
     const banner = await this.findOne(id);
 
+    banner.image = null;
+    await this.bannerRepository.save(banner);
     await this.bannerRepository.softRemove(banner);
 
     return { message: 'Đã xoá Banner thành công' };

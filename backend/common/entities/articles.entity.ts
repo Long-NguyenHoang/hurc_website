@@ -25,9 +25,9 @@ export class Article extends AbstractBaseEntity {
     published_at: Date | null;
 
     // --- Foreign Keys ---
-    @ManyToOne(() => Media, (media) => media.articles)
+    @ManyToOne(() => Media, (media) => media.articles, { nullable: true, onDelete: 'SET NULL' })
     @JoinColumn({ name: 'thumbnail_id' })
-    thumbnail: Media;
+    thumbnail: Media | null;
 
     @ManyToOne(() => User, (user) => user.articles)
     @JoinColumn({ name: 'author_id' })

@@ -147,6 +147,8 @@ export class ArticlesService {
   async remove(id: string) {
     const article = await this.findOne(id);
 
+    article.thumbnail = null;
+    await this.articleRepository.save(article);
     await this.articleRepository.softRemove(article);
 
     return { message: 'Đã xoá bài viết thành công' };

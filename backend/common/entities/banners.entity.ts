@@ -18,9 +18,9 @@ export class Banner extends AbstractBaseEntity {
     is_active: boolean;
 
     // --- Foreign Keys ---
-    @ManyToOne(() => Media, (media) => media.banners)
+    @ManyToOne(() => Media, (media) => media.banners, { nullable: true, onDelete: 'SET NULL' })
     @JoinColumn({ name: 'image_id' })
-    image: Media;
+    image: Media | null;
 
     @ManyToOne(() => User)
     @JoinColumn({ name: 'created_by' })
