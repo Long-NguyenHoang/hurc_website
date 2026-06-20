@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Search, Edit2, Trash2, MapPin, Loader2, Image as ImageIcon, Save, Upload, Maximize2, AlertTriangle } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, MapPin, Loader2, Save, Upload, Maximize2, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { stationService, Station } from '@/services/station.service';
 import RichTextEditor from '@/components/RichTextEditor';
