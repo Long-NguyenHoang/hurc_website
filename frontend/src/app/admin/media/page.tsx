@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import Modal from '@/components/Modal';
 import ImageLightbox from '@/components/ImageLightbox';
 import { mediaService, Media } from '@/services/media.service';
+import Pagination from '@/components/Pagination';
 
 export default function MediaPage() {
     const [medias, setMedias] = useState<Media[]>([]);
@@ -26,15 +27,24 @@ export default function MediaPage() {
     const [isDeleting, setIsDeleting] = useState(false);
     const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
     useEffect(() => {
         fetchMedia();
-    }, []);
+    }, [currentPage]);
 
     const fetchMedia = async () => {
         setIsLoading(true);
         try {
-            const response: any = await mediaService.getAll();
+            const response: any = await mediaService.getAll({ page: currentPage, limit: 20 });
             const dataList = Array.isArray(response) ? response : response?.data || [];
+
+            const meta = response?.data?.meta || response?.meta;
+            if (meta) {
+                setTotalPages(meta.lastPage || Math.ceil(meta.total / meta.limit) || 1);
+            }
+
             // Sắp xếp mới nhất lên đầu
             const sortedList = dataList.sort((a: Media, b: Media) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
             setMedias(sortedList);
@@ -244,6 +254,11 @@ export default function MediaPage() {
                         </div>
                     )}
                 </div>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
             </div>
 
             {/* ========================================= */}

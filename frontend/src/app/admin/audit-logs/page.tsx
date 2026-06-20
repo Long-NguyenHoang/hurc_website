@@ -5,6 +5,7 @@ import { Search, Loader2, Eye, ShieldCheck, Clock, User as UserIcon, Database, C
 import toast from 'react-hot-toast';
 import { auditLogService, AuditLog } from '@/services/audit-log.service';
 import Modal from '@/components/Modal';
+import Pagination from '@/components/Pagination';
 
 // --- BỘ TỪ ĐIỂN DỊCH TÊN BẢNG SANG TIẾNG VIỆT ---
 const entityNameTranslator: Record<string, string> = {
@@ -38,7 +39,7 @@ export default function AuditLogsPage() {
         setIsLoading(true);
         try {
             // Truyền tham số page và limit vào API khớp với PaginationDto của Backend
-            const response: any = await auditLogService.getAll({ page: currentPage, limit: 10 });
+            const response: any = await auditLogService.getAll({ page: currentPage, limit: 20 });
 
             // Xử lý lấy danh sách dữ liệu
             const dataList = response?.data?.items || response?.data?.data || (Array.isArray(response) ? response : response?.data || []);
@@ -205,29 +206,11 @@ export default function AuditLogsPage() {
                 </div>
 
                 {/* THANH ĐIỀU HƯỚNG PHÂN TRANG */}
-                {!isLoading && totalPages > 1 && (
-                    <div className="px-5 py-4 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
-                        <span className="text-[13px] text-slate-500 font-medium">
-                            Đang hiển thị trang <strong className="text-slate-800">{currentPage}</strong> trên tổng số <strong className="text-slate-800">{totalPages}</strong> trang
-                        </span>
-                        <div className="flex items-center gap-2">
-                            <button
-                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                                disabled={currentPage === 1}
-                                className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                            >
-                                <ChevronLeft className="w-5 h-5" />
-                            </button>
-                            <button
-                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                                disabled={currentPage === totalPages}
-                                className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                            >
-                                <ChevronRight className="w-5 h-5" />
-                            </button>
-                        </div>
-                    </div>
-                )}
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
             </div>
 
             {/* ========================================= */}

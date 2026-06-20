@@ -1,6 +1,7 @@
 "use client";
 
 import Modal from "@/components/Modal";
+import Pagination from "@/components/Pagination";
 import { User, userService } from "@/services/user.service";
 import { AlertTriangle, Edit2, Loader2, Plus, Search, ShieldCheck, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -29,15 +30,24 @@ export default function UsersPage() {
     const [userToDelete, setUserToDelete] = useState<User | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
     useEffect(() => {
         fetchUsers();
-    }, []);
+    }, [currentPage]);
 
     const fetchUsers = async () => {
         setIsLoading(true);
         try {
-            const response: any = await userService.getAll();
+            const response: any = await userService.getAll({ page: currentPage, limit: 20 });
             const dataList = Array.isArray(response) ? response : response?.data || [];
+
+            const meta = response?.data?.meta || response?.meta;
+            if (meta) {
+                setTotalPages(meta.lastPage || Math.ceil(meta.total / meta.limit) || 1);
+            }
+
             setUsers(dataList)
         } catch (error) {
             console.error('Lỗi khi tải danh sách user: ', error);
@@ -255,6 +265,11 @@ export default function UsersPage() {
                         </tbody>
                     </table>
                 </div>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
             </div>
 
             {/* ========================================= */}
