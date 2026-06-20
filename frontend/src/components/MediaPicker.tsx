@@ -9,7 +9,7 @@ import { mediaService, Media } from '@/services/media.service';
 interface MediaPickerProps {
     isOpen: boolean;
     onClose: () => void;
-    onSelect: (imageUrl: string) => void;
+    onSelect: (media: Media) => void;
 }
 
 export default function MediaPicker({ isOpen, onClose, onSelect }: MediaPickerProps) {
@@ -71,7 +71,7 @@ export default function MediaPicker({ isOpen, onClose, onSelect }: MediaPickerPr
 
             if (newMediaData && newMediaData.url) {
                 // Nếu lấy được URL -> Tự động chèn luôn vào bài viết và đóng Modal
-                onSelect(getImageUrl(newMediaData.url));
+                onSelect(newMediaData);
             } else {
                 // Nếu không lấy được URL -> Tải lại danh sách để hiển thị ảnh mới ở đầu lưới
                 fetchMedia();
@@ -153,7 +153,7 @@ export default function MediaPicker({ isOpen, onClose, onSelect }: MediaPickerPr
                             {filteredMedias.map((media) => (
                                 <div
                                     key={media.id}
-                                    onClick={() => onSelect(getImageUrl(media.url))}
+                                    onClick={() => onSelect(media)}
                                     className="group relative aspect-square bg-white rounded-xl border border-slate-200 overflow-hidden cursor-pointer hover:border-blue-500 hover:ring-2 hover:ring-blue-200 transition-all"
                                 >
                                     <img
