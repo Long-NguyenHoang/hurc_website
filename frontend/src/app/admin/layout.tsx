@@ -2,10 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import {
-    LayoutDashboard, Map, Ticket, Mail,
-    ShieldAlert, Train, ChevronDown, LogOut
-} from 'lucide-react';
+import { LayoutDashboard, Map, Ticket, Mail, ShieldAlert, Train, ChevronDown, LogOut, Users } from 'lucide-react';
 import { authService } from '@/services/auth.service';
 import { Toaster } from 'react-hot-toast';
 
@@ -87,6 +84,11 @@ export default function AdminLayout({
                             Hệ thống
                         </span>
                         <ul className="space-y-1">
+                            <li>
+                                <Link href="/admin/users" className={`flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors ${isActive('/admin/users') ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}`}>
+                                    <Users className="w-4 h-4" /> Quản lý tài khoản
+                                </Link>
+                            </li>
                             <li>
                                 <Link href="/admin/contacts" className={`flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors ${isActive('/admin/contacts') ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}`}>
                                     <Mail className="w-4 h-4" /> Phản hồi khách hàng
