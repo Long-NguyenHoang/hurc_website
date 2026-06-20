@@ -1,6 +1,5 @@
 import axiosClient from "./axiosClient";
 
-
 export interface User {
     id: string;
     email: string;
