@@ -6,6 +6,7 @@ export enum UserRole {
 export enum ArticleStatus {
     DRAFT = 'DRAFT',
     PUBLISHED = 'PUBLISHED',
+    ARCHIVED = 'ARCHIVED'
 }
 
 export enum JobType {
