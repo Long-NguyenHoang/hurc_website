@@ -44,6 +44,7 @@ export default function StationPage() {
             setStations(sortedList);
         } catch (error) {
             console.error('Lỗi khi tải danh sách nhà ga: ', error);
+            toast.error('Không thể tải danh sách nhà ga!');
         } finally {
             setIsLoading(false);
         }

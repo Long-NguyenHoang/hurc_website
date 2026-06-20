@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Matches, MinLength } from "class-validator";
+import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Matches, MinLength } from "class-validator";
 import { UserRole } from "common/enums";
 
 export class CreateUserDto {
@@ -19,4 +19,8 @@ export class CreateUserDto {
     @IsOptional()
     @IsEnum(UserRole, { message: 'Quyền hạn không hợp lệ' })
     role?: UserRole;
+
+    @IsOptional()
+    @IsBoolean({ message: 'Trạng thái hoạt động phải là boolean' })
+    is_active?: boolean;
 }
