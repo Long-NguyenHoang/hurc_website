@@ -8,6 +8,7 @@ import Modal from '@/components/Modal';
 import ImageLightbox from '@/components/ImageLightbox';
 import MediaPicker from '@/components/MediaPicker';
 import RichTextEditor from '@/components/RichTextEditor';
+import Pagination from '@/components/Pagination';
 
 export default function ArticlesPage() {
     const [articles, setArticles] = useState<Article[]>([]);
@@ -36,16 +37,25 @@ export default function ArticlesPage() {
     const [articleToDelete, setArticleToDelete] = useState<Article | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
     useEffect(() => {
         fetchArticles();
-    }, []);
+    }, [currentPage]);
 
     const fetchArticles = async () => {
         setIsLoading(true);
         try {
-            const response: any = await articleService.getAllAdmin();
+            const response: any = await articleService.getAllAdmin({ page: currentPage, limit: 20 });
             // Xử lý dữ liệu trả về (hỗ trợ cả mảng thường và mảng có phân trang)
             const dataList = response?.data?.items || response?.data?.data || (Array.isArray(response) ? response : response?.data || []);
+
+            const meta = response?.data?.meta || response?.meta;
+            if (meta) {
+                setTotalPages(meta.lastPage || Math.ceil(meta.total / meta.limit) || 1);
+            }
+
             // Sắp xếp bài mới nhất lên đầu
             const sortedList = dataList.sort((a: Article, b: Article) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
             setArticles(sortedList);
@@ -279,6 +289,11 @@ export default function ArticlesPage() {
                         </tbody>
                     </table>
                 </div>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
             </div>
 
             {/* ========================================= */}
