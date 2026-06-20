@@ -81,6 +81,8 @@ export class TicketFaresService {
 
     async remove(id: string) {
         const ticketFare = await this.findOne(id);
+        ticketFare.image = null;
+        await this.ticketFaresRepository.save(ticketFare);
         await this.ticketFaresRepository.softRemove(ticketFare);
         return { message: 'Đã xoá bảng giá thành công' };
     }

@@ -13,7 +13,7 @@ export class TicketFare extends AbstractBaseEntity {
     @Column({ type: 'boolean', default: true })
     is_active: boolean;
 
-    @ManyToOne(() => Media)
+    @ManyToOne(() => Media, { nullable: true, onDelete: 'SET NULL' })
     @JoinColumn({ name: 'image_id' })
-    image: Media;
+    image: Media | null;
 }
