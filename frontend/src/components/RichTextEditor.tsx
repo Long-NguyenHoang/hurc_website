@@ -40,9 +40,10 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
     }, []);
 
     // 2. Nhận URL ảnh từ MediaPicker và chèn vào đúng vị trí đã lưu
-    const handleSelectMedia = (imageUrl: string) => {
+    const handleSelectMedia = (media: any) => {
         const editor = reactQuillRef.current?.getEditor();
-        if (editor && imageUrl) {
+        if (editor && media?.url) {
+            const imageUrl = media.url.startsWith('http') ? media.url : `${process.env.NEXT_PUBLIC_API_URL}${media.url}`;
             // Chèn ảnh vào vị trí cursorPosition
             editor.insertEmbed(cursorPosition.current, 'image', imageUrl);
 
