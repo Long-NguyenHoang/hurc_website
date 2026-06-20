@@ -104,6 +104,8 @@ export class StationsService {
 
     async remove(id: string) {
         const station = await this.findOne(id);
+        station.schedule_image = null;
+        await this.stationsRepository.save(station);
         await this.stationsRepository.softRemove(station);
         return { message: 'Đã xoá nhà ga thành công' };
     }

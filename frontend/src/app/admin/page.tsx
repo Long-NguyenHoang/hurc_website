@@ -1,4 +1,4 @@
-import { Users, Map, Mail, ShieldAlert, ChevronRight, Activity } from 'lucide-react';
+import { Users, Map, Mail, ShieldAlert, Activity } from 'lucide-react';
 
 export default function AdminDashboardPage() {
     return (

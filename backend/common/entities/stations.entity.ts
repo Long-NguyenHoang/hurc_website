@@ -16,7 +16,7 @@ export class Station extends AbstractBaseEntity {
     @Column({ type: 'int', default: 0 })
     display_order: number;
 
-    @ManyToOne(() => Media)
+    @ManyToOne(() => Media, { onDelete: 'SET NULL', nullable: true })
     @JoinColumn({ name: 'schedule_image_id' })
-    schedule_image: Media;
+    schedule_image: Media | null;
 }

@@ -131,7 +131,7 @@ export default function UsersPage() {
             fetchUsers();
         } catch (error: any) {
             console.error(error);
-            toast.error(error.response?.data?.messsage || 'Đã xảy ra lỗi khi lưu dữ liệu!');
+            toast.error(error.response?.data?.message || 'Đã xảy ra lỗi khi lưu dữ liệu!');
         } finally {
             setIsSubmitting(false);
         }
