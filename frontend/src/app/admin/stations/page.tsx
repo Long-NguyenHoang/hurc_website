@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Search, Edit2, Trash2, MapPin, Loader2, Save, Upload, Maximize2, AlertTriangle } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, MapPin, Loader2, Save, Maximize2, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { stationService, Station } from '@/services/station.service';
 import RichTextEditor from '@/components/RichTextEditor';
 import Modal from '@/components/Modal';
 import ImageLightbox from '@/components/ImageLightbox';
+import MediaPicker from '@/components/MediaPicker'; // IMPORT THÊM MEDIAPICKER
 
 export default function StationsPage() {
     const [stations, setStations] = useState<Station[]>([]);
@@ -18,10 +19,13 @@ export default function StationsPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
 
+    // CẬP NHẬT STATE: Bỏ selectedFile, thêm image_id và image_url
     const [formData, setFormData] = useState({
         name: '', code: '', content: '', display_order: 0,
+        image_id: '', image_url: ''
     });
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+    const [isCoverPickerOpen, setIsCoverPickerOpen] = useState(false);
 
     // STATE LƯU TRỮ LỖI VALIDATION
     const [errors, setErrors] = useState<{ name?: string; code?: string; content?: string; file?: string }>({});
@@ -65,16 +69,15 @@ export default function StationsPage() {
             isValid = false;
         }
 
-        // Kiểm tra content của RichTextEditor (Loại bỏ các thẻ HTML để xem có text thật không)
         const strippedContent = formData.content.replace(/(<([^>]+)>)/gi, "").trim();
         if (!strippedContent) {
             newErrors.content = 'Vui lòng nhập nội dung mô tả chi tiết';
             isValid = false;
         }
 
-        // Nếu là thêm mới, bắt buộc phải có ảnh. Nếu là cập nhật, có thể bỏ trống để giữ ảnh cũ.
-        if (!editingId && !selectedFile) {
-            newErrors.file = 'Vui lòng tải lên hình ảnh lịch trình';
+        // Bắt buộc phải có ảnh lịch trình (Vì Edit cũng đã load ảnh cũ vào image_url rồi)
+        if (!formData.image_url) {
+            newErrors.file = 'Vui lòng chọn hình ảnh lịch trình từ thư viện';
             isValid = false;
         }
 
@@ -85,20 +88,26 @@ export default function StationsPage() {
     // --- XỬ LÝ MODAL THÊM/SỬA ---
     const handleOpenAdd = () => {
         setEditingId(null);
-        setFormData({ name: '', code: '', content: '', display_order: stations.length + 1 });
-        setSelectedFile(null);
-        setErrors({}); // Xóa lỗi cũ
+        setFormData({
+            name: '', code: '', content: '', display_order: stations.length + 1,
+            image_id: '', image_url: ''
+        });
+        setErrors({});
         setIsModalOpen(true);
     };
 
     const handleOpenEdit = (station: Station) => {
         setEditingId(station.id);
         setFormData({
-            name: station.name, code: station.code,
-            content: station.content || '', display_order: station.display_order,
+            name: station.name,
+            code: station.code,
+            content: station.content || '',
+            display_order: station.display_order,
+            // Gán dữ liệu ảnh cũ của nhà ga
+            image_id: station.schedule_image?.id || '',
+            image_url: station.schedule_image?.url || ''
         });
-        setSelectedFile(null);
-        setErrors({}); // Xóa lỗi cũ
+        setErrors({});
         setIsModalOpen(true);
     };
 
@@ -107,7 +116,6 @@ export default function StationsPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Gọi hàm kiểm tra trước khi Submit
         if (!validateForm()) {
             toast.error('Vui lòng kiểm tra lại các thông tin bị lỗi!');
             return;
@@ -120,7 +128,11 @@ export default function StationsPage() {
             submitData.append('code', formData.code);
             submitData.append('display_order', formData.display_order.toString());
             if (formData.content) submitData.append('content', formData.content);
-            if (selectedFile) submitData.append('file', selectedFile);
+
+            // Gửi image_id lên API
+            if (formData.image_id) {
+                submitData.append('image_id', formData.image_id);
+            }
 
             if (editingId) {
                 await stationService.update(editingId, submitData);
@@ -251,7 +263,7 @@ export default function StationsPage() {
                                                 className="relative w-16 h-10 mx-auto rounded border border-slate-200 overflow-hidden cursor-pointer group/img"
                                                 onClick={() => setPreviewImageUrl(getImageUrl(station.schedule_image!.url))}
                                             >
-                                                <img src={getImageUrl(station.schedule_image.url)} alt={`Lịch trình ${station.name}`} className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-300" />
+                                                <img src={getImageUrl(station.schedule_image.url)} alt={`Lịch trình ${station.name}`} className="w-full h-full object-cover transform-gpu will-change-transform backface-hidden group-hover/img:scale-110 transition-transform duration-300" loading="lazy" />
                                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 flex items-center justify-center transition-opacity">
                                                     <Maximize2 className="w-4 h-4 text-white" />
                                                 </div>
@@ -262,7 +274,7 @@ export default function StationsPage() {
                                     </td>
                                     <td className="py-3 px-5 text-[12px] font-medium text-slate-500">{formatDate(station.created_at)}</td>
                                     <td className="py-3 px-5 text-right">
-                                        <div className="flex items-center justify-end gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                                        <div className="flex items-center justify-end gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity will-change-opacity">
                                             <button onClick={() => handleOpenEdit(station)} className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
                                                 <Edit2 className="w-4 h-4" />
                                             </button>
@@ -340,29 +352,25 @@ export default function StationsPage() {
                             {errors.content && <p className="text-[11px] font-medium text-red-500 mt-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> {errors.content}</p>}
                         </div>
 
-                        {/* Input File Upload */}
+                        {/* CẬP NHẬT: Chọn ảnh từ MediaPicker */}
                         <div>
-                            <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Hình ảnh lịch trình (File) {!editingId && <span className="text-red-500">*</span>}</label>
-                            <div className="flex flex-col gap-1.5">
-                                <div className="flex items-center gap-3">
-                                    <label className={`flex items-center justify-center gap-2 px-4 py-2 border border-dashed rounded-xl cursor-pointer transition-colors ${errors.file ? 'bg-red-50 border-red-400 text-red-600 hover:bg-red-100' : 'bg-slate-100 border-slate-300 text-slate-600 hover:bg-slate-200'}`}>
-                                        <Upload className="w-4 h-4" />
-                                        <span className="text-[13px] font-medium">Chọn File</span>
-                                        <input
-                                            type="file" accept="image/*" className="hidden"
-                                            onChange={(e) => {
-                                                if (e.target.files && e.target.files[0]) {
-                                                    setSelectedFile(e.target.files[0]);
-                                                    if (errors.file) setErrors({ ...errors, file: undefined });
-                                                }
-                                            }}
-                                        />
-                                    </label>
-                                    {selectedFile && <span className="text-[12px] text-blue-600 font-medium truncate max-w-[200px]">{selectedFile.name}</span>}
-                                    {editingId && !selectedFile && <span className="text-[11px] text-slate-400">Bỏ trống để giữ nguyên ảnh cũ</span>}
-                                </div>
-                                {errors.file && <p className="text-[11px] font-medium text-red-500 flex items-center gap-1 mt-0.5"><AlertTriangle className="w-3 h-3" /> {errors.file}</p>}
+                            <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Hình ảnh lịch trình <span className="text-red-500">*</span></label>
+
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="text" readOnly
+                                    value={formData.image_url}
+                                    placeholder="Chưa có ảnh lịch trình..."
+                                    className={`flex-1 min-w-0 px-3 py-2.5 bg-slate-100 border rounded-xl text-[13px] text-slate-500 outline-none ${errors.file ? 'border-red-500 ring-2 ring-red-100' : 'border-slate-200'}`}
+                                />
+                                <button
+                                    type="button" onClick={() => setIsCoverPickerOpen(true)}
+                                    className="px-3 py-2.5 bg-slate-800 text-white text-[12px] font-semibold rounded-xl hover:bg-slate-900 transition-colors shrink-0 whitespace-nowrap"
+                                >
+                                    Chọn ảnh
+                                </button>
                             </div>
+                            {errors.file && <p className="text-[11px] font-medium text-red-500 flex items-center gap-1 mt-1.5"><AlertTriangle className="w-3 h-3" /> {errors.file}</p>}
                         </div>
 
                     </div>
@@ -403,6 +411,23 @@ export default function StationsPage() {
             {/* MODAL PHÓNG TO ẢNH (LIGHTBOX)             */}
             {/* ========================================= */}
             <ImageLightbox imageUrl={previewImageUrl} onClose={() => setPreviewImageUrl(null)} altText="Lịch trình nhà ga" />
+
+            {/* ========================================= */}
+            {/* COMPONENT MEDIA PICKER                    */}
+            {/* ========================================= */}
+            <MediaPicker
+                isOpen={isCoverPickerOpen}
+                onClose={() => setIsCoverPickerOpen(false)}
+                onSelect={(media: any) => {
+                    setFormData({
+                        ...formData,
+                        image_id: media.id,
+                        image_url: media.url
+                    });
+                    if (errors.file) setErrors({ ...errors, file: undefined });
+                    setIsCoverPickerOpen(false);
+                }}
+            />
 
         </div>
     );

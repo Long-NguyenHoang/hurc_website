@@ -214,7 +214,7 @@ export default function MediaPage() {
                                             <img
                                                 src={getImageUrl(media.url)}
                                                 alt={media.original_name}
-                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 transform-gpu will-change-transform backface-hidden" loading="lazy"
                                             />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center text-slate-400">
@@ -223,7 +223,7 @@ export default function MediaPage() {
                                         )}
 
                                         {/* Overlay Đen chứa Nút Xem/Sửa/Xóa (Hiện khi hover) */}
-                                        <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-opacity">
+                                        <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-opacity will-change-opacity">
                                             {media.mime_type?.startsWith('image/') && (
                                                 <button onClick={() => setPreviewImageUrl(getImageUrl(media.url))} className="w-8 h-8 bg-white/90 hover:bg-white text-slate-800 rounded-full flex items-center justify-center transition-colors" title="Phóng to">
                                                     <Maximize2 className="w-4 h-4" />
