@@ -231,7 +231,7 @@ export default function BannersPage() {
                                                 className="relative w-32 h-14 mx-auto rounded-lg border border-slate-200 overflow-hidden cursor-pointer group/img"
                                                 onClick={() => setPreviewImageUrl(getImageUrl(banner.image!.url))}
                                             >
-                                                <img src={getImageUrl(banner.image.url)} alt={banner.title} className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-300" />
+                                                <img src={getImageUrl(banner.image.url)} alt={banner.title} className="w-full h-full object-cover transform-gpu will-change-transform backface-hidden group-hover/img:scale-110 transition-transform duration-300" loading="lazy" />
                                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 flex items-center justify-center transition-opacity">
                                                     <Maximize2 className="w-4 h-4 text-white" />
                                                 </div>
@@ -263,7 +263,7 @@ export default function BannersPage() {
                                     </td>
 
                                     <td className="py-3 px-5 text-right">
-                                        <div className="flex items-center justify-end gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                                        <div className="flex items-center justify-end gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity will-change-opacity">
                                             <button onClick={() => handleOpenEdit(banner)} className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
                                                 <Edit2 className="w-4 h-4" />
                                             </button>
@@ -340,24 +340,6 @@ export default function BannersPage() {
                                 </button>
                             </div>
                             {errors.file && <p className="text-[11px] font-medium text-red-500 flex items-center gap-1 mt-1.5"><AlertTriangle className="w-3 h-3" /> {errors.file}</p>}
-
-                            {/* Hiển thị bản xem trước ảnh */}
-                            {formData.image_url && (
-                                <div className="mt-3 w-full h-32 rounded-xl border border-slate-200 overflow-hidden shadow-sm relative group/thumb">
-                                    <img src={getImageUrl(formData.image_url)} alt="Banner" className="w-full h-full object-cover" />
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            setFormData({ ...formData, image_id: '', image_url: '' });
-                                            if (errors.file) setErrors({ ...errors, file: undefined });
-                                        }}
-                                        className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover/thumb:opacity-100 transition-opacity shadow-sm"
-                                        title="Bỏ chọn ảnh"
-                                    >
-                                        <Trash2 className="w-4 h-4" />
-                                    </button>
-                                </div>
-                            )}
                         </div>
 
                         {/* NÚT BẬT/TẮT TRẠNG THÁI */}

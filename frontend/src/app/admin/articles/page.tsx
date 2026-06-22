@@ -245,7 +245,7 @@ export default function ArticlesPage() {
                                                 className="relative w-20 h-14 mx-auto rounded-lg border border-slate-200 overflow-hidden cursor-pointer group/img"
                                                 onClick={() => setPreviewImageUrl(getImageUrl(article.thumbnail!.url))}
                                             >
-                                                <img src={getImageUrl(article.thumbnail.url)} alt="Thumbnail" className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-300" />
+                                                <img src={getImageUrl(article.thumbnail.url)} alt="Thumbnail" className="w-full h-full object-cover transform-gpu will-change-transform backface-hidden group-hover/img:scale-110 transition-transform duration-300" loading="lazy" />
                                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 flex items-center justify-center transition-opacity">
                                                     <Maximize2 className="w-4 h-4 text-white" />
                                                 </div>
@@ -275,7 +275,7 @@ export default function ArticlesPage() {
                                     </td>
 
                                     <td className="py-3 px-5 text-right">
-                                        <div className="flex items-center justify-end gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                                        <div className="flex items-center justify-end gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity will-change-opacity">
                                             <button onClick={() => handleOpenEdit(article)} className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
                                                 <Edit2 className="w-4 h-4" />
                                             </button>
@@ -350,24 +350,22 @@ export default function ArticlesPage() {
 
                                 <div>
                                     <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Ảnh bìa (Thumbnail) <span className="text-red-500">*</span></label>
-                                    {formData.thumbnail_url ? (
-                                        <div className="relative w-full aspect-video rounded-xl border border-slate-200 overflow-hidden shadow-sm group/thumb">
-                                            <img src={getImageUrl(formData.thumbnail_url)} alt="Thumbnail" className="w-full h-full object-cover" />
-                                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                                <button type="button" onClick={() => setIsThumbnailPickerOpen(true)} className="bg-white text-slate-800 text-[11px] font-bold px-3 py-1.5 rounded-lg shadow-sm hover:bg-slate-100 transition-colors">Đổi ảnh</button>
-                                                <button type="button" onClick={() => { setFormData({ ...formData, thumbnail_id: '', thumbnail_url: '' }); if (errors.thumbnail) setErrors({ ...errors, thumbnail: undefined }); }} className="bg-red-500 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg shadow-sm hover:bg-red-600 transition-colors">Xóa</button>
-                                            </div>
-                                        </div>
-                                    ) : (
+
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            type="text" readOnly
+                                            value={formData.thumbnail_url}
+                                            placeholder="Chưa có ảnh..."
+                                            className={`flex-1 min-w-0 px-3 py-2.5 bg-slate-100 border rounded-xl text-[13px] text-slate-500 outline-none ${errors.thumbnail ? 'border-red-500 ring-2 ring-red-100' : 'border-slate-200'}`}
+                                        />
                                         <button
                                             type="button" onClick={() => setIsThumbnailPickerOpen(true)}
-                                            className={`w-full aspect-video flex flex-col items-center justify-center gap-2 bg-slate-50 border-2 border-dashed rounded-xl transition-colors ${errors.thumbnail ? 'border-red-400 text-red-500 hover:bg-red-50' : 'border-slate-300 text-slate-500 hover:bg-slate-100 hover:border-slate-400'}`}
+                                            className="px-3 py-2.5 bg-slate-800 text-white text-[12px] font-semibold rounded-xl hover:bg-slate-900 transition-colors shrink-0 whitespace-nowrap"
                                         >
-                                            <ImageIcon className="w-6 h-6" />
-                                            <span className="text-[12px] font-medium">Chọn từ thư viện</span>
+                                            Chọn ảnh
                                         </button>
-                                    )}
-                                    {errors.thumbnail && <p className="text-[11px] font-medium text-red-500 mt-1.5 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> {errors.thumbnail}</p>}
+                                    </div>
+                                    {errors.thumbnail && <p className="text-[11px] font-medium text-red-500 flex items-center gap-1 mt-1.5"><AlertTriangle className="w-3 h-3" /> {errors.thumbnail}</p>}
                                 </div>
                             </div>
                         </div>

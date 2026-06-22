@@ -13,7 +13,7 @@ export interface User {
 
 export const userService = {
     getProfile: async () => {
-        return await axiosClient.get('/user/me');
+        return await axiosClient.get('/users/me');
     },
 
     updateProfile: async (data: any) => {
