@@ -189,21 +189,29 @@ export default function AdminLayout({
                             Hệ thống
                         </span>
                         <ul className="space-y-1">
-                            <li>
-                                <Link href="/admin/users" className={`flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors ${isActive('/admin/users') ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}`}>
-                                    <Users className="w-4 h-4" /> Quản lý tài khoản
-                                </Link>
-                            </li>
+                            {/* CHỈ ADMIN MỚI THẤY QUẢN LÝ TÀI KHOẢN */}
+                            {userProfile?.role === 'ADMIN' && (
+                                <li>
+                                    <Link href="/admin/users" className={`flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors ${isActive('/admin/users') ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}`}>
+                                        <Users className="w-4 h-4" /> Quản lý tài khoản
+                                    </Link>
+                                </li>
+                            )}
+
                             <li>
                                 <Link href="/admin/contacts" className={`flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors ${isActive('/admin/contacts') ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}`}>
                                     <Mail className="w-4 h-4" /> Phản hồi khách hàng
                                 </Link>
                             </li>
-                            <li>
-                                <Link href="/admin/audit-logs" className={`flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors ${isActive('/admin/audit-logs') ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}`}>
-                                    <ShieldAlert className="w-4 h-4" /> Nhật ký bảo mật
-                                </Link>
-                            </li>
+
+                            {/* CHỈ ADMIN MỚI THẤY NHẬT KÝ BẢO MẬT */}
+                            {userProfile?.role === 'ADMIN' && (
+                                <li>
+                                    <Link href="/admin/audit-logs" className={`flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors ${isActive('/admin/audit-logs') ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}`}>
+                                        <ShieldAlert className="w-4 h-4" /> Nhật ký bảo mật
+                                    </Link>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 </nav>
@@ -240,7 +248,7 @@ export default function AdminLayout({
                             <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} />
                         </button>
 
-                        {/* Dropdown Menu Giả lập */}
+                        {/* Dropdown Menu */}
                         {isUserMenuOpen && (
                             <>
                                 <div className="fixed inset-0 z-40" onClick={() => setIsUserMenuOpen(false)}></div>

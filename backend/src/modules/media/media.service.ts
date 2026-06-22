@@ -38,14 +38,14 @@ export class MediaService {
     const { page = 1, limit = 20 } = paginationDto;
     const skip = (page - 1) * limit;
 
-    const whereCondition: any = {};
+    // const whereCondition: any = {};
 
-    if (user.role !== UserRole.ADMIN) {
-      whereCondition.uploaded_by_user = { id: user.id };
-    }
+    // if (user.role !== UserRole.ADMIN) {
+    //   whereCondition.uploaded_by_user = { id: user.id };
+    // }
 
     const [mediaFiles, total] = await this.mediaRepository.findAndCount({
-      where: whereCondition,
+      // where: whereCondition,
       skip: skip,
       take: limit,
       order: { created_at: 'DESC' },
