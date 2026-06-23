@@ -129,9 +129,9 @@ export default function StationsPage() {
             submitData.append('display_order', formData.display_order.toString());
             if (formData.content) submitData.append('content', formData.content);
 
-            // Gửi image_id lên API
+            // Gửi schedule_image_id lên API
             if (formData.image_id) {
-                submitData.append('image_id', formData.image_id);
+                submitData.append('schedule_image_id', formData.image_id);
             }
 
             if (editingId) {

@@ -13,6 +13,10 @@ export interface Banner {
 }
 
 export const bannerService = {
+    getAllPublic: async () => {
+        return await axiosClient.get('/banners');
+    },
+
     getAllAdmin: async () => {
         return await axiosClient.get('/banners/admin/all');
     },

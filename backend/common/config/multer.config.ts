@@ -28,6 +28,6 @@ export const multerOptions = {
 
     // Giới hạn dung lượng 5MB
     limits: {
-        fileSize: 50 * 1024 * 1024,
+        fileSize: 5 * 1024 * 1024,
     },
 };
