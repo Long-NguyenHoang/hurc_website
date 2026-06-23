@@ -17,6 +17,9 @@ export interface Article {
 }
 
 export const articleService = {
+    getAllPublic: async (params?: { page?: number; limit?: number; search?: string }) => {
+        return await axiosClient.get('/articles', { params });
+    },
     // API dành cho Admin
     getAllAdmin: async (params?: any) => {
         return await axiosClient.get('/articles/admin/all', { params });

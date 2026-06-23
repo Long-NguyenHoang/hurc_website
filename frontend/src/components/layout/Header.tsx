@@ -1,0 +1,108 @@
+"use client";
+
+import Link from "next/link";
+import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+
+// Khai báo khuôn mẫu TypeScript để không bị lỗi thuộc tính target
+type NavItem = {
+    name: string;
+    href: string;
+    target?: string;
+};
+
+const navLinks: NavItem[] = [
+    { name: 'Trang chủ', href: '/' },
+    { name: 'Về HURC', href: '/gioi-thieu' },
+    { name: 'Quá trình hình thành', href: '/qua-trinh-hinh-thanh' },
+    { name: 'Lịch chạy tàu', href: '/lich-chay-tau' },
+    // { name: 'Hoá đơn', href: '/hoa-don' },
+    { name: 'Tin tức', href: '/tin-tuc' },
+    // { name: 'Tuyển dụng', href: 'https://tuyendung.metrohcm.ttgt.vn/home', target: '_blank' },
+    { name: 'Liên hệ', href: '/lien-he' },
+];
+
+export default function Header() {
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const pathname = usePathname();
+
+    // Hiệu ứng đổ bóng mờ khi cuộn chuột xuống
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 10);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    return (
+        <header
+            className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-100 py-1' : 'bg-white py-3'
+                }`}
+        >
+            {/* KHUNG CHUẨN: max-w-[120rem] (1920px) và padding 56px (áp dụng từ màn hình lg trở lên) */}
+            <div className="max-w-[120rem] mx-auto px-4 lg:px-[110px]">
+                <div className="flex items-center justify-between h-16">
+
+                    {/* LOGO */}
+                    <Link href="/" className="flex items-center shrink-0">
+                        <img src="/logo.png" alt="HCMC Metro" className="h-10 w-auto object-contain block" />
+                    </Link>
+
+                    {/* MENU DESKTOP */}
+                    <nav className="hidden lg:flex items-center gap-8">
+                        {navLinks.map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Link
+                                    key={link.name}
+                                    href={link.href}
+                                    target={link.target || '_self'}
+                                    className={`text-[15px] transition-colors whitespace-nowrap ${isActive ? 'text-[#004b87] font-medium' : 'text-slate-700 hover:text-[#004b87]'
+                                        }`}
+                                >
+                                    {link.name}
+                                </Link>
+                            );
+                        })}
+                    </nav>
+
+                    {/* NÚT BẬT TẮT MENU MOBILE */}
+                    <button
+                        className="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    >
+                        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                    </button>
+
+                </div>
+            </div>
+
+            {/* MENU MOBILE DROP-DOWN */}
+            <div
+                className={`lg:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-slate-100 overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+            >
+                <div className="flex flex-col px-4 py-4 space-y-2">
+                    {navLinks.map((link) => {
+                        const isActive = pathname === link.href;
+                        return (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                target={link.target || '_self'}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className={`px-4 py-3 rounded-xl text-[15px] transition-colors ${isActive ? 'bg-blue-50 text-[#004b87] font-medium' : 'text-slate-700 hover:bg-slate-50'
+                                    }`}
+                            >
+                                {link.name}
+                            </Link>
+                        );
+                    })}
+                </div>
+            </div>
+        </header>
+    );
+}
