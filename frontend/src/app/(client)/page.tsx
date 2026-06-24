@@ -340,7 +340,7 @@ export default function Home() {
                   <img
                     src="/anh-1.png"
                     alt="Tầm nhìn HCMC Metro"
-                    className="w-full h-full object-cover transition-transform duration-500"
+                    className="w-full h-full object-cover"
                     onError={(e) => { (e.target as HTMLImageElement).src = '/hero-metro.png'; }}
                   />
                 </div>
@@ -363,7 +363,7 @@ export default function Home() {
                   <img
                     src="/anh-2.png"
                     alt="Sứ mệnh HCMC Metro"
-                    className="w-full h-full object-cover transition-transform duration-500"
+                    className="w-full h-full object-cover"
                     onError={(e) => { (e.target as HTMLImageElement).src = '/hero-metro.png'; }}
                   />
                 </div>
@@ -385,7 +385,7 @@ export default function Home() {
                   <img
                     src="/anh-3.png"
                     alt="Giá trị cốt lõi HCMC Metro"
-                    className="w-full h-full object-cover transition-transform duration-500"
+                    className="w-full h-full object-cover"
                     onError={(e) => { (e.target as HTMLImageElement).src = '/hero-metro.png'; }}
                   />
                 </div>
@@ -442,40 +442,40 @@ export default function Home() {
             <div className="flex flex-wrap items-center justify-center gap-32 md:gap-40 lg:gap-48">
 
               {/* Logo 1: Hitachi */}
-              <Link href="#" className="transition-transform duration-300">
+              <div>
                 <img
                   src="/hitachi.jpg"
                   alt="Hitachi"
-                  className="h-[150px] md:h-[200px] w-auto object-contain block transition-all duration-300"
+                  className="h-[150px] md:h-[200px] w-auto object-contain block"
                 />
-              </Link>
+              </div>
 
               {/* Logo 2: Tokyo Metro */}
-              <Link href="#" className="transition-transform duration-300">
+              <div>
                 <img
                   src="/tokyoMetro.jpg"
                   alt="TokyoMetro"
-                  className="h-[150px] md:h-[200px] w-auto object-contain block transition-all duration-300"
+                  className="h-[150px] md:h-[200px] w-auto object-contain block"
                 />
-              </Link>
+              </div>
 
               {/* Logo 3: Mastercard */}
-              <Link href="#" className="transition-transform duration-300">
+              <div>
                 <img
                   src="/masterCard.jpg"
                   alt="Mastercard"
-                  className="h-[150px] md:h-[200px] w-auto object-contain block transition-all duration-300"
+                  className="h-[150px] md:h-[200px] w-auto object-contain block"
                 />
-              </Link>
+              </div>
 
               {/* Logo 4: FPT */}
-              <Link href="#" className="transition-transform duration-300">
+              <div>
                 <img
                   src="/Logo-FPT.png"
                   alt="FPT"
-                  className="h-[150px] md:h-[200px] w-auto object-contain block transition-all duration-300"
+                  className="h-[150px] md:h-[200px] w-auto object-contain block"
                 />
-              </Link>
+              </div>
 
             </div>
           </div>

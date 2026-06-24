@@ -7,13 +7,13 @@ export default function Footer() {
             <div className="max-w-[120rem] mx-auto px-4 lg:px-[56px]">
 
                 {/* Flexbox bọc toàn bộ nội dung, dàn đều 2 bên, canh giữa theo chiều dọc */}
-                <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+                <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 px-14">
 
                     {/* BÊN TRÁI: Nhóm Logo và Text Thông tin */}
                     <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10">
 
                         {/* Khối Logo nền trắng bo góc giống hình ảnh */}
-                        <div className="bg-white px-6 py-4 rounded-xl shrink-0 flex items-center justify-center h-[100px] w-[180px]">
+                        <div className="bg-white px-6 py-2 rounded-xl shrink-0 flex items-center justify-center h-[120px] w-[230px]">
                             <img
                                 src="/logo.png"
                                 alt="HCMC Metro"
