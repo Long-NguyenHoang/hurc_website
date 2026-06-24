@@ -394,14 +394,14 @@ export default function Home() {
           </div>
         </section>
         {/* AREA 5: KHUNG TIN TỨC MỚI CẬP NHẬT */}
-        <section className="py-6 md:py-10">
+        <section className="py-2 md:py-6">
           {/* Bộ khung tỷ lệ vàng 120rem và lề px-56px cố định */}
           <div className="max-w-[120rem] mx-auto px-4 lg:px-[56px]">
 
             {/* Tiêu đề lệch trái màu xanh giống hệt ảnh chụp */}
             <div className="mb-6 md:mb-8">
               <h2 className="text-[22px] md:text-[26px] lg:text-[28px] font-bold text-[#005596]">
-                Tin tức
+                Tin tức mới
               </h2>
             </div>
 
@@ -434,7 +434,7 @@ export default function Home() {
           <div>
 
             {/* Tiêu đề */}
-            <h2 className="text-[20px] md:text-[24px] lg:text-[28px] font-bold text-center text-[#005596] mb-10 md:mb-14">
+            <h2 className="text-[20px] md:text-[24px] lg:text-[28px] font-bold text-center text-[#005596] mb-8 md:mb-12">
               Đối tác thương hiệu
             </h2>
 
@@ -446,7 +446,7 @@ export default function Home() {
                 <img
                   src="/hitachi.jpg"
                   alt="Hitachi"
-                  className="h-[150px] md:h-[200px] w-auto object-contain block"
+                  className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block"
                 />
               </div>
 
@@ -455,7 +455,7 @@ export default function Home() {
                 <img
                   src="/tokyoMetro.jpg"
                   alt="TokyoMetro"
-                  className="h-[150px] md:h-[200px] w-auto object-contain block"
+                  className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block"
                 />
               </div>
 
@@ -464,7 +464,7 @@ export default function Home() {
                 <img
                   src="/masterCard.jpg"
                   alt="Mastercard"
-                  className="h-[150px] md:h-[200px] w-auto object-contain block"
+                  className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block"
                 />
               </div>
 
@@ -473,7 +473,7 @@ export default function Home() {
                 <img
                   src="/Logo-FPT.png"
                   alt="FPT"
-                  className="h-[150px] md:h-[200px] w-auto object-contain block"
+                  className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block"
                 />
               </div>
 
