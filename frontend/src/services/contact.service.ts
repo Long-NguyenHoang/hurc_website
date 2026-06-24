@@ -17,6 +17,16 @@ export interface Contact {
 }
 
 export const contactService = {
+    create: async (data: {
+        full_name: string;
+        email?: string;
+        phone?: string;
+        subject: Subject;
+        message: string
+    }) => {
+        return await axiosClient.post('/contacts', data);
+    },
+
     getAllAdmin: async (params?: any) => {
         return await axiosClient.get('/contacts/admin/all', { params });
     },
