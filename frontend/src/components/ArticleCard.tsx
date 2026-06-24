@@ -27,7 +27,7 @@ export default function ArticleCard({ article }: ArticleCardProps) {
                 <img
                     src={getThumbnailUrl()}
                     alt={article.title}
-                    className="w-full h-full object-cover transform-gpu transition-transform duration-500 ease-out group-hover:scale-105"
+                    className="w-full h-full object-cover transform-gpu will-change-transform transition-transform duration-500 ease-out group-hover:scale-105" loading="lazy"
                     onError={(e) => {
                         (e.target as HTMLImageElement).src = '/hero-metro.png';
                     }}
