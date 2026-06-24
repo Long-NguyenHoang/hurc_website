@@ -270,11 +270,13 @@ export default function Home() {
                     <button
                       key={station.id}
                       onClick={() => setActiveStationId(station.id)}
-                      className={`px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[13px] md:text-[14px] font-medium transition-all duration-200 ${activeStationId === station.id
-                        ? 'bg-[#005596] text-white shadow-md'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      className={`flex items-center gap-2 px-5 py-2.5 rounded-full whitespace-nowrap transition-all duration-300 border-2 font-medium shrink-0
+                          ${activeStationId === station.id
+                          ? 'bg-[#005596] text-white border-[#005596] shadow-md'
+                          : 'bg-white text-[#005596] border-[#005596] hover:bg-blue-50'
                         }`}
                     >
+                      <TrainFront className="w-5 h-5" />
                       {station.name}
                     </button>
                   ))}

@@ -12,6 +12,9 @@ export interface TicketFare {
 }
 
 export const ticketFareService = {
+    getAllPublic: async () => {
+        return await axiosClient.get('/ticket-fares');
+    },
     // API dành cho Admin
     getAllAdmin: async () => {
         return await axiosClient.get('/ticket-fares/admin/all');
