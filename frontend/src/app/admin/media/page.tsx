@@ -37,7 +37,7 @@ export default function MediaPage() {
     const fetchMedia = async () => {
         setIsLoading(true);
         try {
-            const response: any = await mediaService.getAll({ page: currentPage, limit: 20 });
+            const response: any = await mediaService.getAll({ page: currentPage, limit: 12 });
             const dataList = Array.isArray(response) ? response : response?.data || [];
 
             const meta = response?.data?.meta || response?.meta;

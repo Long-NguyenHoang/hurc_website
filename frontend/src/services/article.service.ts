@@ -17,9 +17,14 @@ export interface Article {
 }
 
 export const articleService = {
-    getAllPublic: async (params?: { page?: number; limit?: number; search?: string }) => {
+    getAllPublic: async (params?: { page?: number; limit?: number, search?: string }) => {
         return await axiosClient.get('/articles', { params });
     },
+
+    getBySlug: async (slug: string) => {
+        return await axiosClient.get(`/articles/detail/${slug}`);
+    },
+
     // API dành cho Admin
     getAllAdmin: async (params?: any) => {
         return await axiosClient.get('/articles/admin/all', { params });
