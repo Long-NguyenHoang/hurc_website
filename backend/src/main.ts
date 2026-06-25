@@ -28,8 +28,8 @@ async function bootstrap() {
     origin: [
       'http://localhost:3001',
       'http://localhost:3000',
-      'http://192.168.0.70:3001',
-      'http://192.168.0.70:3000',
+      'http://192.168.0.125:3001',
+      'http://192.168.0.125:3000',
       'https://cms.hurc.vn'
     ],
 
