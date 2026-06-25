@@ -19,10 +19,10 @@ export const multerOptions = {
 
     // Chỉ cho upload file ảnh
     fileFilter: (req, file, cb) => {
-        if (file.mimetype.match(/\/(jpg|jpeg|png|gif|webp|pdf)$/)) {
+        if (file.mimetype.match(/\/(jpg|jpeg|png|gif|pdf)$/)) {
             cb(null, true);
         } else {
-            cb(new BadRequestException('Chỉ gửi file có định dạng sau (jpg/jpeg/png/gif/webp/pdf)'), false);
+            cb(new BadRequestException('Chỉ gửi file có định dạng sau (jpg/jpeg/png/gif/pdf)'), false);
         }
     },
 
