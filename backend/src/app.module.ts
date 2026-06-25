@@ -18,6 +18,7 @@ import { SeederService } from 'common/database/seeder.service';
 import { ClsModule } from 'nestjs-cls';
 import { UserContextMiddleware } from 'common/middlewares/user-context.middleware';
 import { AuditLogsModule } from './modules/audit-logs/audit-logs.module';
+import { InvoicesModule } from './modules/invoices/invoices.module';
 
 @Module({
   imports: [
@@ -72,6 +73,8 @@ import { AuditLogsModule } from './modules/audit-logs/audit-logs.module';
     TicketFaresModule,
 
     AuditLogsModule,
+
+    InvoicesModule,
   ],
   controllers: [AppController],
   providers: [AppService, SeederService],
