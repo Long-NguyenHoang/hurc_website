@@ -8,7 +8,7 @@ interface ArticleCardProps {
     showDate?: boolean;    // Thêm prop để bật/tắt phần ngày đăng
 }
 
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 export default function ArticleCard({
     article,

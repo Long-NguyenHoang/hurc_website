@@ -26,8 +26,8 @@ export default function Footer() {
                             <p className="font-medium">Công ty TNHH MTV Đường sắt Đô thị số 1</p>
                             <p>Mã số thuế: 0315818455</p>
                             <p>Giám đốc: Lê Minh Triết</p>
-                            <p>Điện thoại: 1900 638 885</p>
-                            <p>Địa chỉ thư điện tử (Email): hurc1@tphcm.gov.vn</p>
+                            <p>Điện thoại: <a href="tel:1900 638 885">1900 638 885</a></p>
+                            <p>Địa chỉ thư điện tử (Email): <a href="mailto:hurc1@tphcm.gov.vn">hurc1@tphcm.gov.vn</a></p>
                             <p>Địa chỉ: Toà nhà OCC, số 55 Đường 11, Khu phố Giản Dân, Phường Long Bình, Thành phố Hồ Chí Minh</p>
                         </div>
                     </div>

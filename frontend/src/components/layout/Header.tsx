@@ -39,7 +39,7 @@ export default function Header() {
 
     return (
         <header
-            className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-100 py-1' : 'bg-white py-3'
+            className={`sticky top-0 z-50 border-b transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm border-slate-100 py-1' : 'bg-white border-transparent py-3'
                 }`}
         >
             {/* KHUNG CHUẨN: max-w-[120rem] (1920px) và padding 56px (áp dụng từ màn hình lg trở lên) */}

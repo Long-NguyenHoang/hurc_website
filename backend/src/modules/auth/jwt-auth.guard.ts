@@ -7,8 +7,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         return super.canActivate(context);
     }
 
-    handleRequest(err, user, info) {
+    handleRequest(err, user, info, context?: ExecutionContext) {
         if (err || !user) {
+            if (context) {
+                const response = context.switchToHttp().getResponse();
+                if (response && typeof response.clearCookie === 'function') {
+                    response.clearCookie('access_token');
+                }
+            }
             throw err || new UnauthorizedException('Bạn chưa đăng nhập hoặc phiên làm việc đã hết hạn');
         }
         return user;

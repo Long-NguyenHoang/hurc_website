@@ -1,9 +1,20 @@
 // src/services/axiosClient.ts
 import axios from 'axios';
 
+const getBaseURL = () => {
+    if (typeof window !== 'undefined') {
+        const hostname = window.location.hostname;
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            return 'http://localhost:3000';
+        }
+        // Nếu truy cập qua IP LAN
+        return `http://${hostname}:3000`;
+    }
+    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+};
+
 const axiosClient = axios.create({
-    // Tự động lấy URL từ file .env.local (hoặc biến môi trường trên Server)
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
+    baseURL: getBaseURL(),
     // SIÊU QUAN TRỌNG: Công tắc cho phép trình duyệt gửi HttpOnly Cookie lên Backend
     withCredentials: true,
     headers: {
@@ -48,7 +59,7 @@ axiosClient.interceptors.response.use(
             // Lưu ý: Không dùng router.push ở đây vì đây là file thuần TS, không phải React Component.
             // Chúng ta sẽ dùng window.location để đá người dùng về thẳng trang đăng nhập.
             if (typeof window !== 'undefined' && !window.location.pathname.includes('/admin/login')) {
-                window.location.href = '/admin/login';
+                window.location.href = '/admin/login?expired=true';
             }
         }
 

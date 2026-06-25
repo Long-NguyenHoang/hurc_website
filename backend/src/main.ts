@@ -25,7 +25,13 @@ async function bootstrap() {
   // --- CẤU HÌNH CORS ĐỂ CHỐNG CSRF VÀ CHO PHÉP ĐỌC COOKIE ---
   app.enableCors({
     // Chỉ cho phép các domain này được gọi API (Thay bằng domain thực tế khi lên Production)
-    origin: ['http://localhost:3001', 'http://localhost:3000', 'https://cms.hurc.vn'],
+    origin: [
+      'http://localhost:3001',
+      'http://localhost:3000',
+      'http://192.168.0.70:3001',
+      'http://192.168.0.70:3000',
+      'https://cms.hurc.vn'
+    ],
 
     // BẮT BUỘC PHẢI LÀ TRUE: Cho phép Frontend gửi HttpOnly Cookie lên Backend
     credentials: true,

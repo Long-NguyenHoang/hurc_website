@@ -114,7 +114,7 @@ export default function ContactPage() {
                                     <div className="space-y-1">
                                         <p className="font-bold text-slate-800 text-[16px]">Email</p>
                                         <p className="text-slate-600 leading-relaxed max-w-sm">
-                                            hurc1@tphcm.gov.vn
+                                            <a href="mailto:hurc1@tphcm.gov.vn">hurc1@tphcm.gov.vn</a>
                                         </p>
                                     </div>
                                 </li>
@@ -134,7 +134,7 @@ export default function ContactPage() {
                                     <div className="space-y-1">
                                         <p className="font-bold text-slate-800 text-[16px]">Điện thoại</p>
                                         <p className="text-slate-600 leading-relaxed max-w-sm">
-                                            1900 638 885
+                                            <a href="tel:1900 638 885">1900 638 885</a>
                                         </p>
                                     </div>
                                 </li>

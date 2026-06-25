@@ -9,7 +9,7 @@ import { Article, articleService } from "@/services/article.service";
 import ArticleCard from "@/components/ArticleCard";
 
 // Cấu hình URL Backend
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 export default function Home() {
   // --- STATE BANNER ---
@@ -142,347 +142,326 @@ export default function Home() {
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}} />
       {/* ĐƯA BANNER VÀO BỘ KHUNG CHUẨN ĐỂ THẲNG LỀ HEADER/FOOTER */}
-      <div className="max-w-[120rem] mx-auto px-4 lg:px-[56px]">
 
-        {/* KHỐI SLIDER (Thay chiều cao tĩnh bằng Aspect Ratio) */}
-        {/* Tỷ lệ aspect-[2.5/1] trên Desktop giúp ảnh trải dài giống hình chữ nhật ngang, không bị quá to cao */}
-        <section className="relative w-full aspect-[16/7] md:aspect-[21/9] lg:aspect-[2.5/1] rounded-lg overflow-hidden group shadow-sm">
+      {/* KHỐI SLIDER (Thay chiều cao tĩnh bằng Aspect Ratio) */}
+      {/* Tỷ lệ aspect-[2.5/1] trên Desktop giúp ảnh trải dài giống hình chữ nhật ngang, không bị quá to cao */}
+      <section className="relative w-full aspect-[16/7] md:aspect-[21/9] lg:aspect-[2.5/1] group">
 
-          {/* THẺ LINK BỌC HÌNH ẢNH (Bấm vào ảnh chuyển trang) */}
-          <div
-            className="flex w-full h-full transition-transform duration-700 ease-in-out"
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        {/* THẺ LINK BỌC HÌNH ẢNH (Bấm vào ảnh chuyển trang) */}
+        <div
+          className="flex w-full h-full transition-transform duration-700 ease-in-out"
+          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        >
+          {banners.map((banner, index) => (
+            // Mỗi slide là một khối (shrink-0) bắt buộc rộng bằng đúng 100% khung hình
+            <div key={banner.id || index} className="w-full h-full shrink-0 relative">
+              <Link href={banner.redirect_url || "#"} className="block w-full h-full cursor-pointer">
+                <img
+                  src={getBannerUrl(banner)}
+                  alt={banner.title || `HCMC Metro Banner ${index + 1}`}
+                  className="w-full h-full"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/hero-metro.png';
+                  }}
+                />
+              </Link>
+            </div>
+          ))}
+        </div>
+
+        {/* NÚT ĐIỀU HƯỚNG BÊN TRÁI */}
+        {banners.length > 1 && (
+          <button
+            onClick={(e) => { e.preventDefault(); prevSlide(); }}
+            className="absolute left-3 lg:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 lg:w-12 lg:h-12 bg-white/50 hover:bg-white text-slate-800 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-md"
           >
-            {banners.map((banner, index) => (
-              // Mỗi slide là một khối (shrink-0) bắt buộc rộng bằng đúng 100% khung hình
-              <div key={banner.id || index} className="w-full h-full shrink-0 relative">
-                <Link href={banner.redirect_url || "#"} className="block w-full h-full cursor-pointer">
-                  <img
-                    src={getBannerUrl(banner)}
-                    alt={banner.title || `HCMC Metro Banner ${index + 1}`}
-                    className="w-full h-full"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/hero-metro.png';
-                    }}
-                  />
-                </Link>
-              </div>
+            <ChevronLeft className="w-5 h-5 lg:w-6 lg:h-6" />
+          </button>
+        )}
+
+        {/* NÚT ĐIỀU HƯỚNG BÊN PHẢI */}
+        {banners.length > 1 && (
+          <button
+            onClick={(e) => { e.preventDefault(); nextSlide(); }}
+            className="absolute right-3 lg:right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 lg:w-12 lg:h-12 bg-white/50 hover:bg-white text-slate-800 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-md"
+          >
+            <ChevronRight className="w-5 h-5 lg:w-6 lg:h-6" />
+          </button>
+        )}
+
+        {/* DẤU CHẤM PHÂN TRANG Ở ĐÁY ẢNH */}
+        {banners.length > 1 && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/20 px-3 py-1.5 rounded-full backdrop-blur-sm">
+            {banners.map((_, index) => (
+              <button
+                key={index}
+                className={`h-2 rounded-full transition-all duration-300 ${index === currentIndex ? 'w-6 lg:w-8 bg-white' : 'w-2 bg-white/60 hover:bg-white'
+                  }`}
+                onClick={(e) => { e.preventDefault(); setCurrentIndex(index); }}
+              />
             ))}
           </div>
+        )}
+      </section>
+      {/* AREA 2: KÊU GỌI TẢI ỨNG DỤNG */}
+      <section className="py-8 md:py-12">
+        {/* Vẫn giữ bộ khung chuẩn để phòng hờ sau này bạn muốn thêm nội dung gì đó ở 2 bên */}
+        <div>
 
-          {/* NÚT ĐIỀU HƯỚNG BÊN TRÁI */}
-          {banners.length > 1 && (
-            <button
-              onClick={(e) => { e.preventDefault(); prevSlide(); }}
-              className="absolute left-3 lg:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 lg:w-12 lg:h-12 bg-white/50 hover:bg-white text-slate-800 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-md"
-            >
-              <ChevronLeft className="w-5 h-5 lg:w-6 lg:h-6" />
-            </button>
-          )}
+          {/* Flexbox canh giữa toàn bộ nội dung */}
+          <div className="flex flex-col items-center justify-center text-center">
 
-          {/* NÚT ĐIỀU HƯỚNG BÊN PHẢI */}
-          {banners.length > 1 && (
-            <button
-              onClick={(e) => { e.preventDefault(); nextSlide(); }}
-              className="absolute right-3 lg:right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 lg:w-12 lg:h-12 bg-white/50 hover:bg-white text-slate-800 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-md"
-            >
-              <ChevronRight className="w-5 h-5 lg:w-6 lg:h-6" />
-            </button>
-          )}
-
-          {/* DẤU CHẤM PHÂN TRANG Ở ĐÁY ẢNH */}
-          {banners.length > 1 && (
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/20 px-3 py-1.5 rounded-full backdrop-blur-sm">
-              {banners.map((_, index) => (
-                <button
-                  key={index}
-                  className={`h-2 rounded-full transition-all duration-300 ${index === currentIndex ? 'w-6 lg:w-8 bg-white' : 'w-2 bg-white/60 hover:bg-white'
-                    }`}
-                  onClick={(e) => { e.preventDefault(); setCurrentIndex(index); }}
-                />
-              ))}
-            </div>
-          )}
-        </section>
-        {/* AREA 2: KÊU GỌI TẢI ỨNG DỤNG */}
-        <section className="py-8 md:py-12">
-          {/* Vẫn giữ bộ khung chuẩn để phòng hờ sau này bạn muốn thêm nội dung gì đó ở 2 bên */}
-          <div>
-
-            {/* Flexbox canh giữa toàn bộ nội dung */}
-            <div className="flex flex-col items-center justify-center text-center">
-
-              {/* Tiêu đề chính */}
-              <h2 className="text-[20px] md:text-[24px] lg:text-[26px] font-bold text-[#1e293b] mb-6 md:mb-8">
-                Tải ngay ứng dụng Metro tại đây
-              </h2>
-
-              {/* Khối chứa 2 nút tải app (hiển thị nằm ngang) */}
-              <div className="flex flex-row items-center justify-center gap-4">
-
-                {/* Nút App Store */}
-                <Link
-                  href="https://apps.apple.com/vn/app/hcmc-metro-hurc/id6449395180"
-                  target="_blank"
-                  className="transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg rounded-lg"
-                >
-                  <img
-                    src="/app-store.svg"
-                    alt="Download on the App Store"
-                    className="h-[40px] md:h-[48px] w-auto object-contain block"
-                  />
-                </Link>
-
-                {/* Nút Google Play */}
-                <Link
-                  href="https://play.google.com/store/apps/details?id=com.fts.metro"
-                  target="_blank"
-                  className="transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg rounded-lg"
-                >
-                  <img
-                    src="/google-play.svg"
-                    alt="Get it on Google Play"
-                    className="h-[40px] md:h-[48px] w-auto object-contain block"
-                  />
-                </Link>
-
-              </div>
-            </div>
-          </div>
-        </section>
-        {/* AREA 3: THÔNG TIN NHÀ GA (Dạng Tabs) */}
-        <section>
-          <div>
-            {/* Tiêu đề chính giống thiết kế gốc */}
-            <h2 className="text-[22px] md:text-[26px] lg:text-[28px] font-bold text-[#005596] mb-6">
-              Tuyến Bến Thành - Suối Tiên
+            {/* Tiêu đề chính */}
+            <h2 className="text-[20px] md:text-[24px] lg:text-[26px] font-bold text-[#1e293b] mb-6 md:mb-8">
+              Tải ngay ứng dụng Metro tại đây
             </h2>
 
-            {isStationLoading ? (
-              <div className="flex justify-center my-10"><Loader2 className="w-8 h-8 text-[#005596] animate-spin" /></div>
-            ) : (
-              <>
-                {/* KHỐI NÚT ĐIỀU HƯỚNG NHÀ GA */}
-                {/* Sửa thành flex-wrap để các nút tự động rớt xuống dòng khi hết chỗ */}
-                <div className="flex flex-wrap items-center gap-2 md:gap-3 pb-6">
-                  {stations.map((station) => (
-                    <button
-                      key={station.id}
-                      onClick={() => setActiveStationId(station.id)}
-                      className={`flex items-center gap-2 px-5 py-2.5 rounded-full whitespace-nowrap transition-all duration-300 border-2 font-medium shrink-0
+            {/* Khối chứa 2 nút tải app (hiển thị nằm ngang) */}
+            <div className="flex flex-row items-center justify-center gap-4">
+
+              {/* Nút App Store */}
+              <Link
+                href="https://apps.apple.com/vn/app/hcmc-metro-hurc/id6449395180"
+                target="_blank"
+                className="transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg rounded-lg"
+              >
+                <img
+                  src="/app-store.svg"
+                  alt="Download on the App Store"
+                  className="h-[40px] md:h-[48px] w-auto object-contain block"
+                />
+              </Link>
+
+              {/* Nút Google Play */}
+              <Link
+                href="https://play.google.com/store/apps/details?id=com.fts.metro"
+                target="_blank"
+                className="transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg rounded-lg"
+              >
+                <img
+                  src="/google-play.svg"
+                  alt="Get it on Google Play"
+                  className="h-[40px] md:h-[48px] w-auto object-contain block"
+                />
+              </Link>
+
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* AREA 3: THÔNG TIN NHÀ GA (Dạng Tabs) */}
+      <section className="max-w-[120rem] mx-auto px-4 lg:px-[112px]">
+        <div>
+          {/* Tiêu đề chính giống thiết kế gốc */}
+          <h2 className="text-[22px] md:text-[26px] lg:text-[28px] font-bold text-[#005596] mb-6 text-center">
+            Tuyến Bến Thành - Suối Tiên
+          </h2>
+
+          {isStationLoading ? (
+            <div className="flex justify-center my-10"><Loader2 className="w-8 h-8 text-[#005596] animate-spin" /></div>
+          ) : (
+            <>
+              {/* KHỐI NÚT ĐIỀU HƯỚNG NHÀ GA */}
+              {/* Sửa thành flex-wrap để các nút tự động rớt xuống dòng khi hết chỗ */}
+              <div className="flex flex-wrap items-center gap-2 md:gap-3 pb-6">
+                {stations.map((station) => (
+                  <button
+                    key={station.id}
+                    onClick={() => setActiveStationId(station.id)}
+                    className={`flex items-center gap-1.5 px-3.5 py-1.5 text-[14px] rounded-full whitespace-nowrap transition-all duration-300 border-[1.5px] font-medium shrink-0 cursor-pointer
                           ${activeStationId === station.id
-                          ? 'bg-[#005596] text-white border-[#005596] shadow-md'
-                          : 'bg-white text-[#005596] border-[#005596] hover:bg-blue-50'
-                        }`}
-                    >
-                      <TrainFront className="w-5 h-5" />
-                      {station.name}
-                    </button>
-                  ))}
-                </div>
+                        ? 'bg-[#005596] text-white border-[#005596] shadow-md'
+                        : 'bg-white text-[#005596] border-[#005596] hover:bg-blue-50'
+                      }`}
+                  >
+                    <TrainFront className="w-4 h-4" />
+                    {station.name}
+                  </button>
+                ))}
+              </div>
 
-                {/* KHỐI HIỂN THỊ NỘI DUNG NHÀ GA */}
-                {/* Tái tạo chính xác max-width: 60vw của bản gốc, canh giữa (mx-auto) */}
-                <div className="lg:w-[60vw] lg:max-w-5xl mx-auto min-h-[300px] overflow-hidden">
-                  {activeStation?.content ? (
-                    <div className="flex flex-col gap-4 w-full">
+              {/* KHỐI HIỂN THỊ NỘI DUNG NHÀ GA */}
+              {/* Tái tạo chính xác max-width: 60vw của bản gốc, canh giữa (mx-auto) */}
+              <div className="lg:w-[60vw] lg:max-w-5xl mx-auto min-h-[300px] overflow-hidden">
+                {activeStation?.content ? (
+                  <div className="flex flex-col gap-2 w-full">
 
-                      <h3 className="text-[20px] md:text-[24px] font-bold text-[#005596] mb-2">
-                        {activeStation.name}
-                      </h3>
-                      <div
-                        className="text-slate-800 text-[15px] md:text-[16px] leading-relaxed w-full
+                    <h3 className="text-[20px] md:text-[24px] font-bold text-[#005596] mb-2">
+                      {activeStation.name}
+                    </h3>
+                    <div
+                      className="text-slate-800 text-[15px] md:text-[16px] leading-relaxed w-full
                                  whitespace-pre-wrap break-words overflow-x-hidden
                                  [&>p]:mb-4 
                                  [&>ul]:list-disc [&>ul]:ml-6 [&>ul>li]:mb-2 
                                  [&>ol]:list-decimal [&>ol]:ml-6 [&>ol>li]:mb-2
                                  [&>strong]:font-bold [&>b]:font-bold
                                  [&_a]:text-blue-600 [&_a]:underline [&_a]:break-all"
-                        dangerouslySetInnerHTML={{
-                          __html: activeStation.content.replace(/&nbsp;/g, ' ')
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center h-full text-slate-500 py-10">
-                      <p>Nội dung nhà ga đang được cập nhật.</p>
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
-          </div>
-        </section>
-        {/* AREA 4: TẦM NHÌN - SỨ MỆNH - GIÁ TRỊ CỐT LÕI */}
-        <section className="py-10 md:py-16">
-          {/* Khung lớn ngoài cùng để đồng bộ lề 56px */}
-          <div>
-
-            {/* Tiêu đề lớn của cả phân đoạn */}
-            <h2 className="text-[22px] md:text-[26px] lg:text-[28px] font-bold text-center text-[#005596] mb-16 md:mb-24 tracking-wide">
-              Tầm nhìn - Sứ mệnh - Giá trị cốt lõi
-            </h2>
-
-            <div className="max-w-5xl mx-auto flex flex-col gap-16 md:gap-24">
-
-              {/* KHỐI 1: TẦM NHÌN (Chữ trái - Ảnh phải) */}
-              <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
-                {/* Bên chữ */}
-                <div className="w-full md:w-1/2 space-y-4 text-left">
-                  <h3 className="text-[20px] md:text-[24px] font-bold text-slate-800 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-12 after:h-1 after:bg-[#005596]">
-                    Tầm nhìn
-                  </h3>
-                  <p className="text-slate-600 text-[16px] md:text-[18px] leading-relaxed font-medium">
-                    Chung sức xây dựng thành phố xanh, văn minh, hiện đại và phát triển bền vững.
-                  </p>
-                </div>
-                {/* Bên ảnh */}
-                <div className="w-full md:w-1/2 aspect-[4/3] rounded-2xl overflow-hidden shadow-md">
-                  <img
-                    src="/anh-1.png"
-                    alt="Tầm nhìn HCMC Metro"
-                    className="w-full h-full object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).src = '/hero-metro.png'; }}
-                  />
-                </div>
-              </div>
-
-              {/* KHỐI 2: SỨ MỆNH (Ảnh trái - Chữ phải trên Desktop, nhưng tự xếp chữ lên trước trên Mobile) */}
-              {/* Bí quyết: Dùng md:flex-row-reverse */}
-              <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-16">
-                {/* Bên chữ */}
-                <div className="w-full md:w-1/2 space-y-4 text-left">
-                  <h3 className="text-[20px] md:text-[24px] font-bold text-slate-800 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-12 after:h-1 after:bg-[#005596]">
-                    Sứ mệnh
-                  </h3>
-                  <p className="text-slate-600 text-[16px] md:text-[18px] leading-relaxed font-medium">
-                    Chúng tôi cam kết cung cấp cho bạn một trải nghiệm di chuyển tốt nhất có thể nhằm tạo ra sự kết nối và phục vụ chất lượng, đồng thời góp phần vào sự phát triển bền vững của thành phố.
-                  </p>
-                </div>
-                {/* Bên ảnh */}
-                <div className="w-full md:w-1/2 aspect-[4/3] rounded-2xl overflow-hidden shadow-md">
-                  <img
-                    src="/anh-2.png"
-                    alt="Sứ mệnh HCMC Metro"
-                    className="w-full h-full object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).src = '/hero-metro.png'; }}
-                  />
-                </div>
-              </div>
-
-              {/* KHỐI 3: GIÁ TRỊ CỐT LÕI (Chữ trái - Ảnh phải) */}
-              <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
-                {/* Bên chữ */}
-                <div className="w-full md:w-1/2 space-y-4 text-left">
-                  <h3 className="text-[20px] md:text-[24px] font-bold text-slate-800 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-12 after:h-1 after:bg-[#005596]">
-                    Giá trị cốt lõi
-                  </h3>
-                  <p className="text-slate-600 text-[16px] md:text-[18px] leading-relaxed font-medium">
-                    Tin cậy trong vận hành - Chất lượng trong dịch vụ - Tận tâm trong công việc - Đồng hành cùng phát triển.
-                  </p>
-                </div>
-                {/* Bên ảnh */}
-                <div className="w-full md:w-1/2 aspect-[4/3] rounded-2xl overflow-hidden shadow-md">
-                  <img
-                    src="/anh-3.png"
-                    alt="Giá trị cốt lõi HCMC Metro"
-                    className="w-full h-full object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).src = '/hero-metro.png'; }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        {/* AREA 5: KHUNG TIN TỨC MỚI CẬP NHẬT */}
-        <section className="py-2 md:py-6">
-          {/* Bộ khung tỷ lệ vàng 120rem và lề px-56px cố định */}
-          <div className="max-w-[120rem] mx-auto px-4 lg:px-[56px]">
-
-            {/* Tiêu đề lệch trái màu xanh giống hệt ảnh chụp */}
-            <div className="mb-6 md:mb-8">
-              <h2 className="text-[22px] md:text-[26px] lg:text-[28px] font-bold text-[#005596]">
-                Tin tức mới
-              </h2>
-            </div>
-
-            {/* Khối hiển thị danh sách tin tức */}
-            {isArticlesLoading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="flex flex-col space-y-3 w-full">
-                    <div className="w-full aspect-[16/10] bg-slate-100 rounded-xl animate-pulse" />
-                    <div className="h-4 bg-slate-100 rounded w-3/4 animate-pulse" />
+                      dangerouslySetInnerHTML={{
+                        __html: activeStation.content.replace(/&nbsp;/g, ' ')
+                      }}
+                    />
                   </div>
-                ))}
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-full text-slate-500 py-10">
+                    <p>Nội dung nhà ga đang được cập nhật.</p>
+                  </div>
+                )}
               </div>
-            ) : articles.length > 0 ? (
-              /* LƯỚI TIN TỨC: Chia 4 cột tăm tắp trên Desktop, khoảng cách hàng rộng rãi (gap-y-10) */
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-                {articles.map((article) => (
-                  <ArticleCard key={article.id} article={article} />
-                ))}
-              </div>
-            ) : (
-              <div className="text-left text-slate-500 py-6">
-                Chưa có tin tức nào được cập nhật.
-              </div>
-            )}
-          </div>
-        </section>
-        {/* AREA 6: ĐỐI TÁC THƯƠNG HIỆU */}
-        <section className="py-4 md:py-8">
-          <div>
+            </>
+          )}
+        </div>
+      </section>
+      {/* AREA 4: TẦM NHÌN - SỨ MỆNH - GIÁ TRỊ CỐT LÕI */}
+      <section className="py-10 md:py-16 max-w-[120rem] mx-auto px-4 lg:px-[112px]">
+        {/* Tiêu đề lớn của cả phân đoạn */}
+        <h2 className="text-[22px] md:text-[26px] lg:text-[28px] font-bold text-center text-[#005596] mb-16 md:mb-24 tracking-wide">
+          Tầm nhìn - Sứ mệnh - Giá trị cốt lõi
+        </h2>
 
-            {/* Tiêu đề */}
-            <h2 className="text-[20px] md:text-[24px] lg:text-[28px] font-bold text-center text-[#005596] mb-8 md:mb-12">
-              Đối tác thương hiệu
-            </h2>
+        <div className="max-w-8xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 px-4 lg:px-0">
 
-            {/* Lưới Logo Đối Tác */}
-            <div className="flex flex-wrap items-center justify-center gap-32 md:gap-40 lg:gap-48">
-
-              {/* Logo 1: Hitachi */}
-              <div>
-                <img
-                  src="/hitachi.jpg"
-                  alt="Hitachi"
-                  className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block"
-                />
-              </div>
-
-              {/* Logo 2: Tokyo Metro */}
-              <div>
-                <img
-                  src="/tokyoMetro.jpg"
-                  alt="TokyoMetro"
-                  className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block"
-                />
-              </div>
-
-              {/* Logo 3: Mastercard */}
-              <div>
-                <img
-                  src="/masterCard.jpg"
-                  alt="Mastercard"
-                  className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block"
-                />
-              </div>
-
-              {/* Logo 4: FPT */}
-              <div>
-                <img
-                  src="/Logo-FPT.png"
-                  alt="FPT"
-                  className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block"
-                />
-              </div>
-
+          {/* CỘT 1: TẦM NHÌN */}
+          <div className="flex flex-col items-start text-left group">
+            {/* Hình ảnh nằm trên */}
+            <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm mb-6 border border-slate-100">
+              <img
+                src="/anh-1.png"
+                alt="Tầm nhìn HCMC Metro"
+                className="w-full h-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).src = '/hero-metro.png'; }}
+              />
             </div>
+            {/* Chữ nằm dưới */}
+            <h3 className="text-[20px] md:text-[22px] font-bold text-slate-800 relative pb-3 mb-3 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-12 after:h-1 after:bg-[#005596]">
+              Tầm nhìn
+            </h3>
+            <p className="text-slate-600 text-[15px] md:text-[16px] leading-relaxed">
+              Chung sức xây dựng thành phố xanh, văn minh, hiện đại và phát triển bền vững.
+            </p>
           </div>
-        </section>
-      </div>
+
+          {/* CỘT 2: SỨ MỆNH */}
+          <div className="flex flex-col items-start text-left group">
+            {/* Hình ảnh nằm trên */}
+            <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm mb-6 border border-slate-100">
+              <img
+                src="/anh-2.png"
+                alt="Sứ mệnh HCMC Metro"
+                className="w-full h-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).src = '/hero-metro.png'; }}
+              />
+            </div>
+            {/* Chữ nằm dưới */}
+            <h3 className="text-[20px] md:text-[22px] font-bold text-slate-800 relative pb-3 mb-3 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-12 after:h-1 after:bg-[#005596]">
+              Sứ mệnh
+            </h3>
+            <p className="text-slate-600 text-[15px] md:text-[16px] leading-relaxed">
+              Chúng tôi cam kết cung cấp cho bạn một trải nghiệm di chuyển tốt nhất có thể nhằm tạo ra sự kết nối và phục vụ chất lượng, đồng thời góp phần vào sự phát triển bền vững của thành phố.
+            </p>
+          </div>
+
+          {/* CỘT 3: GIÁ TRỊ CỐT LÕI */}
+          <div className="flex flex-col items-start text-left group">
+            {/* Hình ảnh nằm trên */}
+            <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm mb-6 border border-slate-100">
+              <img
+                src="/anh-3.png"
+                alt="Giá trị cốt lõi HCMC Metro"
+                className="w-full h-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).src = '/hero-metro.png'; }}
+              />
+            </div>
+            {/* Chữ nằm dưới */}
+            <h3 className="text-[20px] md:text-[22px] font-bold text-slate-800 relative pb-3 mb-3 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-12 after:h-1 after:bg-[#005596]">
+              Giá trị cốt lõi
+            </h3>
+            <p className="text-slate-600 text-[15px] md:text-[16px] leading-relaxed">
+              Tin cậy trong vận hành - Chất lượng trong dịch vụ - Tận tâm trong công việc - Đồng hành cùng phát triển.
+            </p>
+          </div>
+
+        </div>
+      </section>
+      {/* AREA 5: KHUNG TIN TỨC MỚI CẬP NHẬT */}
+      <section className="py-2 md:py-6 max-w-[120rem] mx-auto px-4 lg:px-[112px]">
+        <h2 className="text-[22px] md:text-[26px] lg:text-[28px] font-bold text-[#005596] text-center mb-6 md:mb-8">
+          Tin tức mới
+        </h2>
+
+        {/* Khối hiển thị danh sách tin tức */}
+        {isArticlesLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="flex flex-col space-y-3 w-full">
+                <div className="w-full aspect-[16/10] bg-slate-100 rounded-xl animate-pulse" />
+                <div className="h-4 bg-slate-100 rounded w-3/4 animate-pulse" />
+              </div>
+            ))}
+          </div>
+        ) : articles.length > 0 ? (
+          /* LƯỚI TIN TỨC: Chia 4 cột tăm tắp trên Desktop, khoảng cách hàng rộng rãi (gap-y-10) */
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+            {articles.map((article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-left text-slate-500 py-6">
+            Chưa có tin tức nào được cập nhật.
+          </div>
+        )}
+      </section>
+      {/* AREA 6: ĐỐI TÁC THƯƠNG HIỆU */}
+      <section className="py-4 md:py-8 max-w-[120rem] mx-auto px-4 lg:px-[112px]">
+
+        {/* Tiêu đề */}
+        <h2 className="text-[20px] md:text-[24px] lg:text-[28px] font-bold text-center text-[#005596] mb-8 md:mb-12">
+          Đối tác thương hiệu
+        </h2>
+
+        {/* Lưới Logo Đối Tác */}
+        <div className="grid grid-cols-4 gap-4 sm:gap-8 md:gap-16 lg:gap-24 items-center justify-items-center max-w-8xl mx-auto">
+
+          {/* Logo 1: Hitachi */}
+          <div className="w-full flex justify-center">
+            <img
+              src="/hitachi.jpg"
+              alt="Hitachi"
+              className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block"
+            />
+          </div>
+
+          {/* Logo 2: Tokyo Metro */}
+          <div className="w-full flex justify-center">
+            <img
+              src="/tokyoMetro.jpg"
+              alt="TokyoMetro"
+              className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block"
+            />
+          </div>
+
+          {/* Logo 3: Mastercard */}
+          <div className="w-full flex justify-center">
+            <img
+              src="/masterCard.jpg"
+              alt="Mastercard"
+              className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block"
+            />
+          </div>
+
+          {/* Logo 4: FPT */}
+          <div className="w-full flex justify-center">
+            <img
+              src="/Logo-FPT.png"
+              alt="FPT"
+              className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block"
+            />
+          </div>
+
+        </div>
+      </section>
     </div>
   );
 }
