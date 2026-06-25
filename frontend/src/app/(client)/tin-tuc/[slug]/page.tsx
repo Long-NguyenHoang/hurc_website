@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Loader2, CalendarDays, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft } from "lucide-react";
 import { articleService, Article } from "@/services/article.service";
 
 export default function ArticleDetailPage() {
@@ -36,6 +36,19 @@ export default function ArticleDetailPage() {
         return new Date(dateString).toLocaleDateString("vi-VN", {
             day: "2-digit", month: "2-digit", year: "numeric",
         });
+    };
+
+    const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
+    const processContent = (content: string) => {
+        if (!content) return "";
+        let processed = content.replace(/&nbsp;/g, ' ');
+        // Thay thế các đường dẫn tuyệt đối (chứa domain localhost hoặc domain cũ) bằng BACKEND_URL
+        processed = processed.replace(/(src|href)="https?:\/\/[^\/]+(\/uploads\/[^"]+)"/g, `$1="${BACKEND_URL}$2"`);
+        // Thay thế các đường dẫn tương đối /uploads/
+        processed = processed.replace(/src="\/uploads\//g, `src="${BACKEND_URL}/uploads/`);
+        processed = processed.replace(/href="\/uploads\//g, `href="${BACKEND_URL}/uploads/`);
+        return processed;
     };
 
     if (isLoading) {
@@ -82,7 +95,7 @@ export default function ArticleDetailPage() {
                        [&>h3]:text-[20px] [&>h3]:font-bold [&>h3]:text-slate-900 [&>h3]:mt-8 [&>h3]:mb-3
                        [&_a]:text-blue-600 [&_a]:underline"
                         dangerouslySetInnerHTML={{
-                            __html: article.content.replace(/&nbsp;/g, ' ')
+                            __html: processContent(article.content)
                         }}
                     />
 

@@ -1,6 +1,13 @@
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Trang chủ | HCMC Metro",
+    description: "Trang chủ Công ty TNHH MTV Đường sắt Đô thị số 1 TP.HCM (HURC1)",
+};
+
 export default function ClientLayout({
     children,
 }: {
