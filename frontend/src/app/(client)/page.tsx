@@ -145,7 +145,7 @@ export default function Home() {
 
       {/* KHỐI SLIDER (Thay chiều cao tĩnh bằng Aspect Ratio) */}
       {/* Tỷ lệ aspect-[2.5/1] trên Desktop giúp ảnh trải dài giống hình chữ nhật ngang, không bị quá to cao */}
-      <section className="relative w-full aspect-[16/7] md:aspect-[21/9] lg:aspect-[2.5/1] group">
+      <section className="relative w-full aspect-[16/7] md:aspect-[21/9] lg:aspect-[2.5/1] group overflow-hidden">
 
         {/* THẺ LINK BỌC HÌNH ẢNH (Bấm vào ảnh chuyển trang) */}
         <div
@@ -213,7 +213,7 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center text-center">
 
             {/* Tiêu đề chính */}
-            <h2 className="text-[20px] md:text-[24px] lg:text-[26px] font-bold text-[#1e293b] mb-6 md:mb-8">
+            <h2 className="text-[20px] md:text-[24px] lg:text-[28px] font-bold text-[#1e293b] mb-6 md:mb-8">
               Tải ngay ứng dụng Metro tại đây
             </h2>
 
@@ -251,72 +251,91 @@ export default function Home() {
         </div>
       </section>
       {/* AREA 3: THÔNG TIN NHÀ GA (Dạng Tabs) */}
-      <section className="max-w-[120rem] mx-auto px-4 lg:px-[112px]">
-        <div>
-          {/* Tiêu đề chính giống thiết kế gốc */}
-          <h2 className="text-[22px] md:text-[26px] lg:text-[28px] font-bold text-[#005596] mb-6 text-center">
-            Tuyến Bến Thành - Suối Tiên
-          </h2>
+      <section className="max-w-[120rem] mx-auto px-8 lg:px-[112px]">
+        {/* Tiêu đề chính giống thiết kế gốc */}
+        <h2 className="text-[22px] md:text-[26px] lg:text-[28px] font-bold text-[#005596] mb-6 text-center">
+          Tuyến Bến Thành - Suối Tiên
+        </h2>
 
-          {isStationLoading ? (
-            <div className="flex justify-center my-10"><Loader2 className="w-8 h-8 text-[#005596] animate-spin" /></div>
-          ) : (
-            <>
-              {/* KHỐI NÚT ĐIỀU HƯỚNG NHÀ GA */}
-              {/* Sửa thành flex-wrap để các nút tự động rớt xuống dòng khi hết chỗ */}
-              <div className="flex flex-wrap items-center gap-2 md:gap-3 pb-6">
-                {stations.map((station) => (
-                  <button
-                    key={station.id}
-                    onClick={() => setActiveStationId(station.id)}
-                    className={`flex items-center gap-1.5 px-3.5 py-1.5 text-[14px] rounded-full whitespace-nowrap transition-all duration-300 border-[1.5px] font-medium shrink-0 cursor-pointer
-                          ${activeStationId === station.id
-                        ? 'bg-[#005596] text-white border-[#005596] shadow-md'
-                        : 'bg-white text-[#005596] border-[#005596] hover:bg-blue-50'
-                      }`}
-                  >
-                    <TrainFront className="w-4 h-4" />
-                    {station.name}
-                  </button>
-                ))}
+        {isStationLoading ? (
+          <div className="flex justify-center my-10"><Loader2 className="w-8 h-8 text-[#005596] animate-spin" /></div>
+        ) : (
+          <>
+            {/* KHỐI NÚT ĐIỀU HƯỚNG NHÀ GA */}
+            {/* 1. GIAO DIỆN MOBILE: SELECT BOX */}
+            <div className="md:hidden pb-4 w-full max-w-sm mx-auto">
+              <div className="relative w-full">
+                <select
+                  value={activeStationId || ""}
+                  onChange={(e) => setActiveStationId(e.target.value)}
+                  className="w-full appearance-none bg-white border-[1.5px] border-[#005596] text-[#005596] text-[15px] font-medium py-2 pl-4 rounded-xl outline-none focus:ring-2 focus:ring-[#005596]/20 transition-all cursor-pointer shadow-sm"
+                >
+                  {stations.map((station) => (
+                    <option key={station.id} value={station.id}>
+                      {station.name}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#005596]">
+                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </div>
               </div>
+            </div>
+            {/* 2. GIAO DIỆN DESKTOP: NÚT BẤM */}
+            <div className="hidden md:flex flex-wrap gap-2 md:gap-3 pb-6">
+              {stations.map((station) => (
+                <button
+                  key={station.id}
+                  onClick={() => setActiveStationId(station.id)}
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 text-[14px] rounded-full whitespace-nowrap transition-all duration-300 border-[1.5px] font-medium shrink-0 cursor-pointer
+                          ${activeStationId === station.id
+                      ? 'bg-[#005596] text-white border-[#005596] shadow-md'
+                      : 'bg-white text-[#005596] border-[#005596] hover:bg-blue-50'
+                    }`}
+                >
+                  <TrainFront className="w-4 h-4" />
+                  {station.name}
+                </button>
+              ))}
+            </div>
 
-              {/* KHỐI HIỂN THỊ NỘI DUNG NHÀ GA */}
-              {/* Tái tạo chính xác max-width: 60vw của bản gốc, canh giữa (mx-auto) */}
-              <div className="lg:w-[60vw] lg:max-w-5xl mx-auto min-h-[300px] overflow-hidden">
-                {activeStation?.content ? (
-                  <div className="flex flex-col gap-2 w-full">
+            {/* KHỐI HIỂN THỊ NỘI DUNG NHÀ GA */}
+            {/* Tái tạo chính xác max-width: 60vw của bản gốc, canh giữa (mx-auto) */}
+            <div className="lg:w-[60vw] lg:max-w-5xl mx-auto min-h-[300px] overflow-hidden">
+              {activeStation?.content ? (
+                <div className="flex flex-col gap-2 w-full">
 
-                    <h3 className="text-[20px] md:text-[24px] font-bold text-[#005596] mb-2">
-                      {activeStation.name}
-                    </h3>
-                    <div
-                      className="text-slate-800 text-[15px] md:text-[16px] leading-relaxed w-full
+                  <h3 className="text-[20px] md:text-[24px] font-bold text-[#005596] mb-4 text-center">
+                    {activeStation.name}
+                  </h3>
+                  <div
+                    className="text-slate-800 text-[15px] md:text-[16px] leading-relaxed w-full
                                  whitespace-pre-wrap break-words overflow-x-hidden
                                  [&>p]:mb-4 
                                  [&>ul]:list-disc [&>ul]:ml-6 [&>ul>li]:mb-2 
                                  [&>ol]:list-decimal [&>ol]:ml-6 [&>ol>li]:mb-2
                                  [&>strong]:font-bold [&>b]:font-bold
                                  [&_a]:text-blue-600 [&_a]:underline [&_a]:break-all"
-                      dangerouslySetInnerHTML={{
-                        __html: activeStation.content.replace(/&nbsp;/g, ' ')
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-full text-slate-500 py-10">
-                    <p>Nội dung nhà ga đang được cập nhật.</p>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-        </div>
+                    dangerouslySetInnerHTML={{
+                      __html: activeStation.content.replace(/&nbsp;/g, ' ')
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full text-slate-500 py-10">
+                  <p>Nội dung nhà ga đang được cập nhật.</p>
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </section>
       {/* AREA 4: TẦM NHÌN - SỨ MỆNH - GIÁ TRỊ CỐT LÕI */}
-      <section className="py-10 md:py-16 max-w-[120rem] mx-auto px-4 lg:px-[112px]">
+      <section className="py-10 md:py-16 max-w-[120rem] mx-auto px-8 lg:px-[112px]">
         {/* Tiêu đề lớn của cả phân đoạn */}
-        <h2 className="text-[22px] md:text-[26px] lg:text-[28px] font-bold text-center text-[#005596] mb-16 md:mb-24 tracking-wide">
+        <h2 className="text-[20px] md:text-[24px] lg:text-[28px] font-bold text-center text-[#005596] mb-16 md:mb-24 tracking-wide">
           Tầm nhìn - Sứ mệnh - Giá trị cốt lõi
         </h2>
 
@@ -385,7 +404,7 @@ export default function Home() {
         </div>
       </section>
       {/* AREA 5: KHUNG TIN TỨC MỚI CẬP NHẬT */}
-      <section className="py-2 md:py-6 max-w-[120rem] mx-auto px-4 lg:px-[112px]">
+      <section className="py-2 md:py-6 max-w-[120rem] mx-auto px-8 lg:px-[112px]">
         <h2 className="text-[22px] md:text-[26px] lg:text-[28px] font-bold text-[#005596] text-center mb-6 md:mb-8">
           Tin tức mới
         </h2>
@@ -414,7 +433,7 @@ export default function Home() {
         )}
       </section>
       {/* AREA 6: ĐỐI TÁC THƯƠNG HIỆU */}
-      <section className="py-4 md:py-8 max-w-[120rem] mx-auto px-4 lg:px-[112px]">
+      <section className="py-4 md:py-8 max-w-[120rem] mx-auto px-8 lg:px-[112px]">
 
         {/* Tiêu đề */}
         <h2 className="text-[20px] md:text-[24px] lg:text-[28px] font-bold text-center text-[#005596] mb-8 md:mb-12">

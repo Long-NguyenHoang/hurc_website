@@ -69,7 +69,7 @@ export default function InvoiceLookupPage() {
 
     return (
         <div className="w-full bg-white min-h-[80vh] py-12 md:py-20">
-            <div className="max-w-[80rem] mx-auto px-4 lg:px-[56px]">
+            <div className="max-w-[80rem] mx-auto px-8 lg:px-[56px]">
 
                 {/* BỐ CỤC 2 CỘT: Trái chứa Form & Kết quả, Phải chứa Ảnh minh họa */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">

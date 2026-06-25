@@ -73,19 +73,19 @@ export default function ArticleDetailPage() {
 
     return (
         <div className="w-full bg-white pb-20 pt-8 md:pt-12">
-            <div className="max-w-[120rem] mx-auto px-4 lg:px-[56px]">
+            <div className="max-w-[120rem] mx-auto px-8 lg:px-[56px]">
 
                 {/* Khung nội dung thu hẹp (max-w-4xl) để bài viết dễ đọc, không dàn quá ngang */}
                 <div className="max-w-5xl mx-auto">
 
                     {/* HEADER BÀI VIẾT */}
-                    <h1 className="text-[26px] md:text-[34px] lg:text-[40px] font-bold text-slate-900 leading-tight mb-6">
+                    <h1 className="text-[24px] md:text-[30px] lg:text-[36px] font-bold text-slate-900 leading-tight mb-6">
                         {article.title}
                     </h1>
 
                     {/* NỘI DUNG CHÍNH (HTML TỪ EDITOR) */}
                     <div
-                        className="w-full text-[16px] md:text-[17px] text-slate-800 leading-loose text-justify 
+                        className="w-full text-[14px] md:text-[16px] text-slate-800 leading-loose text-justify 
                        whitespace-pre-wrap break-words
                        [&>p]:mb-6
                        [&>img]:w-full [&>img]:h-auto [&>img]:rounded-lg [&>img]:my-8

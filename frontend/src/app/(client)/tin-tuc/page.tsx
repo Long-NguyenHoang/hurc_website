@@ -69,7 +69,7 @@ export default function NewsPage() {
     };
 
     return (
-        <div className="w-full bg-white min-h-[80vh] py-4 md:py-8 max-w-[120rem] mx-auto px-4 lg:px-[112px]">
+        <div className="w-full bg-white min-h-[80vh] py-4 md:py-8 max-w-[120rem] mx-auto px-8 lg:px-[112px]">
             {/* TIÊU ĐỀ KHỐI TIN TỨC */}
             <div className="mb-6 pb-2">
                 <h1 className="text-[24px] md:text-[28px] lg:text-[32px] font-bold text-[#005596] uppercase tracking-wide">

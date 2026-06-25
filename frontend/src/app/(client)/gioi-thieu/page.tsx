@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
     return (
-        <div className="w-full bg-white pb-16 md:pb-24 max-w-[120rem] mx-auto px-4 lg:px-[112px] pt-4 md:pt-8">
+        <div className="w-full bg-white pb-16 md:pb-24 max-w-[120rem] mx-auto px-8 lg:px-[112px] pt-4 md:pt-8">
             {/* KHUNG TỶ LỆ VÀNG ĐỒNG BỘ VỚI HEADER VÀ TRANG CHỦ */}
 
             {/* TIÊU ĐỀ TRANG */}

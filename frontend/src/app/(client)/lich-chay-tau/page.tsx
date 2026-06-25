@@ -114,7 +114,7 @@ export default function SchedulePage() {
             </div>
 
             {/* ========================================= */}
-            {/* KHU VỰC HIỂN THỊ NỘI DUNG (Có nền xám nhạt) */}
+            {/* KHU VỰC HIỂN THỊ NỘI DUNG */}
             {/* ========================================= */}
             <div className="w-full p-4 md:p-8 min-h-[400px]">
 
@@ -128,9 +128,30 @@ export default function SchedulePage() {
                         {/* === TAB 1: BẢNG THỜI GIAN CHẠY TÀU === */}
                         {activeMainTab === 'schedule' && (
                             <div className="animate-in fade-in duration-500">
+                                {/* 1. GIAO DIỆN MOBILE: SELECT BOX */}
+                                <div className="md:hidden pb-4 w-full max-w-sm mx-auto">
+                                    <div className="relative w-full">
+                                        <select
+                                            value={activeStationId || ""}
+                                            onChange={(e) => setActiveStationId(e.target.value)}
+                                            className="w-full appearance-none bg-white border-[1.5px] border-[#005596] text-[#005596] text-[15px] font-medium py-2 pl-4 rounded-xl outline-none focus:ring-2 focus:ring-[#005596]/20 transition-all cursor-pointer shadow-sm"
+                                        >
+                                            {stations.map((station) => (
+                                                <option key={station.id} value={station.id}>
+                                                    {station.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#005596]">
+                                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 {/* Danh sách các nút chọn nhà ga (Giống trang chủ) */}
-                                <div className="flex flex-wrap items-center gap-2 md:gap-3 pb-6">
+                                <div className="hidden md:flex flex-wrap gap-2 md:gap-3 pb-6">
                                     {stations.map((station) => (
                                         <button
                                             key={station.id}

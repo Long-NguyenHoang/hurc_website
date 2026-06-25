@@ -7,10 +7,10 @@ export default function Footer() {
             <div className="max-w-[120rem] mx-auto px-4 lg:px-[56px]">
 
                 {/* Flexbox bọc toàn bộ nội dung, dàn đều 2 bên, canh giữa theo chiều dọc */}
-                <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 px-14">
+                <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 px-4">
 
                     {/* BÊN TRÁI: Nhóm Logo và Text Thông tin */}
-                    <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10">
+                    <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
 
                         {/* Khối Logo nền trắng bo góc giống hình ảnh */}
                         <div className="bg-white px-6 py-2 rounded-xl shrink-0 flex items-center justify-center h-[120px] w-[230px]">
@@ -22,7 +22,7 @@ export default function Footer() {
                         </div>
 
                         {/* Khối Text thông tin */}
-                        <div className="space-y-2 text-[15px] lg:text-[15px]">
+                        <div className="space-y-1 text-[14px] lg:text-[15px]">
                             <p className="font-medium">Công ty TNHH MTV Đường sắt Đô thị số 1</p>
                             <p>Mã số thuế: 0315818455</p>
                             <p>Giám đốc: Lê Minh Triết</p>
@@ -33,7 +33,7 @@ export default function Footer() {
                     </div>
 
                     {/* BÊN PHẢI: Icon Facebook đã thay bằng thẻ img */}
-                    <div className="shrink-0 pt-4 pl-8 lg:pr-10">
+                    <div className="shrink-0 lg:pr-10">
                         <Link
                             href="https://www.facebook.com/HURC1HCMC"
                             target="_blank"

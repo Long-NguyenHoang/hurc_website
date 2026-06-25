@@ -11,7 +11,7 @@ export default function HistoryPage() {
         <div className="w-full bg-white min-h-[50vh] flex items-center py-12">
 
             {/* Khung tỷ lệ vàng w-full để chiếm trọn không gian flex */}
-            <div className="max-w-[120rem] w-full mx-auto px-4 lg:px-[56px]">
+            <div className="max-w-[120rem] w-full mx-auto px-8 lg:px-[56px]">
 
                 {/* 2. Dùng mx-auto ở đây để đẩy cả khối văn bản (rộng tối đa 5xl) ra chính giữa chiều ngang */}
                 <div className="w-full lg:max-w-5xl mx-auto text-slate-800">

@@ -42,17 +42,28 @@ export default function Header() {
             className={`sticky top-0 z-50 border-b transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm border-slate-100 py-1' : 'bg-white border-transparent py-3'
                 }`}
         >
-            {/* KHUNG CHUẨN: max-w-[120rem] (1920px) và padding 56px (áp dụng từ màn hình lg trở lên) */}
-            <div className="max-w-[120rem] mx-auto px-4 lg:px-[110px]">
-                <div className="flex items-center justify-between h-16">
+            {/* KHUNG CHUẨN: max-w-[120rem] (1920px) */}
+            <div className="max-w-[120rem] mx-auto px-4 lg:px-[112px]">
+                <div className="flex items-center justify-between lg:justify-start h-16 relative">
+                    <button
+                        className="text-slate-600 hover:bg-slate-100 rounded-lg transition-colors flex lg:hidden w-1/3 justify-start pl-2"
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        aria-label="Toggle menu"
+                    >
+                        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                    </button>
 
                     {/* LOGO */}
-                    <Link href="/" className="flex items-center shrink-0">
+                    <Link href="/" className="flex items-center flex justify-center w-1/3 lg:w-auto shrink-0">
                         <img src="/logo.png" alt="HCMC Metro" className="h-10 w-auto object-contain block" />
                     </Link>
 
-                    {/* MENU DESKTOP */}
-                    <nav className="hidden lg:flex items-center gap-8">
+                    {/* KHỐI CÂN BẰNG PHẢI TRÊN MOBILE */}
+                    {/* Khối này trống, có w-1/3 để đẩy Logo vào đúng chính giữa màn hình trên mobile */}
+                    <div className="flex lg:hidden w-1/3"></div>
+
+                    {/* MENU DESKTOP (Vẫn giữ nguyên bên phải trên màn hình lớn) */}
+                    <nav className="hidden lg:flex items-center gap-8 ml-auto">
                         {navLinks.map((link) => {
                             const isActive = pathname === link.href;
                             return (
@@ -68,14 +79,6 @@ export default function Header() {
                             );
                         })}
                     </nav>
-
-                    {/* NÚT BẬT TẮT MENU MOBILE */}
-                    <button
-                        className="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    >
-                        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                    </button>
 
                 </div>
             </div>

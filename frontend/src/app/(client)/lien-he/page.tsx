@@ -18,7 +18,7 @@ export default function ContactPage() {
     const [errors, setErrors] = useState<{
         full_name?: string;
         email?: string;
-        contact?: string; // Lỗi dùng chung cho cả email và sđt
+        phone?: string;
         message?: string;
     }>({});
 
@@ -31,10 +31,6 @@ export default function ContactPage() {
         // Tự động xóa lỗi khi người dùng bắt đầu gõ lại
         if (errors[e.target.name as keyof typeof errors]) {
             setErrors({ ...errors, [e.target.name]: undefined });
-        }
-        // Nếu gõ vào email hoặc phone thì xóa lỗi "contact"
-        if ((e.target.name === 'email' || e.target.name === 'phone') && errors.contact) {
-            setErrors({ ...errors, contact: undefined });
         }
     };
 
@@ -49,20 +45,21 @@ export default function ContactPage() {
             newErrors.full_name = "Vui lòng nhập họ và tên của bạn.";
         }
 
-        if (!formData.message.trim()) {
-            newErrors.message = "Vui lòng nhập nội dung cần liên hệ.";
-        }
-
-        // LOGIC CHÍNH: Nếu cả Email VÀ Phone đều trống thì mới báo lỗi
-        if (!formData.email.trim() && !formData.phone.trim()) {
-            newErrors.contact = "Vui lòng nhập Email hoặc Số điện thoại để chúng tôi có thể liên hệ lại.";
-        }
-
-        if (formData.email.trim()) {
+        if (!formData.email.trim()) {
+            newErrors.email = "Vui lòng nhập Email";
+        } else {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(formData.email.trim())) {
-                newErrors.email = "Vui lòng nhập đúng định dạng email (ví dụ: abc@gmail.com).";
+                newErrors.email = "Vui lòng nhập đúng định dạng email (ví dụ: abc@gmail.com)";
             }
+        }
+
+        if (!formData.phone.trim()) {
+            newErrors.phone = "Vui lòng nhập Số điện thoại";
+        }
+
+        if (!formData.message.trim()) {
+            newErrors.message = "Vui lòng nhập nội dung cần liên hệ";
         }
 
         // Nếu có bất kỳ lỗi nào thì hiển thị ra và DỪNG LẠI, không gọi API
@@ -97,23 +94,23 @@ export default function ContactPage() {
 
     return (
         <div className="w-full bg-white min-h-[80vh] flex items-center py-12 md:py-20">
-            <div className="max-w-[120rem] w-full mx-auto px-4 lg:px-[56px]">
+            <div className="max-w-[120rem] w-full mx-auto px-8 lg:px-[56px]">
                 <div className="max-w-5xl mx-auto w-full">
 
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-16 items-center">
 
                         {/* CỘT TRÁI: THÔNG TIN LIÊN HỆ */}
                         <div className="flex flex-col justify-center md:col-span-5">
-                            <h1 className="text-[28px] md:text-[36px] font-bold text-[#005596] mb-10 tracking-tight">
+                            <h1 className="text-[28px] md:text-[36px] font-bold text-[#005596] mb-8 tracking-tight">
                                 Thông tin liên hệ
                             </h1>
 
-                            <ul className="space-y-4">
+                            <ul className="space-y-3">
                                 <li className="flex items-start gap-4">
                                     <Mail className="w-6 h-6 text-slate-800 shrink-0 mt-0.5" strokeWidth={1.5} />
-                                    <div className="space-y-1">
-                                        <p className="font-bold text-slate-800 text-[16px]">Email</p>
-                                        <p className="text-slate-600 leading-relaxed max-w-sm">
+                                    <div>
+                                        <p className="font-medium text-[16px] text-[#005596]">Email</p>
+                                        <p className="text-slate-1000 leading-relaxed max-w-sm">
                                             <a href="mailto:hurc1@tphcm.gov.vn">hurc1@tphcm.gov.vn</a>
                                         </p>
                                     </div>
@@ -121,9 +118,9 @@ export default function ContactPage() {
 
                                 <li className="flex items-start gap-4">
                                     <MapPin className="w-6 h-6 text-slate-800 shrink-0 mt-.5" strokeWidth={1.5} />
-                                    <div className="space-y-1">
-                                        <p className="font-bold text-slate-800 text-[16px]">Địa chỉ</p>
-                                        <p className="text-slate-600 leading-relaxed max-w-sm">
+                                    <div>
+                                        <p className="font-medium text-[16px] text-[#005596]">Địa chỉ</p>
+                                        <p className="text-slate-1000 leading-relaxed max-w-sm">
                                             Toà nhà OCC, số 55 Đường 11, Khu phố Giản Dân, Phường Long Bình, TP. Hồ Chí Minh
                                         </p>
                                     </div>
@@ -131,9 +128,9 @@ export default function ContactPage() {
 
                                 <li className="flex items-start gap-4">
                                     <Phone className="w-6 h-6 text-slate-800 shrink-0 mt-0.5" strokeWidth={1.5} />
-                                    <div className="space-y-1">
-                                        <p className="font-bold text-slate-800 text-[16px]">Điện thoại</p>
-                                        <p className="text-slate-600 leading-relaxed max-w-sm">
+                                    <div>
+                                        <p className="font-medium text-[16px] text-[#005596]">Điện thoại</p>
+                                        <p className="text-slate-1000 leading-relaxed max-w-sm">
                                             <a href="tel:1900 638 885">1900 638 885</a>
                                         </p>
                                     </div>
@@ -162,7 +159,7 @@ export default function ContactPage() {
 
                                 {/* Email */}
                                 <div className="flex flex-col gap-1.5">
-                                    <label htmlFor="email" className="text-[14px] font-bold text-slate-800">Email</label>
+                                    <label htmlFor="email" className="text-[14px] font-bold text-slate-800">Email <span className="text-red-500">*</span></label>
                                     <input
                                         type="email"
                                         id="email"
@@ -170,14 +167,14 @@ export default function ContactPage() {
                                         value={formData.email}
                                         onChange={handleChange}
                                         placeholder="Nhập Email..."
-                                        className={`w-full px-4 py-2.5 rounded-md border focus:ring-1 outline-none transition-all text-[15px] ${(errors.email || errors.contact) ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-slate-300 focus:border-[#005596] focus:ring-[#005596]'}`}
+                                        className={`w-full px-4 py-2.5 rounded-md border focus:ring-1 outline-none transition-all text-[15px] ${errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-slate-300 focus:border-[#005596] focus:ring-[#005596]'}`}
                                     />
                                     {errors.email && <p className="text-red-500 text-[13px]">{errors.email}</p>}
                                 </div>
 
                                 {/* Số điện thoại */}
                                 <div className="flex flex-col gap-1.5">
-                                    <label htmlFor="phone" className="text-[14px] font-bold text-slate-800">Số điện thoại</label>
+                                    <label htmlFor="phone" className="text-[14px] font-bold text-slate-800">Số điện thoại <span className="text-red-500">*</span></label>
                                     <input
                                         type="tel"
                                         id="phone"
@@ -185,14 +182,10 @@ export default function ContactPage() {
                                         value={formData.phone}
                                         onChange={handleChange}
                                         placeholder="Nhập sđt..."
-                                        className={`w-full px-4 py-2.5 rounded-md border focus:ring-1 outline-none transition-all text-[15px] ${errors.contact ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-slate-300 focus:border-[#005596] focus:ring-[#005596]'}`}
+                                        className={`w-full px-4 py-2.5 rounded-md border focus:ring-1 outline-none transition-all text-[15px] ${errors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-slate-300 focus:border-[#005596] focus:ring-[#005596]'}`}
                                     />
+                                    {errors.phone && <p className="text-red-500 text-[13px]">{errors.phone}</p>}
                                 </div>
-
-                                {/* Hiển thị lỗi dùng chung cho Email và SĐT */}
-                                {errors.contact && (
-                                    <p className="text-red-500 text-[13px] -mt-2">{errors.contact}</p>
-                                )}
 
                                 {/* Loại liên hệ */}
                                 <div className="flex flex-col gap-1.5">
