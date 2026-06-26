@@ -33,16 +33,49 @@ export default function Footer() {
                     </div>
 
                     {/* BÊN PHẢI: Icon Facebook đã thay bằng thẻ img */}
-                    <div className="shrink-0 lg:pr-10">
+                    <div className="shrink-0 lg:pr-10 flex items-center gap-4 md:gap-5">
                         <Link
                             href="https://www.facebook.com/HURC1HCMC"
                             target="_blank"
-                            className="inline-block hover:opacity-80 transition-opacity"
+                            className="inline-block hover:opacity-80 hover:-translate-y-1 transition-all"
                         >
                             <img
                                 src="/facebook.png"
                                 alt="Facebook HCMC Metro"
-                                className="w-8 h-8 object-contain block"
+                                className="w-8 h-8 md:w-9 md:h-9 object-contain block"
+                            />
+                        </Link>
+                        <Link
+                            href="https://www.tiktok.com/@metrohurc1"
+                            target="_blank"
+                            className="inline-block hover:opacity-80 hover:-translate-y-1 transition-all"
+                        >
+                            <img
+                                src="/tiktok.png"
+                                alt="TikTok HCMC Metro"
+                                className="w-8 h-8 md:w-9 md:h-9 object-contain block"
+                            />
+                        </Link>
+                        <Link
+                            href="https://www.instagram.com/hcmcmetroline1/"
+                            target="_blank"
+                            className="inline-block hover:opacity-80 hover:-translate-y-1 transition-all"
+                        >
+                            <img
+                                src="/instagram.png"
+                                alt="Instagram HCMC Metro"
+                                className="w-8 h-8 md:w-9 md:h-9 object-contain block"
+                            />
+                        </Link>
+                        <Link
+                            href="https://www.youtube.com/@hurcoffical"
+                            target="_blank"
+                            className="inline-block hover:opacity-80 hover:-translate-y-1 transition-all"
+                        >
+                            <img
+                                src="/youtube.png"
+                                alt="Youtube HCMC Metro"
+                                className="w-8 h-8 md:w-9 md:h-9 object-contain block"
                             />
                         </Link>
                     </div>

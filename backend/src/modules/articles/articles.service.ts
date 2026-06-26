@@ -1,21 +1,45 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { Repository } from 'typeorm';
+import { LessThanOrEqual, Repository } from 'typeorm';
 import { Article } from 'common/entities/articles.entity';
 import { MediaService } from '../media/media.service';
 import { slugify } from 'common/utils/slug.util';
 import { ArticleStatus } from 'common/enums';
 import { PaginationDto } from 'common/dto/pagination.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class ArticlesService {
+  private readonly logger = new Logger(ArticlesService.name);
   constructor(
     @InjectRepository(Article)
     private readonly articleRepository: Repository<Article>,
     private readonly mediaService: MediaService,
   ) { }
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  async handleScheduledArticles() {
+    const now = new Date();
+
+    const articlesToPublish = await this.articleRepository.find({
+      where: {
+        status: ArticleStatus.SCHEDULED,
+        published_at: LessThanOrEqual(now),
+      },
+    });
+
+    if (articlesToPublish.length > 0) {
+      this.logger.log(`Tìm thấy ${articlesToPublish.length} bài viết đến giờ đăng...`);
+
+      for (const article of articlesToPublish) {
+        article.status = ArticleStatus.PUBLISHED;
+        await this.articleRepository.save(article);
+        this.logger.log(`Đã xuất bản bài viết: [${article.id}] ${article.title}`);
+      }
+    }
+  }
 
   async create(createArticleDto: CreateArticleDto, userId: string, file?: Express.Multer.File) {
     let finalThumbnailId = createArticleDto.thumbnail_id;

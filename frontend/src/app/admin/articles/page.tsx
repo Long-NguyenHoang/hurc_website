@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Search, Edit2, Trash2, Loader2, Save, Maximize2, AlertTriangle, Image as ImageIcon, Newspaper } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, Loader2, Save, Maximize2, AlertTriangle, Image as ImageIcon, Clock } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { articleService, Article, ArticleStatus } from '@/services/article.service';
 import Modal from '@/components/Modal';
@@ -26,11 +26,12 @@ export default function ArticlesPage() {
         content: '',
         status: 'DRAFT' as ArticleStatus,
         thumbnail_id: '',
-        thumbnail_url: ''
+        thumbnail_url: '',
+        published_at: ''
     });
 
     const [isThumbnailPickerOpen, setIsThumbnailPickerOpen] = useState(false);
-    const [errors, setErrors] = useState<{ title?: string; content?: string; thumbnail?: string }>({});
+    const [errors, setErrors] = useState<{ title?: string; content?: string; thumbnail?: string; published_at?: string }>({});
 
     // --- STATE MODAL XÓA & LIGHTBOX ---
     const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
@@ -67,9 +68,17 @@ export default function ArticlesPage() {
         }
     };
 
+    const formatForDateTimeInput = (isoString?: string | null) => {
+        if (!isoString) return '';
+        const date = new Date(isoString);
+        if (isNaN(date.getTime())) return '';
+        const tzOffset = date.getTimezoneOffset() * 60000;
+        return new Date(date.getTime() - tzOffset).toISOString().slice(0, 16);
+    };
+
     // --- VALIDATION ---
     const validateForm = () => {
-        const newErrors: { title?: string; content?: string; thumbnail?: string } = {};
+        const newErrors: { title?: string; content?: string; thumbnail?: string; published_at?: string } = {};
         let isValid = true;
 
         if (!formData.title.trim()) {
@@ -88,6 +97,11 @@ export default function ArticlesPage() {
             isValid = false;
         }
 
+        if (formData.status === 'SCHEDULED' && !formData.published_at) {
+            newErrors.published_at = 'Vui lòng chọn thời gian hẹn giờ xuất bản';
+            isValid = false;
+        }
+
         setErrors(newErrors);
         return isValid;
     };
@@ -96,7 +110,7 @@ export default function ArticlesPage() {
         setEditingId(null);
         setFormData({
             title: '', summary: '', content: '', status: 'DRAFT',
-            thumbnail_id: '', thumbnail_url: ''
+            thumbnail_id: '', thumbnail_url: '', published_at: ''
         });
         setErrors({});
         setIsModalOpen(true);
@@ -110,7 +124,8 @@ export default function ArticlesPage() {
             content: article.content,
             status: article.status,
             thumbnail_id: article.thumbnail?.id || '',
-            thumbnail_url: article.thumbnail?.url || ''
+            thumbnail_url: article.thumbnail?.url || '',
+            published_at: formatForDateTimeInput(article.published_at)
         });
         setErrors({});
         setIsModalOpen(true);
@@ -136,6 +151,13 @@ export default function ArticlesPage() {
 
             if (formData.thumbnail_id) {
                 submitData.append('thumbnail_id', formData.thumbnail_id);
+            }
+
+            if (formData.status === 'SCHEDULED' && formData.published_at) {
+                submitData.append('published_at', new Date(formData.published_at).toISOString());
+            } else if (formData.status === 'PUBLISHED') {
+                // Nếu xuất bản luôn thì gán giờ hiện tại
+                submitData.append('published_at', new Date().toISOString());
             }
 
             if (editingId) {
@@ -264,9 +286,13 @@ export default function ArticlesPage() {
 
                                     <td className="py-3 px-5 text-center">
                                         {article.status === 'PUBLISHED' ? (
-                                            <span className="bg-blue-50 text-blue-600 border border-blue-200 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider">Đã Xuất Bản</span>
+                                            <span className="bg-blue-50 text-blue-600 border border-blue-200 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider  flex items-center justify-center gap-1 w-max mx-auto">Đã Xuất Bản</span>
+                                        ) : article.status === 'SCHEDULED' ? (
+                                            <span className="bg-purple-50 text-purple-600 border border-purple-200 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 w-max mx-auto">Hẹn Giờ</span>
+                                        ) : article.status === 'ARCHIVED' ? (
+                                            <span className="bg-grey-50 text-grey-600 border border-grey-200 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 w-max mx-auto">Lưu Trữ</span>
                                         ) : (
-                                            <span className="bg-amber-50 text-amber-600 border border-amber-200 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider">Bản Nháp</span>
+                                            <span className="bg-amber-50 text-amber-600 border border-amber-200 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider  flex items-center justify-center gap-1 w-max mx-auto">Bản Nháp</span>
                                         )}
                                     </td>
 
@@ -342,11 +368,28 @@ export default function ArticlesPage() {
                                         onChange={(e) => setFormData({ ...formData, status: e.target.value as ArticleStatus })}
                                         className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[13px] focus:bg-white focus:ring-2 focus:ring-blue-100 outline-none cursor-pointer"
                                     >
-                                        <option value="PUBLISHED">Published</option>
-                                        <option value="DRAFT">Draft</option>
-                                        <option value="ARCHIVED">Archived</option>
+                                        <option value="PUBLISHED">Xuất bản</option>
+                                        <option value="SCHEDULED">Hẹn giờ đăng</option>
+                                        <option value="DRAFT">Lưu nháp</option>
+                                        <option value="ARCHIVED">Lưu trữ</option>
                                     </select>
                                 </div>
+
+                                {formData.status === 'SCHEDULED' && (
+                                    <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                                        <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Thời gian đăng bài <span className="text-red-500">*</span></label>
+                                        <input
+                                            type="datetime-local"
+                                            value={formData.published_at}
+                                            onChange={(e) => {
+                                                setFormData({ ...formData, published_at: e.target.value });
+                                                if (errors.published_at) setErrors({ ...errors, published_at: undefined });
+                                            }}
+                                            className={`w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-[13px] outline-none transition-all ${errors.published_at ? 'border-red-500 focus:bg-white focus:ring-2 focus:ring-red-100' : 'border-slate-200 focus:bg-white focus:ring-2 focus:ring-blue-100'}`}
+                                        />
+                                        {errors.published_at && <p className="text-[11px] font-medium text-red-500 mt-1.5 flex items-center gap-1"><AlertTriangle className="w-3 h-3" /> {errors.published_at}</p>}
+                                    </div>
+                                )}
 
                                 <div>
                                     <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Ảnh bìa (Thumbnail) <span className="text-red-500">*</span></label>
