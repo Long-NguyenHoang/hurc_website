@@ -59,7 +59,15 @@ import { CacheModule } from '@nestjs/cache-manager';
         // synchronize: true sẽ tự động sync schema database với entity của code.
         // LƯU Ý TỪ SENIOR: Chỉ nên để true ở môi trường DEV (Local).
         // Khi lên Production, BẮT BUỘC phải chuyển thành false và dùng Migration.
-        synchronize: true
+        synchronize: true,
+
+        // THÊM 2 CẤU HÌNH SSL NÀY VÀO (Bắt buộc cho Cloud DB)
+        ssl: true,
+        extra: {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        },
       }),
     }),
     TypeOrmModule.forFeature([User, Station]),
