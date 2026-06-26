@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import { AbstractBaseEntity } from "./base.entity";
 import { Media } from "./media.entity";
 
@@ -10,6 +10,7 @@ export class TicketFare extends AbstractBaseEntity {
     @Column({ type: 'int', default: 0 })
     display_order: number;
 
+    @Index()
     @Column({ type: 'boolean', default: true })
     is_active: boolean;
 

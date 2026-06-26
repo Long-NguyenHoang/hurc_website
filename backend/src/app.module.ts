@@ -20,6 +20,7 @@ import { UserContextMiddleware } from 'common/middlewares/user-context.middlewar
 import { AuditLogsModule } from './modules/audit-logs/audit-logs.module';
 import { InvoicesModule } from './modules/invoices/invoices.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -27,6 +28,12 @@ import { ScheduleModule } from '@nestjs/schedule';
     ConfigModule.forRoot({
       isGlobal: true,   // Read file in every module
       envFilePath: '.env',
+    }),
+
+    // THÊM CACHE MODULE VÀO ĐÂY (Lưu cache trong 60 giây)
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 60000, // 60 giây. Trong 1 phút, 1000 người vào thì DB chỉ bị gọi đúng 1 lần!
     }),
 
     ClsModule.forRoot({

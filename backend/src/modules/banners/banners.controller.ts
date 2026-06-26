@@ -8,11 +8,13 @@ import { UserRole } from 'common/enums';
 import { Roles } from 'common/decorators/roles.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'common/config/multer.config';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('banners')
 export class BannersController {
   constructor(private readonly bannersService: BannersService) { }
 
+  @UseInterceptors(CacheInterceptor)
   @Get()
   findAllPublic() {
     return this.bannersService.findAll(true);
