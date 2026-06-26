@@ -8,6 +8,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { multerOptions } from "common/config/multer.config";
 import { CreateTicketFareDto } from "./dto/create-ticket-fare.dto";
 import { UpdateTicketFareDto } from "./dto/update-ticket-fare.dto";
+import { CacheInterceptor } from "@nestjs/cache-manager";
 
 @Controller('ticket-fares')
 export class TicketFaresController {
@@ -15,6 +16,7 @@ export class TicketFaresController {
         private readonly ticketFaresService: TicketFaresService,
     ) { }
 
+    @UseInterceptors(CacheInterceptor)
     @Get()
     findAllPublic() {
         return this.ticketFaresService.findAllPublic();

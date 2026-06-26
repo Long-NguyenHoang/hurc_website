@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import { AbstractBaseEntity } from "./base.entity";
 import { ArticleStatus } from "common/enums";
 import { Media } from "./media.entity";
@@ -9,6 +9,7 @@ export class Article extends AbstractBaseEntity {
     @Column({ type: 'varchar' })
     title: string;
 
+    @Index()
     @Column({ type: 'varchar', unique: true })
     slug: string;
 
@@ -18,6 +19,7 @@ export class Article extends AbstractBaseEntity {
     @Column({ type: 'text' })
     content: string;
 
+    @Index()
     @Column({ type: 'enum', enum: ArticleStatus, default: ArticleStatus.DRAFT })
     status: ArticleStatus;
 

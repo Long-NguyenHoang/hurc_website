@@ -9,16 +9,19 @@ import { Roles } from 'common/decorators/roles.decorator';
 import { UserRole } from 'common/enums';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'common/config/multer.config';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) { }
 
+  @UseInterceptors(CacheInterceptor)
   @Get()
   findAllPublic(@Query() paginationDto: PaginationDto) {
     return this.articlesService.findAllPublic(paginationDto);
   }
 
+  @UseInterceptors(CacheInterceptor)
   @Get('detail/:slug')
   findBySlug(@Param('slug') slug: string) {
     return this.articlesService.findBySlug(slug);

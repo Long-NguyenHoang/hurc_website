@@ -8,6 +8,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { multerOptions } from "common/config/multer.config";
 import { CreateStationDto } from "./dto/create-station.dto";
 import { UpdateStationDto } from "./dto/update-station.dto";
+import { CacheInterceptor } from "@nestjs/cache-manager";
 
 @Controller('stations')
 export class StationsController {
@@ -15,11 +16,13 @@ export class StationsController {
         private readonly stationsService: StationsService,
     ) { }
 
+    @UseInterceptors(CacheInterceptor)
     @Get('schedule')
     findAllSchedule() {
         return this.stationsService.findAllSchedule();
     }
 
+    @UseInterceptors(CacheInterceptor)
     @Get('content')
     findAllContent() {
         return this.stationsService.findAllContent();
