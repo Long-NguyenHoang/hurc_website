@@ -120,41 +120,41 @@ export default function InvoiceLookupPage() {
 
                                     {/* Hàng 1 */}
                                     <div className="flex flex-col gap-1.5">
-                                        <span className="text-[13px] text-slate-400 font-medium">Số hoá đơn</span>
+                                        <span className="text-[13px] text-[#005596] font-medium">Số hoá đơn</span>
                                         <span className="text-[15px] text-slate-800 font-medium break-all">{invoiceData.so_hoa_don}</span>
                                     </div>
                                     <div className="flex flex-col gap-1.5">
-                                        <span className="text-[13px] text-slate-400 font-medium">Ngày tạo</span>
+                                        <span className="text-[13px] text-[#005596] font-medium">Ngày tạo</span>
                                         <span className="text-[15px] text-slate-800 font-medium">{invoiceData.ngay_tao}</span>
                                     </div>
 
                                     {/* Hàng 2 */}
                                     <div className="flex flex-col gap-1.5">
-                                        <span className="text-[13px] text-slate-400 font-medium">Ga đi</span>
+                                        <span className="text-[13px] text-[#005596] font-medium">Ga đi</span>
                                         <span className="text-[15px] text-slate-800 font-medium">{invoiceData.ga_di}</span>
                                     </div>
                                     <div className="flex flex-col gap-1.5">
-                                        <span className="text-[13px] text-slate-400 font-medium">Ga đến</span>
+                                        <span className="text-[13px] text-[#005596] font-medium">Ga đến</span>
                                         <span className="text-[15px] text-slate-800 font-medium">{invoiceData.ga_den}</span>
                                     </div>
 
                                     {/* Hàng 3 */}
                                     <div className="flex flex-col gap-1.5">
-                                        <span className="text-[13px] text-slate-400 font-medium">Loại khách</span>
+                                        <span className="text-[13px] text-[#005596] font-medium">Loại khách</span>
                                         <span className="text-[15px] text-slate-800 font-medium">{invoiceData.loai_khach}</span>
                                     </div>
                                     <div className="flex flex-col gap-1.5">
-                                        <span className="text-[13px] text-slate-400 font-medium">Loại vé</span>
+                                        <span className="text-[13px] text-[#005596] font-medium">Loại vé</span>
                                         <span className="text-[15px] text-slate-800 font-medium">{invoiceData.loai_ve}</span>
                                     </div>
 
                                     {/* Hàng 4 */}
                                     <div className="flex flex-col gap-1.5">
-                                        <span className="text-[13px] text-slate-400 font-medium">Đơn giá</span>
+                                        <span className="text-[13px] text-[#005596] font-medium">Đơn giá</span>
                                         <span className="text-[15px] text-slate-800 font-medium">{formatCurrency(invoiceData.don_gia)}</span>
                                     </div>
                                     <div className="flex flex-col gap-1.5">
-                                        <span className="text-[13px] text-slate-400 font-medium">Số lượng</span>
+                                        <span className="text-[13px] text-[#005596] font-medium">Số lượng</span>
                                         <span className="text-[15px] text-slate-800 font-medium">{invoiceData.so_luong}</span>
                                     </div>
                                 </div>
@@ -165,14 +165,14 @@ export default function InvoiceLookupPage() {
                                 {/* Tổng tiền & Link */}
                                 <div className="grid grid-cols-2 gap-y-6 gap-x-8">
                                     <div className="flex flex-col gap-1.5 justify-center">
-                                        <span className="text-[14px] text-slate-500 font-medium">Tổng tiền</span>
+                                        <span className="text-[14px] text-[#005596] font-medium">Tổng tiền</span>
                                     </div>
                                     <div className="flex flex-col gap-1.5 justify-center">
                                         <span className="text-[16px] text-[#005596] font-bold">{formatCurrency(invoiceData.tong_tien)}</span>
                                     </div>
 
                                     <div className="flex flex-col gap-1.5 justify-center">
-                                        <span className="text-[14px] text-slate-500 font-medium">Thông tin chi tiết</span>
+                                        <span className="text-[14px] text-[#005596] font-medium">Thông tin chi tiết</span>
                                     </div>
                                     <div className="flex flex-col gap-1.5 justify-center">
                                         <a

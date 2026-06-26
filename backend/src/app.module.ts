@@ -19,6 +19,7 @@ import { ClsModule } from 'nestjs-cls';
 import { UserContextMiddleware } from 'common/middlewares/user-context.middleware';
 import { AuditLogsModule } from './modules/audit-logs/audit-logs.module';
 import { InvoicesModule } from './modules/invoices/invoices.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -32,6 +33,8 @@ import { InvoicesModule } from './modules/invoices/invoices.module';
       global: true,
       middleware: { mount: true }, // Cho phép CLS nhận diện HTTP Context
     }),
+
+    ScheduleModule.forRoot(),
 
     // Config TypeOrmModule
     TypeOrmModule.forRootAsync({

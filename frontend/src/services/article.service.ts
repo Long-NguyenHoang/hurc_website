@@ -1,7 +1,7 @@
 import axiosClient from './axiosClient';
 import { Media } from './media.service';
 
-export type ArticleStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+export type ArticleStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED' | 'SCHEDULED';
 
 export interface Article {
     id: string;
@@ -9,7 +9,7 @@ export interface Article {
     slug: string;
     summary: string;
     content: string;
-    status: 'DRAFT' | 'PUBLISHED';
+    status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED' | 'SCHEDULED';
     published_at: string;
     thumbnail?: Media | null;
     created_at: string;
