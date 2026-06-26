@@ -30,7 +30,8 @@ async function bootstrap() {
       'http://localhost:3000',
       'http://192.168.0.253:3001',
       'http://192.168.0.253:3000',
-      'https://cms.hurc.vn'
+      'https://cms.hurc.vn',
+      'hurc-website.vercel.app'
     ],
 
     // BẮT BUỘC PHẢI LÀ TRUE: Cho phép Frontend gửi HttpOnly Cookie lên Backend
