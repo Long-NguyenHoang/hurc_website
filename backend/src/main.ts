@@ -27,7 +27,8 @@ async function bootstrap() {
     // Chỉ cho phép các domain này được gọi API (Thay bằng domain thực tế khi lên Production)
     origin: [
       'WEB_SERVER',
-      'http://192.168.1.217/admin'
+      'http://192.168.1.217/admin',
+      'http://192.168.1.217:3001'
     ],
 
     // BẮT BUỘC PHẢI LÀ TRUE: Cho phép Frontend gửi HttpOnly Cookie lên Backend
