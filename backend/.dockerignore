@@ -1,0 +1,27 @@
+# Bỏ qua thư viện
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Bỏ qua thư mục code đã được build sẵn ở máy cá nhân
+dist
+
+# BẢO MẬT: Chặn các file chứa mật khẩu Database, JWT Secret...
+.env
+.env.*
+!.env.example
+
+# Bỏ qua các file cấu hình Git và Docker
+.git
+.gitignore
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Bỏ qua các file tài liệu, test hoặc cấu hình editor
+README.md
+.vscode
+.idea
+test/

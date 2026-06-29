@@ -26,11 +26,7 @@ async function bootstrap() {
   app.enableCors({
     // Chỉ cho phép các domain này được gọi API (Thay bằng domain thực tế khi lên Production)
     origin: [
-      'http://localhost:3001',
-      'http://localhost:3000',
-      'http://192.168.0.253:3001',
-      'http://192.168.0.253:3000',
-      'https://cms.hurc.vn'
+      'WEB_SERVER'
     ],
 
     // BẮT BUỘC PHẢI LÀ TRUE: Cho phép Frontend gửi HttpOnly Cookie lên Backend

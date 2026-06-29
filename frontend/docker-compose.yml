@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: metro_frontend
+    restart: always
+    ports:
+      # Ánh xạ port 80 (chuẩn lướt web mặc định) vào port 3000 của Next.js
+      # Giúp người dùng gõ domain.com là vào web luôn, không cần gõ domain.com:3000
+      - "80:3000"
+    environment:
+      - NODE_ENV=production
+      # Bắt buộc: Điền địa chỉ IP mạng nội bộ của Server 2 (Backend) vào đây
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    deploy:
+      resources:
+        limits:
+          cpus: '3.0' # Cho phép Next.js dùng nhiều CPU để xử lý mượt các trang động
+          memory: 4G

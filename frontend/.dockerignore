@@ -1,0 +1,27 @@
+# Bỏ qua thư viện (Để Docker tự cài lại bằng npm ci cho đúng chuẩn Linux)
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Bỏ qua thư mục build nội bộ của Next.js trên máy cá nhân
+.next
+out
+build
+
+# BẢO MẬT: Tuyệt đối không đưa file chứa biến môi trường vào Image
+.env
+.env.*
+!.env.example 
+
+# Bỏ qua các file cấu hình Git và Docker (không cần thiết để chạy web)
+.git
+.gitignore
+.dockerignore
+Dockerfile
+
+# Bỏ qua các file tài liệu hoặc cấu hình editor
+README.md
+.vscode
+.idea
