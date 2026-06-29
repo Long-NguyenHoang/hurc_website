@@ -18,7 +18,7 @@ services:
     volumes:
       # RẤT QUAN TRỌNG: Lưu dữ liệu Database ra ổ cứng thật của Server
       # Nếu không có dòng này, tắt Docker là mất sạch bài viết, nhà ga!
-      - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql
 
   # 2. KHỞI TẠO BACKEND API
   api:
