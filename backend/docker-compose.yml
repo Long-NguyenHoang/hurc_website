@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # 1. KHỞI TẠO DATABASE (Không cần Dockerfile)
   postgres:
-    image: postgres:15-alpine
+    image: postgres:18-alpine
     container_name: metro_db
     restart: always # Tự động chạy lại nếu Server bị khởi động lại
     environment:
