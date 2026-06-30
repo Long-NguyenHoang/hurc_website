@@ -1,14 +1,14 @@
 // src/services/axiosClient.ts
 import axios from 'axios';
 
-const getBaseURL = () => {
+export const getBaseURL = () => {
     if (typeof window !== 'undefined') {
         const hostname = window.location.hostname;
         if (hostname === 'localhost' || hostname === '127.0.0.1') {
             return 'http://localhost:3000';
         }
-        // Nếu truy cập qua IP LAN
-        return `http://${hostname}:3000`;
+        // Nếu truy cập qua IP LAN hoặc WAN
+        return `https://${hostname}:3000`;
     }
     return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 };

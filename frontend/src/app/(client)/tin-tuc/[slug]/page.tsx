@@ -5,15 +5,15 @@ import { articleService } from "@/services/article.service";
 // Làm mới cache bài viết mỗi 60 giây
 export const revalidate = 60;
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+// Sử dụng relative URL để Next.js rewrites proxy ảnh về Backend
 
 // Hàm xử lý đường dẫn ảnh từ nội dung HTML của Editor
 const processContent = (content: string) => {
     if (!content) return "";
     let processed = content.replace(/&nbsp;/g, ' ');
-    processed = processed.replace(/(src|href)="https?:\/\/[^\/]+(\/uploads\/[^"]+)"/g, `$1="${BACKEND_URL}$2"`);
-    processed = processed.replace(/src="\/uploads\//g, `src="${BACKEND_URL}/uploads/`);
-    processed = processed.replace(/href="\/uploads\//g, `href="${BACKEND_URL}/uploads/`);
+    processed = processed.replace(/(src|href)="https?:\/\/[^\/]+(\/uploads\/[^"]+)"/g, `$1="$2"`);
+    processed = processed.replace(/src="\/uploads\//g, `src="/uploads/`);
+    processed = processed.replace(/href="\/uploads\//g, `href="/uploads/`);
     return processed;
 };
 
