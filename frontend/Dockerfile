@@ -11,6 +11,10 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 # Copy toàn bộ code Frontend
 COPY . .
+
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 # Tạo các trang tĩnh, nén hình ảnh (SSG/ISR)
 RUN npm run build
 
