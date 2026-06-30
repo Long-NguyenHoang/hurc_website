@@ -8,7 +8,7 @@ export const getBaseURL = () => {
             return 'http://localhost:3000';
         }
         // Nếu truy cập qua IP LAN hoặc WAN
-        return `https://${hostname}:3000`;
+        return `http://${hostname}:3000`;
     }
     return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 };
