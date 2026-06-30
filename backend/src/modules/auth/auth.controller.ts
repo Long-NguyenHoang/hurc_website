@@ -21,7 +21,7 @@ export class AuthController {
 
         res.cookie('access_token', tokenResult.access_token, {
             httpOnly: true, // Chống XSS (không cho JavaScript đọc)
-            secure: process.env.NODE_ENV === 'production', // Chỉ gửi qua HTTPS khi lên Production
+            secure: false, // Đặt false vì chúng ta đang chạy nội bộ bằng HTTP (không có HTTPS)
             sameSite: 'lax', // Chống CSRF
             maxAge: 1000 * 60 * 60 * 24, // Sống được 1 ngày (1000ms * 60s * 60m * 24h)
         });

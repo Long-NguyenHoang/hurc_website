@@ -11,6 +11,10 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 # Copy toàn bộ code Frontend
 COPY . .
+
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 # Tạo các trang tĩnh, nén hình ảnh (SSG/ISR)
 RUN npm run build
 
@@ -22,7 +26,7 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1 
 
 # Copy chính xác những file Next.js cần để chạy (bỏ lại toàn bộ code thừa)
-COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/next.config.ts ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules

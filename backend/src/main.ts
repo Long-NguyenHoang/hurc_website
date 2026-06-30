@@ -26,7 +26,10 @@ async function bootstrap() {
   app.enableCors({
     // Chỉ cho phép các domain này được gọi API (Thay bằng domain thực tế khi lên Production)
     origin: [
-      'WEB_SERVER'
+      'WEB_SERVER',
+      'http://192.168.1.217:3001',
+      'http://127.0.0.1:3001',
+      'http://192.168.1.217',
     ],
 
     // BẮT BUỘC PHẢI LÀ TRUE: Cho phép Frontend gửi HttpOnly Cookie lên Backend
