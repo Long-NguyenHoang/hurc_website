@@ -2,15 +2,22 @@
 import axios from 'axios';
 
 export const getBaseURL = () => {
+    // Ưu tiên sử dụng biến môi trường từ .env.local (chạy được cả client & server)
+    if (process.env.NEXT_PUBLIC_API_URL) {
+        return process.env.NEXT_PUBLIC_API_URL;
+    }
+
     if (typeof window !== 'undefined') {
         const hostname = window.location.hostname;
-        if (hostname === 'localhost' || hostname === '127.0.0.1') {
-            return 'http://localhost:3000';
+        // Dùng 127.0.0.1 thay vì localhost để né lỗi HSTS (trình duyệt tự ép HTTP thành HTTPS)
+        if (hostname === 'localhost') {
+            return 'http://127.0.0.1:3000';
         }
         // Nếu truy cập qua IP LAN hoặc WAN
         return `http://${hostname}:3000`;
     }
-    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+    
+    return 'http://127.0.0.1:3000';
 };
 
 const axiosClient = axios.create({
