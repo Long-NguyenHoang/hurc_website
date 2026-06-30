@@ -27,6 +27,8 @@ services:
     restart: always
     ports:
       - "3000:3000" # Mở port 3000 ra Internet (để Frontend gọi vào)
+    volumes:
+      - ./uploads:/app/uploads
     environment:
       - NODE_ENV=production
       - DB_HOST=postgres # Trỏ thẳng tên kết nối vào dịch vụ postgres phía trên
