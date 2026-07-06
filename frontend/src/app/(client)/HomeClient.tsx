@@ -8,7 +8,7 @@ import { Station } from "@/services/station.service";
 import { Article } from "@/services/article.service";
 import ArticleCard from "@/components/ArticleCard";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+// Sử dụng relative URL để Next.js rewrites proxy ảnh về Backend
 
 // Nhận dữ liệu đã được Server lấy sẵn thông qua Props
 export default function HomeClient({
@@ -48,7 +48,7 @@ export default function HomeClient({
         const imgPath = (banner.image as any).url || (banner.image as any).path;
         if (!imgPath) return '/hero-metro.png';
         if (imgPath.startsWith('http')) return imgPath;
-        return `${BACKEND_URL}${imgPath.startsWith('/') ? '' : '/'}${imgPath}`;
+        return `${imgPath.startsWith('/') ? '' : '/'}${imgPath}`;
     };
 
     const activeStation = initialStations.find(s => s.id === activeStationId);

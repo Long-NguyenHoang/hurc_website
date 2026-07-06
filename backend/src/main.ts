@@ -29,7 +29,10 @@ async function bootstrap() {
       'WEB_SERVER',
       'http://192.168.1.217:3001',
       'http://127.0.0.1:3001',
+      'http://localhost:3001',
       'http://192.168.1.217',
+      'http://113.161.84.61',
+      'http://113.161.84.61:3001',
     ],
 
     // BẮT BUỘC PHẢI LÀ TRUE: Cho phép Frontend gửi HttpOnly Cookie lên Backend
