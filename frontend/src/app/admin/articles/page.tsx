@@ -156,8 +156,12 @@ export default function ArticlesPage() {
             if (formData.status === 'SCHEDULED' && formData.published_at) {
                 submitData.append('published_at', new Date(formData.published_at).toISOString());
             } else if (formData.status === 'PUBLISHED') {
-                // Nếu xuất bản luôn thì gán giờ hiện tại
-                submitData.append('published_at', new Date().toISOString());
+                // Giữ nguyên giờ cũ nếu có, ngược lại gán giờ hiện tại
+                if (formData.published_at) {
+                    submitData.append('published_at', new Date(formData.published_at).toISOString());
+                } else {
+                    submitData.append('published_at', new Date().toISOString());
+                }
             }
 
             if (editingId) {

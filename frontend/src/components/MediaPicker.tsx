@@ -98,11 +98,14 @@ export default function MediaPicker({ isOpen, onClose, onSelect }: MediaPickerPr
             <Modal isOpen={isOpen} onClose={onClose} title="Thư viện hình ảnh" maxWidth="4xl">
                 {/* Header Controls: Chỉ giữ lại nút Upload và canh lề phải */}
                 <div className="p-5 border-b border-slate-100 flex justify-end items-center bg-slate-50/50">
-                    <label className="flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 text-white text-[13px] font-semibold rounded-xl hover:bg-slate-900 cursor-pointer transition-colors whitespace-nowrap shadow-sm">
-                        {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
-                        {isUploading ? 'Đang tải lên...' : 'Tải ảnh mới'}
-                        <input type="file" accept="image/*" className="hidden" onChange={handleUpload} disabled={isUploading} />
-                    </label>
+                    <div className="flex flex-col items-end">
+                        <label className="flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 text-white text-[13px] font-semibold rounded-xl hover:bg-slate-900 cursor-pointer transition-colors whitespace-nowrap shadow-sm">
+                            {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                            {isUploading ? 'Đang tải lên...' : 'Tải ảnh mới'}
+                            <input type="file" accept="image/*" className="hidden" onChange={handleUpload} disabled={isUploading} />
+                        </label>
+                        <p className="text-[11px] text-slate-500 mt-1.5">* Dung lượng tối đa: 500KB</p>
+                    </div>
                 </div>
 
                 {/* Danh sách lưới hình ảnh */}

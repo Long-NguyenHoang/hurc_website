@@ -147,8 +147,8 @@ export default function MediaPage() {
                     <p className="text-[13px] text-slate-500 mt-1">Quản lý toàn bộ hình ảnh và tài liệu tải lên hệ thống.</p>
                 </div>
 
-                {/* NÚT UPLOAD FILE ẨN */}
-                <div>
+                {/* NÚT UPLOAD FILE */}
+                <div className="flex flex-col sm:items-end">
                     <input
                         type="file"
                         accept="image/*"
@@ -160,11 +160,12 @@ export default function MediaPage() {
                     <button
                         onClick={() => fileInputRef.current?.click()}
                         disabled={isUploading}
-                        className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white text-[13px] font-semibold rounded-xl hover:bg-blue-700 disabled:bg-blue-400 transition-colors shadow-sm"
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white text-[13px] font-semibold rounded-xl hover:bg-blue-700 disabled:bg-blue-400 transition-colors shadow-sm w-full sm:w-auto"
                     >
                         {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
                         {isUploading ? 'Đang tải lên...' : 'Tải lên hình ảnh'}
                     </button>
+                    <p className="text-[11px] text-slate-500 mt-1.5">* Dung lượng tối đa: 500KB</p>
                 </div>
             </div>
 

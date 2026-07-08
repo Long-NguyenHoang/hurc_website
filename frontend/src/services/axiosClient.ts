@@ -10,7 +10,8 @@ const getBaseURL = () => {
         // Nếu truy cập qua IP LAN
         return `http://${hostname}:3000`;
     }
-    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+    // Trên Server-side (Next.js SSR chạy trong Docker)
+    return process.env.INTERNAL_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 };
 
 const axiosClient = axios.create({

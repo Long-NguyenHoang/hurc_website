@@ -50,9 +50,9 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                     <div className="max-w-5xl mx-auto">
 
                         {/* HEADER BÀI VIẾT */}
-                        <h1 className="text-[24px] md:text-[30px] lg:text-[36px] font-bold text-slate-900 leading-tight mb-6">
+                        <h2 className="text-[18px] md:text-[22px] lg:text-[26px] font-bold text-[#005596] leading-tight mb-6">
                             {article.title}
-                        </h1>
+                        </h2>
 
                         {/* NỘI DUNG CHÍNH (HTML TỪ EDITOR) */}
                         <div
