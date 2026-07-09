@@ -16,7 +16,7 @@ services:
       - NODE_ENV=production
       # Bắt buộc: Điền địa chỉ IP mạng nội bộ của Server 2 (Backend) vào đây
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-      - INTERNAL_API_URL=http://host.docker.internal:3000
+      - INTERNAL_API_URL=${INTERNAL_API_URL:-http://host.docker.internal:3000}
     deploy:
       resources:
         limits:

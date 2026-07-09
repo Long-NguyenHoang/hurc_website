@@ -9,6 +9,9 @@ async function bootstrap() {
   // const app = await NestFactory.create(AppModule);
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  // Lấy đúng IP thật của người dùng khi chạy qua Nginx, Docker hoặc Cloudflare
+  app.set('trust proxy', 1);
+
   app.useStaticAssets(join(process.cwd(), 'uploads'), {
     prefix: '/uploads/', // Tiền tố URL
   });

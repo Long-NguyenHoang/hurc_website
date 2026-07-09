@@ -54,11 +54,7 @@ import { CacheModule } from '@nestjs/cache-manager';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
-
         autoLoadEntities: true,
-        // synchronize: true sẽ tự động sync schema database với entity của code.
-        // LƯU Ý TỪ SENIOR: Chỉ nên để true ở môi trường DEV (Local).
-        // Khi lên Production, BẮT BUỘC phải chuyển thành false và dùng Migration.
         synchronize: configService.get<string>('NODE_ENV') !== 'production'
       }),
     }),

@@ -30,7 +30,7 @@ services:
     volumes:
       - ./uploads:/app/uploads
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=${NODE_ENV}
       - DB_HOST=postgres # Trỏ thẳng tên kết nối vào dịch vụ postgres phía trên
       - DB_PORT=5432
       - DB_USERNAME=${DB_USERNAME}
