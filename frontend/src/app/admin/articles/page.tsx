@@ -14,6 +14,7 @@ export default function ArticlesPage() {
     const [articles, setArticles] = useState<Article[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
 
     // --- STATE MODAL THÊM/SỬA ---
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,13 +43,23 @@ export default function ArticlesPage() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            if (searchTerm !== debouncedSearch) {
+                setDebouncedSearch(searchTerm);
+                setCurrentPage(1);
+            }
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [searchTerm, debouncedSearch]);
+
+    useEffect(() => {
         fetchArticles();
-    }, [currentPage]);
+    }, [currentPage, debouncedSearch]);
 
     const fetchArticles = async () => {
         setIsLoading(true);
         try {
-            const response: any = await articleService.getAllAdmin({ page: currentPage, limit: 20 });
+            const response: any = await articleService.getAllAdmin({ page: currentPage, limit: 20, search: debouncedSearch });
             // Xử lý dữ liệu trả về (hỗ trợ cả mảng thường và mảng có phân trang)
             const dataList = response?.data?.items || response?.data?.data || (Array.isArray(response) ? response : response?.data || []);
 
@@ -197,7 +208,7 @@ export default function ArticlesPage() {
         }
     };
 
-    const filteredArticles = articles.filter(a => a.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filteredArticles = articles;
 
     const getImageUrl = (url: string) => {
         if (!url) return '';

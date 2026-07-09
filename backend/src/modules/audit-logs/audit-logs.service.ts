@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PaginationDto } from "common/dto/pagination.dto";
 import { AuditLog } from "common/entities/audit-log.entity";
-import { Repository } from "typeorm";
+import { Repository, ILike } from "typeorm";
 
 @Injectable()
 export class AuditLogsService {
@@ -12,8 +12,12 @@ export class AuditLogsService {
     ) { }
 
     async findAll(paginationDto: PaginationDto) {
-        const { page = 1, limit = 20 } = paginationDto;
+        const { page = 1, limit = 20, search } = paginationDto;
         const [auditLogs, total] = await this.auditLogRepository.findAndCount({
+            where: search ? [
+                { actor_email: ILike(`%${search}%`) },
+                { entity_name: ILike(`%${search}%`) }
+            ] : undefined,
             order: { created_at: 'DESC' },
             skip: (page - 1) * limit,
             take: limit,

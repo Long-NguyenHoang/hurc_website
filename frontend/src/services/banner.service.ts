@@ -17,8 +17,8 @@ export const bannerService = {
         return await axiosClient.get('/banners');
     },
 
-    getAllAdmin: async () => {
-        return await axiosClient.get('/banners/admin/all');
+    getAllAdmin: async (params?: { search?: string }) => {
+        return await axiosClient.get('/banners/admin/all', { params });
     },
 
     create: async (data: FormData) => {

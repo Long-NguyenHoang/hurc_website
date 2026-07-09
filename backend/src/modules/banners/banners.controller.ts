@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
 import { BannersService } from './banners.service';
 import { CreateBannerDto } from './dto/create-banner.dto';
 import { UpdateBannerDto } from './dto/update-banner.dto';
@@ -36,8 +36,8 @@ export class BannersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.EDITOR)
   @Get('admin/all')
-  findAllForAdmin() {
-    return this.bannersService.findAll(false);
+  findAllForAdmin(@Query('search') search?: string) {
+    return this.bannersService.findAll(false, search);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

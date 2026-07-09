@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'common/dto/pagination.dto';
 import { Media } from 'common/entities/media.entity';
 import { UserRole } from 'common/enums';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Repository, ILike } from 'typeorm';
 import { UpdateMediaDto } from './dto/update-media.dto';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -35,17 +35,16 @@ export class MediaService {
   }
 
   async findAll(user: any, paginationDto: PaginationDto) {
-    const { page = 1, limit = 20 } = paginationDto;
+    const { page = 1, limit = 20, search } = paginationDto;
     const skip = (page - 1) * limit;
 
-    // const whereCondition: any = {};
-
-    // if (user.role !== UserRole.ADMIN) {
-    //   whereCondition.uploaded_by_user = { id: user.id };
-    // }
+    const whereCondition: any = {};
+    if (search) {
+      whereCondition.original_name = ILike(`%${search}%`);
+    }
 
     const [mediaFiles, total] = await this.mediaRepository.findAndCount({
-      // where: whereCondition,
+      where: whereCondition,
       skip: skip,
       take: limit,
       order: { created_at: 'DESC' },

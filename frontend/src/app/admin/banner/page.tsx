@@ -12,6 +12,7 @@ export default function BannersPage() {
     const [banners, setBanners] = useState<Banner[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
 
     // --- STATE MODAL THÊM/SỬA ---
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,13 +39,22 @@ export default function BannersPage() {
     const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            if (searchTerm !== debouncedSearch) {
+                setDebouncedSearch(searchTerm);
+            }
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [searchTerm, debouncedSearch]);
+
+    useEffect(() => {
         fetchBanners();
-    }, []);
+    }, [debouncedSearch]);
 
     const fetchBanners = async () => {
         setIsLoading(true);
         try {
-            const response: any = await bannerService.getAllAdmin();
+            const response: any = await bannerService.getAllAdmin({ search: debouncedSearch });
             const dataList = Array.isArray(response) ? response : response?.data || [];
             const sortedList = dataList.sort((a: Banner, b: Banner) => a.display_order - b.display_order);
             setBanners(sortedList);
@@ -162,7 +172,7 @@ export default function BannersPage() {
     };
 
     // --- HÀM PHỤ TRỢ ---
-    const filteredBanners = banners.filter(b => b.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filteredBanners = banners;
 
     const getImageUrl = (url: string) => {
         if (!url) return '';

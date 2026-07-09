@@ -21,6 +21,7 @@ export default function AuditLogsPage() {
     const [logs, setLogs] = useState<AuditLog[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
 
     // --- STATE PHÂN TRANG ---
     const [currentPage, setCurrentPage] = useState(1);
@@ -30,16 +31,26 @@ export default function AuditLogsPage() {
     // --- STATE MODAL XEM CHI TIẾT ---
     const [selectedLog, setSelectedLog] = useState<AuditLog | null>(null);
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (searchTerm !== debouncedSearch) {
+                setDebouncedSearch(searchTerm);
+                setCurrentPage(1);
+            }
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [searchTerm, debouncedSearch]);
+
     // Khi trang hiện tại thay đổi, tự động gọi lại API
     useEffect(() => {
         fetchLogs();
-    }, [currentPage]);
+    }, [currentPage, debouncedSearch]);
 
     const fetchLogs = async () => {
         setIsLoading(true);
         try {
-            // Truyền tham số page và limit vào API khớp với PaginationDto của Backend
-            const response: any = await auditLogService.getAll({ page: currentPage, limit: 20 });
+            // Truyền tham số page, limit và search vào API khớp với PaginationDto của Backend
+            const response: any = await auditLogService.getAll({ page: currentPage, limit: 20, search: debouncedSearch });
 
             // Xử lý lấy danh sách dữ liệu
             const dataList = response?.data?.items || response?.data?.data || (Array.isArray(response) ? response : response?.data || []);
@@ -65,10 +76,7 @@ export default function AuditLogsPage() {
     };
 
     // --- HÀM LỌC ---
-    const filteredLogs = logs.filter(log =>
-        log.actor_email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        log.entity_name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredLogs = logs;
 
     // --- HÀM PHỤ TRỢ UI ---
     const formatDate = (isoString: string) => {
