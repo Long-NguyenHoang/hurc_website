@@ -11,6 +11,7 @@ export default function ContactsPage() {
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
 
     // --- STATE PHÂN TRANG ---
     const [currentPage, setCurrentPage] = useState(1);
@@ -26,13 +27,23 @@ export default function ContactsPage() {
     const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            if (searchTerm !== debouncedSearch) {
+                setDebouncedSearch(searchTerm);
+                setCurrentPage(1);
+            }
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [searchTerm, debouncedSearch]);
+
+    useEffect(() => {
         fetchContacts();
-    }, [currentPage]);
+    }, [currentPage, debouncedSearch]);
 
     const fetchContacts = async () => {
         setIsLoading(true);
         try {
-            const response: any = await contactService.getAllAdmin({ page: currentPage, limit: 10 });
+            const response: any = await contactService.getAllAdmin({ page: currentPage, limit: 10, search: debouncedSearch });
 
             const dataList = response?.data?.items || response?.data?.data || (Array.isArray(response) ? response : response?.data || []);
 
@@ -89,11 +100,7 @@ export default function ContactsPage() {
     };
 
     // --- BỘ LỌC VÀ HIỂN THỊ UI ---
-    const filteredContacts = contacts.filter(c =>
-        c.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (c.email && c.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (c.phone && c.phone.includes(searchTerm))
-    );
+    const filteredContacts = contacts;
 
     const formatDate = (isoString: string) => {
         if (!isoString) return '—';

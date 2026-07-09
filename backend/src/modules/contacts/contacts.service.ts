@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
-import { Repository } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { Contact } from 'common/entities/contacts.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ContactStatus } from 'common/enums';
@@ -28,8 +28,13 @@ export class ContactsService {
   }
 
   async findAllAdmin(paginationDto: PaginationDto) {
-    const { page = 1, limit = 20 } = paginationDto;
+    const { page = 1, limit = 20, search } = paginationDto;
     const [contacts, total] = await this.contactsRepository.findAndCount({
+      where: search ? [
+        { full_name: ILike(`%${search}%`) },
+        { email: ILike(`%${search}%`) },
+        { phone: ILike(`%${search}%`) }
+      ] : undefined,
       order: { created_at: 'DESC' },
       relations: { resolved_by_user: true },
       select: {

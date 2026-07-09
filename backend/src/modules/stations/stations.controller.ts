@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UploadedFile, UseGuards, UseInterceptors, Query } from "@nestjs/common";
 import { StationsService } from "./stations.service";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { RolesGuard } from "../auth/roles.guard";
@@ -46,8 +46,8 @@ export class StationsController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(UserRole.ADMIN, UserRole.EDITOR)
     @Get('admin/all')
-    findAllAdmin() {
-        return this.stationsService.findAllAdmin();
+    findAllAdmin(@Query('search') search?: string) {
+        return this.stationsService.findAllAdmin(search);
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)

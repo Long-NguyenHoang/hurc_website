@@ -76,10 +76,10 @@ export default function AdminLayout({
         }
 
         if (profileFormData.password) {
-            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()])[A-Za-z\d@$!%*?&#^()]{8,}$/;
 
             if (!passwordRegex.test(profileFormData.password)) {
-                newErrors.password = 'Mật khẩu phải từ 8 ký tự, gồm chữ hoa, thường, số và ký tự đặc biệt (@$!%*?&)!';
+                newErrors.password = 'Mật khẩu phải từ 8 ký tự, gồm chữ hoa, thường, số và ký tự đặc biệt';
                 isValid = false;
             }
 

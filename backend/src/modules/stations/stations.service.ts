@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Station } from "common/entities/stations.entity";
-import { Repository } from "typeorm";
+import { Repository, ILike } from "typeorm";
 import { MediaService } from "../media/media.service";
 import { CreateStationDto } from "./dto/create-station.dto";
 import { UpdateStationDto } from "./dto/update-station.dto";
@@ -65,8 +65,12 @@ export class StationsService {
         });
     }
 
-    async findAllAdmin() {
+    async findAllAdmin(search?: string) {
         return await this.stationsRepository.find({
+            where: search ? [
+                { name: ILike(`%${search}%`) },
+                { code: ILike(`%${search}%`) }
+            ] : undefined,
             order: { display_order: 'ASC' },
             relations: { schedule_image: true },
         });

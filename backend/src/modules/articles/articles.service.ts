@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { LessThanOrEqual, Repository } from 'typeorm';
+import { LessThanOrEqual, Repository, ILike } from 'typeorm';
 import { Article } from 'common/entities/articles.entity';
 import { MediaService } from '../media/media.service';
 import { slugify } from 'common/utils/slug.util';
@@ -97,8 +97,9 @@ export class ArticlesService {
   }
 
   async findAllAdmin(paginationDto: PaginationDto) {
-    const { page = 1, limit = 20 } = paginationDto;
+    const { page = 1, limit = 20, search } = paginationDto;
     const [articles, total] = await this.articleRepository.findAndCount({
+      where: search ? { title: ILike(`%${search}%`) } : undefined,
       relations: { thumbnail: true, author: true },
       select: {
         thumbnail: { id: true, url: true, original_name: true },

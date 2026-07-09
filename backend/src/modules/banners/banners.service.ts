@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBannerDto } from './dto/create-banner.dto';
 import { UpdateBannerDto } from './dto/update-banner.dto';
-import { Repository } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { Banner } from 'common/entities/banners.entity';
 import { MediaService } from '../media/media.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -38,8 +38,11 @@ export class BannersService {
     return await this.bannerRepository.save(newBanner);
   }
 
-  async findAll(isPublic: boolean = false) {
-    const whereCondition = isPublic ? { is_active: true } : {};
+  async findAll(isPublic: boolean = false, search?: string) {
+    const whereCondition: any = isPublic ? { is_active: true } : {};
+    if (search) {
+      whereCondition.title = ILike(`%${search}%`);
+    }
     return await this.bannerRepository.find({
       where: whereCondition,
       order: {

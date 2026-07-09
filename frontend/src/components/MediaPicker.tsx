@@ -18,6 +18,7 @@ export default function MediaPicker({ isOpen, onClose, onSelect }: MediaPickerPr
     const [mediaList, setMediaList] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
     const [isUploading, setIsUploading] = useState(false);
 
     // --- STATE HIỂN THỊ LIGHTBOX PHÓNG TO ẢNH ---
@@ -34,10 +35,20 @@ export default function MediaPicker({ isOpen, onClose, onSelect }: MediaPickerPr
     }, [isOpen]);
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            if (searchTerm !== debouncedSearch) {
+                setDebouncedSearch(searchTerm);
+                setCurrentPage(1);
+            }
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [searchTerm, debouncedSearch]);
+
+    useEffect(() => {
         if (isOpen) {
             fetchMedia();
         }
-    }, [isOpen, currentPage]);
+    }, [isOpen, currentPage, debouncedSearch]);
 
     const fetchMedia = async () => {
         setIsLoading(true);
@@ -45,6 +56,7 @@ export default function MediaPicker({ isOpen, onClose, onSelect }: MediaPickerPr
             const response: any = await mediaService.getAll({
                 page: currentPage,
                 limit: 10,
+                search: debouncedSearch
             });
             const dataList = response?.data?.items || response?.data?.data || (Array.isArray(response) ? response : response?.data || []);
             const meta = response?.data?.meta || response?.meta;
@@ -82,10 +94,7 @@ export default function MediaPicker({ isOpen, onClose, onSelect }: MediaPickerPr
         }
     };
 
-    // Lọc hình ảnh theo tên
-    const filteredMedia = mediaList.filter(m =>
-        (m.original_name || '').toLowerCase().includes(searchTerm.toLowerCase())
-    );
+
 
     const getImageUrl = (url: string) => {
         if (!url) return '';
@@ -96,8 +105,16 @@ export default function MediaPicker({ isOpen, onClose, onSelect }: MediaPickerPr
     return (
         <>
             <Modal isOpen={isOpen} onClose={onClose} title="Thư viện hình ảnh" maxWidth="4xl">
-                {/* Header Controls: Chỉ giữ lại nút Upload và canh lề phải */}
-                <div className="p-5 border-b border-slate-100 flex justify-end items-center bg-slate-50/50">
+                {/* Header Controls */}
+                <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-50/50">
+                    <div className="relative w-full max-w-sm">
+                        <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                        <input
+                            type="text" placeholder="Tìm kiếm theo tên file..."
+                            value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-[13px] focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                        />
+                    </div>
                     <div className="flex flex-col items-end">
                         <label className="flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 text-white text-[13px] font-semibold rounded-xl hover:bg-slate-900 cursor-pointer transition-colors whitespace-nowrap shadow-sm">
                             {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}

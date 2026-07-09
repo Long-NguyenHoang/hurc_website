@@ -16,8 +16,8 @@ export const ticketFareService = {
         return await axiosClient.get('/ticket-fares');
     },
     // API dành cho Admin
-    getAllAdmin: async () => {
-        return await axiosClient.get('/ticket-fares/admin/all');
+    getAllAdmin: async (params?: { search?: string }) => {
+        return await axiosClient.get('/ticket-fares/admin/all', { params });
     },
 
     // Vì Controller dùng FileInterceptor, phải gửi bằng FormData

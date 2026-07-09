@@ -74,7 +74,7 @@ export default function UsersPage() {
             isValid = false;
         }
 
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()])[A-Za-z\d@$!%*?&#^()]{8,}$/;
         if (!editingId && !formData.password.trim()) {
             newErrors.password = 'Vui lòng nhập mật khẩu cho tài khoản mới';
             isValid = false;

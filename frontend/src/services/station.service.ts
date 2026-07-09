@@ -25,8 +25,8 @@ export interface Station {
 }
 
 export const stationService = {
-    getAllAdmin: async () => {
-        return await axiosClient.get('/stations/admin/all');
+    getAllAdmin: async (params?: { search?: string }) => {
+        return await axiosClient.get('/stations/admin/all', { params });
     },
 
     getSchedule: async () => {

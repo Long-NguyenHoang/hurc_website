@@ -12,6 +12,7 @@ export default function MediaPage() {
     const [medias, setMedias] = useState<Media[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
 
     // STATE UPLOAD
     const [isUploading, setIsUploading] = useState(false);
@@ -31,13 +32,23 @@ export default function MediaPage() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            if (searchTerm !== debouncedSearch) {
+                setDebouncedSearch(searchTerm);
+                setCurrentPage(1);
+            }
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [searchTerm, debouncedSearch]);
+
+    useEffect(() => {
         fetchMedia();
-    }, [currentPage]);
+    }, [currentPage, debouncedSearch]);
 
     const fetchMedia = async () => {
         setIsLoading(true);
         try {
-            const response: any = await mediaService.getAll({ page: currentPage, limit: 12 });
+            const response: any = await mediaService.getAll({ page: currentPage, limit: 12, search: debouncedSearch });
             const dataList = Array.isArray(response) ? response : response?.data || [];
 
             const meta = response?.data?.meta || response?.meta;
@@ -118,7 +129,7 @@ export default function MediaPage() {
     };
 
     // --- HÀM PHỤ TRỢ ---
-    const filteredMedias = medias.filter(m => m.original_name?.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filteredMedias = medias;
 
     const getImageUrl = (url: string) => {
         if (!url) return '';

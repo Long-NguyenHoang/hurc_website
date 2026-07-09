@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { TicketFare } from "common/entities/ticket_fare.entity";
-import { Repository } from "typeorm";
+import { Repository, ILike } from "typeorm";
 import { MediaService } from "../media/media.service";
 import { CreateTicketFareDto } from "./dto/create-ticket-fare.dto";
 import { UpdateTicketFareDto } from "./dto/update-ticket-fare.dto";
@@ -47,8 +47,9 @@ export class TicketFaresService {
         });
     }
 
-    async findAllAdmin() {
+    async findAllAdmin(search?: string) {
         return await this.ticketFaresRepository.find({
+            where: search ? { title: ILike(`%${search}%`) } : undefined,
             order: { display_order: 'ASC', created_at: 'DESC' },
             relations: { image: true },
         });

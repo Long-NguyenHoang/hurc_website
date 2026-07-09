@@ -13,6 +13,7 @@ export default function StationsPage() {
     const [stations, setStations] = useState<Station[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
 
     // --- STATE CHO MODAL THÊM/SỬA ---
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,13 +37,22 @@ export default function StationsPage() {
     const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            if (searchTerm !== debouncedSearch) {
+                setDebouncedSearch(searchTerm);
+            }
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [searchTerm, debouncedSearch]);
+
+    useEffect(() => {
         fetchStations();
-    }, []);
+    }, [debouncedSearch]);
 
     const fetchStations = async () => {
         setIsLoading(true);
         try {
-            const response: any = await stationService.getAllAdmin();
+            const response: any = await stationService.getAllAdmin({ search: debouncedSearch });
             const dataList = Array.isArray(response) ? response : response?.data || [];
             const sortedList = dataList.sort((a: Station, b: Station) => a.display_order - b.display_order);
             setStations(sortedList);
@@ -170,11 +180,7 @@ export default function StationsPage() {
     };
 
     // --- HÀM PHỤ TRỢ ---
-    const filteredStations = stations.filter(
-        (station) =>
-            station.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            station.code.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredStations = stations;
 
     const formatDate = (isoString: string) => {
         if (!isoString) return '—';

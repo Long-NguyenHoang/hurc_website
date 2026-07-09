@@ -12,6 +12,7 @@ export default function TicketFaresPage() {
     const [ticketFares, setTicketFares] = useState<TicketFare[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
 
     // --- STATE MODAL THÊM/SỬA ---
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,13 +36,22 @@ export default function TicketFaresPage() {
     const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            if (searchTerm !== debouncedSearch) {
+                setDebouncedSearch(searchTerm);
+            }
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [searchTerm, debouncedSearch]);
+
+    useEffect(() => {
         fetchTicketFares();
-    }, []);
+    }, [debouncedSearch]);
 
     const fetchTicketFares = async () => {
         setIsLoading(true);
         try {
-            const response: any = await ticketFareService.getAllAdmin();
+            const response: any = await ticketFareService.getAllAdmin({ search: debouncedSearch });
             const dataList = Array.isArray(response) ? response : response?.data || [];
             // Sắp xếp hiển thị theo display_order
             const sortedList = dataList.sort((a: TicketFare, b: TicketFare) => a.display_order - b.display_order);
@@ -152,7 +162,7 @@ export default function TicketFaresPage() {
     };
 
     // --- HÀM PHỤ TRỢ ---
-    const filteredFares = ticketFares.filter(f => f.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filteredFares = ticketFares;
 
     const getImageUrl = (url: string) => {
         if (!url) return '';
