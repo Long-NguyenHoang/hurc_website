@@ -27,13 +27,14 @@ async function bootstrap() {
   app.use(cookieParser());
   // --- CẤU HÌNH CORS ĐỂ CHỐNG CSRF VÀ CHO PHÉP ĐỌC COOKIE ---
   app.enableCors({
-    // Chỉ cho phép các domain này được gọi API (Thay bằng domain thực tế khi lên Production)
     origin: [
       process.env.WEB_SERVER || 'http://localhost',
       'http://localhost',
       'http://localhost:3000',
       'http://localhost:3001',
       'http://127.0.0.1:3001',
+      'http://192.168.1.217',
+      'http://192.168.1.217:3001'
     ],
 
     // BẮT BUỘC PHẢI LÀ TRUE: Cho phép Frontend gửi HttpOnly Cookie lên Backend
