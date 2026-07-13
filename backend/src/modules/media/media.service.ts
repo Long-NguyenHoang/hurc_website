@@ -93,7 +93,10 @@ export class MediaService {
     });
 
     const usedInArticles = await this.dataSource.getRepository(Article).count({
-      where: { thumbnail: { id } },
+      where: [
+        { thumbnail: { id } },
+        { content: ILike(`%${media.url}%`) }
+      ],
       withDeleted: true
     });
 

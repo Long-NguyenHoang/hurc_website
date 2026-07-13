@@ -127,10 +127,10 @@ export default function AdminLayout({
             <aside className="fixed left-0 top-0 h-full w-[240px] bg-white border-r border-slate-200 flex flex-col z-50 transition-all">
                 {/* Logo Header */}
                 <div className="h-[72px] px-6 flex items-center gap-3">
-                    <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-sm">
-                        <Train className="w-5 h-5 text-white" />
+                    <div className="w-10 h-10 flex items-center">
+                        <img src="/logo.png" alt="HCMC Metro" />
                     </div>
-                    <span className="text-lg font-bold text-slate-900 tracking-tight">HCMC METRO</span>
+                    <span className="text-lg font-bold text-slate-900 tracking-tight">HURC1</span>
                 </div>
 
                 {/* Navigation */}

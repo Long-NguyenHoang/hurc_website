@@ -55,7 +55,7 @@ export default function Header() {
 
                     {/* LOGO */}
                     <Link href="/" className="flex items-center flex justify-center w-1/3 lg:w-auto shrink-0">
-                        <img src="/logo.png" alt="HCMC Metro" className="h-10 w-auto object-contain block" />
+                        <img src="/logo.png" alt="HCMC Metro" className="h-25 w-auto object-contain block" />
                     </Link>
 
                     {/* KHỐI CÂN BẰNG PHẢI TRÊN MOBILE */}
