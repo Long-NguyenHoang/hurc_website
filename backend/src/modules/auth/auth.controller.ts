@@ -28,7 +28,10 @@ export class AuthController {
             maxAge: 1000 * 60 * 60 * 24, // Sống được 1 ngày (1000ms * 60s * 60m * 24h)
         });
 
-        return { message: 'Đăng nhập thành công' };
+        return { 
+            message: 'Đăng nhập thành công',
+            access_token: tokenResult.access_token 
+        };
     }
 
     @UseGuards(JwtAuthGuard)

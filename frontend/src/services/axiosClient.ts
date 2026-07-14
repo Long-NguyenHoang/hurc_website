@@ -38,13 +38,16 @@ axiosClient.interceptors.request.use(
 
         // Tự động gắn ngôn ngữ (Dành cho tính năng Đa ngôn ngữ sau này)
         // Giả sử bạn lưu ngôn ngữ người dùng chọn trong localStorage
+        // ĐỌC TOKEN TỪ LOCALSTORAGE ĐỂ CHỐNG LỖI CHẶN COOKIE CỦA TRÌNH DUYỆT
         if (typeof window !== 'undefined') {
+            const token = localStorage.getItem('access_token');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            
             const language = localStorage.getItem('app_language') || 'vi';
             config.headers['Accept-Language'] = language;
         }
-
-        // Lưu ý: Chúng ta KHÔNG cần đính kèm Token (Authorization: Bearer...) ở đây nữa,
-        // vì tùy chọn withCredentials = true ở trên đã lo việc ngầm gửi Cookie rồi!
 
         return config;
     },
