@@ -2,14 +2,20 @@
 import axios from 'axios';
 
 const getBaseURL = () => {
+    // Nếu đang chạy trên Production (Vercel), BẮT BUỘC dùng biến môi trường (Render API)
+    if (process.env.NODE_ENV === 'production') {
+        return process.env.NEXT_PUBLIC_API_URL;
+    }
+
+    // Nếu chạy Local Dev, hỗ trợ tự nhận diện IP LAN (ví dụ 192.168.x.x) để test trên điện thoại
     if (typeof window !== 'undefined') {
         const hostname = window.location.hostname;
         if (hostname === 'localhost' || hostname === '127.0.0.1') {
-            return 'http://localhost:3000';
+            return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
         }
-        // Nếu truy cập qua IP LAN
         return `http://${hostname}:3000`;
     }
+
     // Trên Server-side (Next.js SSR chạy trong Docker)
     return process.env.INTERNAL_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 };
