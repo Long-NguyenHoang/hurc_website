@@ -35,6 +35,8 @@ async function bootstrap() {
       'http://127.0.0.1:3001',
       'http://192.168.1.217',
       'http://192.168.1.217:3001',
+      'https://hurc-website.vercel.app',
+      'https://hurc-website.vercel.app:3001',
       'https://hurc-website-6s1lsmvo6-long-nguyenhoangs-projects.vercel.app',
       'https://hurc-website-6s1lsmvo6-long-nguyenhoangs-projects.vercel.app:3001',
     ],
