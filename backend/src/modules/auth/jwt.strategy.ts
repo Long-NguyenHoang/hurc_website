@@ -21,7 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         super({
             jwtFromRequest: ExtractJwt.fromExtractors([
                 (request: Request) => {
-                    return request?.cookies?.access_token || null;
+                    return request?.cookies?.access_token || ExtractJwt.fromAuthHeaderAsBearerToken()(request);
                 }
             ]),
             ignoreExpiration: false,
@@ -31,7 +31,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(req: Request, payload: JwtPayload) {
-        const token = req?.cookies?.access_token;
+        // Ưu tiên lấy từ Header (do Cookie có thể bị chặn)
+        const token = ExtractJwt.fromAuthHeaderAsBearerToken()(req) || req?.cookies?.access_token;
 
         if (token) {
             const isBlacklisted = await this.authService.isTokenBlacklisted(token);

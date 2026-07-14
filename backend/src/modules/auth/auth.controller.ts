@@ -37,7 +37,9 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @Post('logout')
     async logout(@Request() req, @Res({ passthrough: true }) res: express.Response) {
-        const token = req?.cookies?.access_token;
+        const authHeader = req.headers.authorization;
+        const headerToken = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
+        const token = headerToken || req?.cookies?.access_token;
 
         if (token) {
             // Đẩy token vào bảng Blacklist
