@@ -19,11 +19,12 @@ export class AuthController {
 
         const tokenResult = await this.authService.login(user);
 
-        const isProduction = process.env.NODE_ENV === 'production';
+        // Render tự động set biến môi trường RENDER=true. Ta dùng nó để phát hiện Cloud.
+        const isCloud = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true';
         res.cookie('access_token', tokenResult.access_token, {
             httpOnly: true, // Chống XSS (không cho JavaScript đọc)
-            secure: isProduction, // Phải là true khi chạy trên Render/Vercel (HTTPS)
-            sameSite: isProduction ? 'none' : 'lax', // Khác domain (Render API vs Vercel Frontend) bắt buộc dùng 'none'
+            secure: isCloud, // Phải là true khi chạy trên Render/Vercel (HTTPS)
+            sameSite: isCloud ? 'none' : 'lax', // Khác domain (Render API vs Vercel Frontend) bắt buộc dùng 'none'
             maxAge: 1000 * 60 * 60 * 24, // Sống được 1 ngày (1000ms * 60s * 60m * 24h)
         });
 
