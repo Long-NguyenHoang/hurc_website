@@ -47,19 +47,27 @@ import { CacheModule } from '@nestjs/cache-manager';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USERNAME'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_DATABASE'),
-        autoLoadEntities: true,
-        synchronize: configService.get<string>('NODE_ENV') !== 'production',
-        ssl: configService.get<string>('DB_SSL') === 'true' ? {
-          rejectUnauthorized: false,
-        } : false,
-      }),
+      useFactory: (configService: ConfigService) => {
+        const isNeon = configService.get<string>('DB_HOST')?.includes('neon.tech') || configService.get<string>('DB_URL')?.includes('neon.tech');
+        const dbSsl = configService.get<string>('DB_SSL') === 'true';
+        const useSsl = isNeon || dbSsl;
+
+        return {
+          type: 'postgres',
+          url: configService.get<string>('DB_URL'),
+          host: configService.get<string>('DB_HOST'),
+          port: configService.get<number>('DB_PORT'),
+          username: configService.get<string>('DB_USERNAME'),
+          password: configService.get<string>('DB_PASSWORD'),
+          database: configService.get<string>('DB_DATABASE'),
+          autoLoadEntities: true,
+          synchronize: configService.get<string>('NODE_ENV') !== 'production',
+          ssl: useSsl ? { rejectUnauthorized: false } : false,
+          extra: useSsl ? {
+            ssl: { rejectUnauthorized: false }
+          } : undefined,
+        };
+      },
     }),
     TypeOrmModule.forFeature([User, Station]),
 
