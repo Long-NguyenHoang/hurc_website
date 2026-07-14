@@ -6,11 +6,21 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
+        protocol: 'http',
         hostname: '192.168.1.217',
         port: '3000',
         pathname: '/uploads/**'
       },
+      {
+        protocol: 'https',
+        hostname: '**.onrender.com',
+        pathname: '/uploads/**'
+      },
+      {
+        protocol: 'https',
+        hostname: '**.vercel.app',
+        pathname: '/uploads/**'
+      }
     ],
   },
 };

@@ -19,10 +19,11 @@ export class AuthController {
 
         const tokenResult = await this.authService.login(user);
 
+        const isProduction = process.env.NODE_ENV === 'production';
         res.cookie('access_token', tokenResult.access_token, {
             httpOnly: true, // Chống XSS (không cho JavaScript đọc)
-            secure: false, // Đặt false vì chúng ta đang chạy nội bộ bằng HTTP (không có HTTPS)
-            sameSite: 'lax', // Chống CSRF
+            secure: isProduction, // Phải là true khi chạy trên Render/Vercel (HTTPS)
+            sameSite: isProduction ? 'none' : 'lax', // Khác domain (Render API vs Vercel Frontend) bắt buộc dùng 'none'
             maxAge: 1000 * 60 * 60 * 24, // Sống được 1 ngày (1000ms * 60s * 60m * 24h)
         });
 
