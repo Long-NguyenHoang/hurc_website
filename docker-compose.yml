@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: metro_db
+    restart: always
+    env_file:
+      - ./backend/.env
+    # Mở port chỉ định ở máy thật, nhưng chặn không cho truy cập từ mạng ngoài (chỉ cho phép localhost)
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+      # Tính năng cực xịn của Docker: Nếu thư mục pgdata trống, nó sẽ tự động chạy tất cả file .sql nằm trong thư mục initdb.d
+      - ./backup.sql:/docker-entrypoint-initdb.d/backup.sql
+    # Biến môi trường sẽ tự động được load từ file ./backend/.env phía trên
+    # Tối ưu RAM cache cho PostgreSQL theo yêu cầu
+    command: postgres -c shared_buffers=2GB -c effective_cache_size=4GB -c work_mem=16MB
+
+  api:
+    build: 
+      context: ./backend
+    container_name: metro_backend
+    restart: always
+    env_file:
+      - ./backend/.env
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend/uploads:/app/uploads
+    depends_on:
+      - postgres
+    # Thay đổi HOST để code kết nối đúng với service database thay vì localhost
+    environment:
+      DB_HOST: postgres
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 2G
+
+  web:
+    build: 
+      context: ./frontend
+    container_name: metro_frontend
+    restart: always
+    env_file:
+      - ./frontend/.env
+    # Giúp Next.js Server-Side gọi thẳng sang Backend thông qua mạng nội bộ Docker (nhanh & bảo mật hơn)
+    environment:
+      INTERNAL_API_URL: http://api:3000
+    ports:
+      - "80:3000"
+    depends_on:
+      - api
+    deploy:
+      resources:
+        limits:
+          cpus: '3.0'
+          memory: 4G
+
+volumes:
+  pgdata:

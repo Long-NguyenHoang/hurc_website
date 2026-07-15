@@ -13,6 +13,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/uploads/:path*',
+        // Hardcode proxy về mạng nội bộ Docker để không bị phụ thuộc vào biến môi trường lúc Build
+        destination: `http://api:3000/uploads/:path*`,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
