@@ -22,14 +22,14 @@ export class AuthController {
         // Để dùng được Cookie trên môi trường thực tế (có HTTPS và sử dụng Sub-domain):
         // 1. Phải bật secure = true
         // 2. Phải set domain để cả Frontend (hurc.vn) và Backend (api.hurc.vn) cùng đọc được Cookie
-        const isProduction = process.env.NODE_ENV === 'production';
+        const isSecure = process.env.WEB_SERVER?.startsWith('https://') || false;
         const cookieDomain = process.env.COOKIE_DOMAIN || undefined; // Ví dụ trong file .env set: COOKIE_DOMAIN=.hurc.vn
 
         res.cookie('access_token', tokenResult.access_token, {
             httpOnly: true, // Chống XSS
-            secure: isProduction, // Bật true khi lên Server thật
+            secure: isSecure, // Tự động bật true nếu WEB_SERVER dùng https
             sameSite: 'lax', // Chống CSRF (Lax hoạt động tốt khi Frontend và Backend chung tên miền gốc)
-            domain: isProduction ? cookieDomain : undefined, // Bắt buộc phải có để Middleware của Vercel/Next.js đọc được
+            domain: cookieDomain, // Bắt buộc phải có để Middleware của Vercel/Next.js đọc được (NẾU CÓ SUBDOMAIN)
             maxAge: 1000 * 60 * 60 * 24,
         });
 
