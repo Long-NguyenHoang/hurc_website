@@ -19,7 +19,7 @@ const navLinks: NavItem[] = [
     { name: 'Lịch chạy tàu', href: '/lich-chay-tau' },
     { name: 'Hoá đơn', href: '/hoa-don' },
     { name: 'Tin tức', href: '/tin-tuc' },
-    // { name: 'Tuyển dụng', href: 'https://tuyendung.metrohcm.ttgt.vn/home', target: '_blank' },
+    { name: 'Tuyển dụng', href: '/tuyen-dung' },
     { name: 'Liên hệ', href: '/lien-he' },
 ];
 
