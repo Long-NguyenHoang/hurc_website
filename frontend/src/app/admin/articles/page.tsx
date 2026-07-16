@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Search, Edit2, Trash2, Loader2, Save, Maximize2, AlertTriangle, Image as ImageIcon, Clock } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, Loader2, Save, Maximize2, AlertTriangle, Image as ImageIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { articleService, Article, ArticleStatus } from '@/services/article.service';
 import Modal from '@/components/Modal';

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Map, Ticket, Mail, ShieldAlert, Train, ChevronDown, LogOut, Users, Image as ImageIcon, Layers, FileText, UserIcon, Loader2, Save, AlertTriangle } from 'lucide-react';
+import { LayoutDashboard, Map, Ticket, Mail, ShieldAlert, Train, ChevronDown, LogOut, Users, Image as ImageIcon, Layers, FileText, UserIcon, Loader2, Save, AlertTriangle, Handshake, UserPlus } from 'lucide-react';
 import { authService } from '@/services/auth.service';
 import toast, { Toaster } from 'react-hot-toast';
 import { User, userService } from '@/services/user.service';
@@ -178,6 +178,11 @@ export default function AdminLayout({
                             <li>
                                 <Link href="/admin/media" className={`flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors ${isActive('/admin/media') ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}`}>
                                     <ImageIcon className="w-4 h-4" /> Thư viện Media
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/admin/jobs" className={`flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors ${isActive('/admin/jobs') ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}`}>
+                                    <UserPlus className="w-4 h-4" /> Tuyển dụng
                                 </Link>
                             </li>
                         </ul>
