@@ -27,18 +27,15 @@ async function bootstrap() {
   app.use(cookieParser());
   // --- CẤU HÌNH CORS ĐỂ CHỐNG CSRF VÀ CHO PHÉP ĐỌC COOKIE ---
   app.enableCors({
-    origin: process.env.NODE_ENV === 'production' 
-      ? [process.env.WEB_SERVER as string] // TRÊN PRODUCTION: Chỉ mở cửa duy nhất cho tên miền thực tế (VD: https://hurc.vn)
-      : [
-          // TRÊN MÔI TRƯỜNG DEV: Mở cửa cho cả localhost và IP mạng LAN để tiện code và test
-          process.env.WEB_SERVER || 'http://localhost',
-          'http://localhost',
-          'http://localhost:3000',
-          'http://localhost:3001',
-          'http://127.0.0.1:3001',
-          'http://192.168.1.217',
-          'http://192.168.1.217:3001'
-        ],
+    origin: [
+      process.env.WEB_SERVER as string,
+      'http://localhost',
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://127.0.0.1:3001',
+      'http://192.168.1.217',
+      'http://192.168.1.217:3001'
+    ],
 
     // BẮT BUỘC PHẢI LÀ TRUE: Cho phép Frontend gửi HttpOnly Cookie lên Backend
     credentials: true,
