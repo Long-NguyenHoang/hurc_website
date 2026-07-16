@@ -8,7 +8,7 @@ interface ArticleCardProps {
     showDate?: boolean;    // Thêm prop để bật/tắt phần ngày đăng
 }
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
 
 export default function ArticleCard({
     article,
@@ -22,7 +22,7 @@ export default function ArticleCard({
         const imgPath = article.thumbnail.url || (article.thumbnail as any).path;
         if (!imgPath) return '/hero-metro.png';
         if (imgPath.startsWith('http')) return imgPath;
-        return `${BACKEND_URL}${imgPath.startsWith('/') ? '' : '/'}${imgPath}`;
+        return `${imgPath.startsWith('/') ? '' : '/'}${imgPath}`;
     };
 
     // Định dạng ngày đăng bài viết

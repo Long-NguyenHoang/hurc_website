@@ -5,7 +5,7 @@ import { TrainFront } from "lucide-react";
 import { Station } from "@/services/station.service";
 import { TicketFare } from "@/services/ticket-fare.service";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
 
 export default function ScheduleClient({
     initialStations,
@@ -31,7 +31,7 @@ export default function ScheduleClient({
         const imgPath = media.url || media.path;
         if (!imgPath) return null;
         if (imgPath.startsWith('http')) return imgPath;
-        return `${BACKEND_URL}${imgPath.startsWith('/') ? '' : '/'}${imgPath}`;
+        return `${imgPath.startsWith('/') ? '' : '/'}${imgPath}`;
     };
 
     const activeStation = stations.find(s => s.id === activeStationId);
