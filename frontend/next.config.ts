@@ -14,11 +14,19 @@ const nextConfig: NextConfig = {
     ],
   },
   async rewrites() {
+    // Lưu ý: rewrites() được Next.js biên dịch và hardcode 1 lần duy nhất lúc "next build".
+    // Do đó không thể dùng biến môi trường chạy thật như INTERNAL_API_URL ở đây được.
+    // Nếu là môi trường 'development' (npm run dev), trỏ về localhost.
+    // Nếu là môi trường 'production' (next build trong Docker), trỏ về http://api:3000.
+    const isDev = process.env.NODE_ENV === 'development';
+    const backendUrl = isDev 
+      ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000')
+      : 'http://api:3000';
+    
     return [
       {
         source: '/uploads/:path*',
-        // Hardcode proxy về mạng nội bộ Docker để không bị phụ thuộc vào biến môi trường lúc Build
-        destination: `http://api:3000/uploads/:path*`,
+        destination: `${backendUrl}/uploads/:path*`,
       },
     ];
   },

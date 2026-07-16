@@ -93,7 +93,7 @@ export default function ContactPage() {
     };
 
     return (
-        <div className="w-full bg-white min-h-[80vh] flex items-center py-12 md:py-20">
+        <div className="w-full bg-white min-h-[80vh] flex items-center py-4 md:py-12">
             <div className="max-w-[120rem] w-full mx-auto px-8 lg:px-[56px]">
                 <div className="max-w-5xl mx-auto w-full">
 
@@ -139,8 +139,8 @@ export default function ContactPage() {
                         </div>
 
                         {/* CỘT PHẢI: FORM LIÊN HỆ */}
-                        <div className="w-full bg-white rounded-xl border border-[#005596]/30 shadow-sm p-6 md:py-6 md:px-8 md:col-span-7">
-                            <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
+                        <div className="w-full bg-white rounded-xl border border-[#005596]/30 shadow-sm p-4 md:py-6 md:px-8 md:col-span-7">
+                            <form onSubmit={handleSubmit} className="flex flex-col gap-2" noValidate>
 
                                 {/* Họ và tên */}
                                 <div className="flex flex-col gap-1.5">

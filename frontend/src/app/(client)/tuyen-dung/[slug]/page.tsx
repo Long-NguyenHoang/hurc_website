@@ -61,9 +61,6 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
             return (
                 <div className="w-full min-h-[70vh] flex flex-col items-center justify-center bg-slate-50">
                     <p className="text-[20px] text-slate-800 font-bold mb-4">Không tìm thấy vị trí tuyển dụng!</p>
-                    <Link href="/jobs" className="text-[#005596] hover:underline flex items-center gap-2">
-                        <ArrowLeft className="w-4 h-4" /> Quay lại danh sách tuyển dụng
-                    </Link>
                 </div>
             );
         }
@@ -74,11 +71,6 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
             <div className="w-full bg-slate-50 pb-20 pt-8 md:pt-12 min-h-screen">
                 <div className="max-w-[120rem] mx-auto px-6 lg:px-[112px]">
                     <div className="max-w-4xl mx-auto">
-
-                        {/* BACK BUTTON */}
-                        <Link href="/jobs" className="inline-flex items-center gap-2 text-slate-500 hover:text-[#005596] transition-colors mb-6 text-[14px] font-medium">
-                            <ArrowLeft className="w-4 h-4" /> Về trang Tuyển dụng
-                        </Link>
 
                         {/* ================= HEADER KHỐI THÔNG TIN ================= */}
                         <div className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm mb-8 relative overflow-hidden">
@@ -116,7 +108,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
                                 <div className="bg-blue-50 text-blue-700 px-4 py-3 rounded-xl border border-blue-100 flex items-center justify-between">
                                     <span className="text-[14px] font-medium">{calculateDaysLeft(job.deadline)}</span>
                                     <a href="#how-to-apply" className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-lg text-[14px] font-bold hover:bg-blue-700 transition-colors">
-                                        Ứng tuyển ngay <Send className="w-4 h-4" />
+                                        Cách ứng tuyển <Send className="w-4 h-4" />
                                     </a>
                                 </div>
                             )}
@@ -217,9 +209,6 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
         return (
             <div className="w-full min-h-[70vh] flex flex-col items-center justify-center bg-slate-50">
                 <p className="text-[20px] text-slate-800 font-bold mb-4">Lỗi mạng hoặc không tìm thấy tin tuyển dụng này!</p>
-                <Link href="/jobs" className="text-[#005596] hover:underline flex items-center gap-2">
-                    <ArrowLeft className="w-4 h-4" /> Quay lại danh sách tuyển dụng
-                </Link>
             </div>
         );
     }
