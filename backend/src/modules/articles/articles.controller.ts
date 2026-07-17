@@ -15,13 +15,13 @@ import { CacheInterceptor } from '@nestjs/cache-manager';
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) { }
 
-  @UseInterceptors(CacheInterceptor)
+
   @Get()
   findAllPublic(@Query() paginationDto: PaginationDto) {
     return this.articlesService.findAllPublic(paginationDto);
   }
 
-  @UseInterceptors(CacheInterceptor)
+
   @Get('detail/:slug')
   findBySlug(@Param('slug') slug: string) {
     return this.articlesService.findBySlug(slug);

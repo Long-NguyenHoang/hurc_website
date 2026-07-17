@@ -21,4 +21,9 @@ export class CreateContactDto {
     @IsNotEmpty({ message: 'Nội dung tin nhắn không được để trống' })
     @IsString()
     message: string;
+
+    // HONEYPOT: Trường này ẩn trên giao diện, người thật không thấy. Nếu bot điền vào -> Spam!
+    @IsOptional()
+    @IsString()
+    website_url?: string;
 }

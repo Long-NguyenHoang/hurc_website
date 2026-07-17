@@ -13,13 +13,13 @@ import { UserRole } from 'common/enums';
 export class JobsController {
   constructor(private readonly jobsService: JobsService) { }
 
-  @UseInterceptors(CacheInterceptor)
+
   @Get()
   findAllPublic(@Query() paginationDto: PaginationDto) {
     return this.jobsService.findAllPublic(paginationDto);
   }
 
-  @UseInterceptors(CacheInterceptor)
+
   @Get('details/:slug')
   findBySlug(@Param('slug') slug: string) {
     return this.jobsService.findBySlug(slug);

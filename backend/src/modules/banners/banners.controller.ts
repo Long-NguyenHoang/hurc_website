@@ -14,7 +14,7 @@ import { CacheInterceptor } from '@nestjs/cache-manager';
 export class BannersController {
   constructor(private readonly bannersService: BannersService) { }
 
-  @UseInterceptors(CacheInterceptor)
+
   @Get()
   findAllPublic() {
     return this.bannersService.findAll(true);

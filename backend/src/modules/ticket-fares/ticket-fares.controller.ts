@@ -16,7 +16,7 @@ export class TicketFaresController {
         private readonly ticketFaresService: TicketFaresService,
     ) { }
 
-    @UseInterceptors(CacheInterceptor)
+
     @Get()
     findAllPublic() {
         return this.ticketFaresService.findAllPublic();

@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query, BadRequestException } from '@nestjs/common';
+import { ThrottlerGuard } from '@nestjs/throttler';
 import { ContactsService } from './contacts.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
@@ -12,8 +13,15 @@ import { PaginationDto } from 'common/dto/pagination.dto';
 export class ContactsController {
   constructor(private readonly contactsService: ContactsService) { }
 
+  @UseGuards(ThrottlerGuard)
   @Post()
   create(@Body() createContactDto: CreateContactDto) {
+    // HONEYPOT CHECK
+    if (createContactDto.website_url) {
+      // Bắt quả tang bot điền vào trường ẩn! 
+      // Không ném lỗi ra để đánh lừa bot tưởng gửi thành công, hoặc ném lỗi tuỳ ý.
+      throw new BadRequestException('Spam detected!');
+    }
     return this.contactsService.create(createContactDto);
   }
 

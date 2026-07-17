@@ -20,7 +20,7 @@ import { UserContextMiddleware } from 'common/middlewares/user-context.middlewar
 import { AuditLogsModule } from './modules/audit-logs/audit-logs.module';
 import { InvoicesModule } from './modules/invoices/invoices.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { CacheModule } from '@nestjs/cache-manager';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -30,11 +30,12 @@ import { CacheModule } from '@nestjs/cache-manager';
       envFilePath: '.env',
     }),
 
-    // THÊM CACHE MODULE VÀO ĐÂY (Lưu cache trong 60 giây)
-    CacheModule.register({
-      isGlobal: true,
-      ttl: 60000, // 60 giây. Trong 1 phút, 1000 người vào thì DB chỉ bị gọi đúng 1 lần!
-    }),
+
+    // RATE LIMITING (Chống Spam)
+    ThrottlerModule.forRoot([{
+      ttl: 60000, // 60 giây
+      limit: 3,   // Tối đa 3 requests / 1 IP / 60 giây
+    }]),
 
     ClsModule.forRoot({
       global: true,

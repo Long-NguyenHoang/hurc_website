@@ -16,13 +16,13 @@ export class StationsController {
         private readonly stationsService: StationsService,
     ) { }
 
-    @UseInterceptors(CacheInterceptor)
+
     @Get('schedule')
     findAllSchedule() {
         return this.stationsService.findAllSchedule();
     }
 
-    @UseInterceptors(CacheInterceptor)
+
     @Get('content')
     findAllContent() {
         return this.stationsService.findAllContent();
