@@ -3,6 +3,8 @@ import { bannerService } from "@/services/banner.service";
 import { stationService } from "@/services/station.service";
 import HomeClient from "./HomeClient";
 
+export const dynamic = 'force-dynamic'; // TẮT CACHE HOÀN TOÀN ĐỂ FIX BUG
+
 export default async function HomePage() {
   try {
     // 1. Fetch dữ liệu trực tiếp trên Server (Chạy đồng thời cả 3 API cho nhanh)
@@ -11,6 +13,12 @@ export default async function HomePage() {
       stationService.getContent(),
       articleService.getAllPublic({ page: 1, limit: 8 })
     ]);
+
+    console.log("=== DEBUG SSR HOME PAGE ===");
+    console.log("Banners:", bannersRes);
+    console.log("Stations:", stationsRes);
+    console.log("Articles:", articlesRes);
+    console.log("===========================");
 
     // 2. Trích xuất và sắp xếp Banner
     let initialBanners = [];
@@ -40,9 +48,21 @@ export default async function HomePage() {
         initialArticles={initialArticles}
       />
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error("Lỗi khi fetch data trên Server Component:", error);
-    // Nếu Backend có lỡ sập lúc đang nướng bánh, thì trả về mảng rỗng để không bị sập theo
-    return <HomeClient initialBanners={[]} initialStations={[]} initialArticles={[]} />;
+
+    // TRẢ VỀ LỖI LÊN MÀN HÌNH ĐỂ DEBUG!
+    return (
+      <div style={{ color: 'red', padding: '50px', background: '#fee', minHeight: '50vh' }}>
+        <h1 style={{ fontSize: '24px', fontWeight: 'bold' }}>⚠️ LỖI KẾT NỐI NEXT.JS SERVER ĐẾN BACKEND ⚠️</h1>
+        <p>Hệ thống đang gặp trục trặc khi gọi API nội bộ trong Docker.</p>
+        <p><strong>URL đang gọi:</strong> {process.env.INTERNAL_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}</p>
+        <pre style={{ marginTop: '20px', whiteSpace: 'pre-wrap', background: '#fff', padding: '15px' }}>
+          {error.message}
+          {'\n\n'}
+          {error.stack}
+        </pre>
+      </div>
+    );
   }
 }
