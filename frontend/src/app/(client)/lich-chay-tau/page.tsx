@@ -1,7 +1,9 @@
 import { stationService } from "@/services/station.service";
 import { ticketFareService } from "@/services/ticket-fare.service";
 import ScheduleClient from "./ScheduleClient";
-// Đã chuyển sang cơ chế On-Demand Revalidation
+
+export const dynamic = 'force-dynamic';
+
 export default async function SchedulePage() {
     try {
         // GỌI CÙNG LÚC 2 API TỪ BACKEND

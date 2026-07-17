@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { articleService } from "@/services/article.service";
 
+export const dynamic = 'force-dynamic';
+
 // Hàm xử lý đường dẫn ảnh từ nội dung HTML của Editor
 const processContent = (content: string) => {
     if (!content) return "";

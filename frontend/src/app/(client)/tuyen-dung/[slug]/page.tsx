@@ -1,6 +1,7 @@
-import Link from "next/link";
-import { ArrowLeft, MapPin, Briefcase, Calendar, Clock, Send } from "lucide-react";
+import { MapPin, Briefcase, Calendar, Clock, Send } from "lucide-react";
 import { jobService } from "@/services/job.service";
+
+export const dynamic = 'force-dynamic';
 
 // Label Helpers
 const DEPARTMENT_LABELS: Record<string, string> = {

@@ -1,6 +1,8 @@
 import { articleService } from "@/services/article.service";
 import NewsClient from "./NewClient";
 
+export const dynamic = 'force-dynamic';
+
 export default async function NewsPage() {
     try {
         // Fetch trực tiếp trên Server: Lấy Trang 1, giới hạn 8 bài viết

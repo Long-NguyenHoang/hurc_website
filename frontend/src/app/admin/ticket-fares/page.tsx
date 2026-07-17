@@ -7,7 +7,6 @@ import { ticketFareService, TicketFare } from '@/services/ticket-fare.service';
 import Modal from '@/components/Modal';
 import ImageLightbox from '@/components/ImageLightbox';
 import MediaPicker from '@/components/MediaPicker';
-import { clearCacheByPath } from '@/actions/revalidate';
 
 export default function TicketFaresPage() {
     const [ticketFares, setTicketFares] = useState<TicketFare[]>([]);
@@ -137,9 +136,6 @@ export default function TicketFaresPage() {
                 toast.success('Thêm Bảng giá vé mới thành công!');
             }
 
-            // Chỉ xóa cache của trang Lịch chạy tàu (nơi hiển thị Bảng giá vé)
-            await clearCacheByPath('/lich-chay-tau', 'page');
-
             setIsModalOpen(false);
             fetchTicketFares();
         } catch (error: any) {
@@ -156,9 +152,6 @@ export default function TicketFaresPage() {
         try {
             await ticketFareService.delete(fareToDelete.id);
             setFareToDelete(null);
-
-            // Xóa cache ngay sau khi xóa dữ liệu
-            await clearCacheByPath('/lich-chay-tau', 'page');
 
             fetchTicketFares();
             toast.success('Xóa Bảng giá vé thành công!');

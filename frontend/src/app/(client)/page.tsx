@@ -3,6 +3,8 @@ import { bannerService } from "@/services/banner.service";
 import { stationService } from "@/services/station.service";
 import HomeClient from "./HomeClient";
 
+export const dynamic = 'force-dynamic'; // TẮT CACHE HOÀN TOÀN ĐỂ FIX TÌNH TRẠNG LƯU TRANG RỖNG
+
 export default async function HomePage() {
   try {
     // 1. Fetch dữ liệu trực tiếp trên Server (Chạy đồng thời cả 3 API cho nhanh)
@@ -36,12 +38,6 @@ export default async function HomePage() {
     return (
       <>
         {/* THANH DEBUG MÀU VÀNG IN TRỰC TIẾP LÊN MÀN HÌNH */}
-        <div style={{ background: '#fff9c4', color: 'black', padding: '10px 20px', textAlign: 'center', fontWeight: 'bold', borderBottom: '2px solid #fbc02d' }}>
-          🛠 DEBUG DATA PASSED TO CLIENT:
-          Banners ({initialBanners?.length || 0}) |
-          Stations ({initialStations?.length || 0}) |
-          Articles ({initialArticles?.length || 0})
-        </div>
 
         <HomeClient
           initialBanners={initialBanners}

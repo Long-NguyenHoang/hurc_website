@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { Plus, Search, Edit2, Trash2, Loader2, Save, Maximize2, AlertTriangle, Image as ImageIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { clearCacheByPath } from '@/actions/revalidate';
 import { articleService, Article, ArticleStatus } from '@/services/article.service';
 import Modal from '@/components/Modal';
 import ImageLightbox from '@/components/ImageLightbox';
@@ -184,11 +183,6 @@ export default function ArticlesPage() {
                 toast.success('Thêm bài viết mới thành công!');
             }
 
-            // Xóa cache của trang Tin Tức (và tất cả bài viết con)
-            await clearCacheByPath('/tin-tuc', 'layout');
-            // Xóa cache của trang Chủ (nơi hiển thị danh sách tin tức mới nhất)
-            await clearCacheByPath('/', 'page');
-
             setIsModalOpen(false);
             fetchArticles();
         } catch (error: any) {
@@ -205,10 +199,6 @@ export default function ArticlesPage() {
         try {
             await articleService.delete(articleToDelete.id);
             setArticleToDelete(null);
-
-            // Xóa cache ngay lập tức
-            await clearCacheByPath('/tin-tuc', 'layout');
-            await clearCacheByPath('/', 'page');
 
             fetchArticles();
             toast.success('Xóa bài viết thành công!');

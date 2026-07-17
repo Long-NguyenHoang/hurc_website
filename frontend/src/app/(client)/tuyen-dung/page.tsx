@@ -1,6 +1,8 @@
 import { jobService } from "@/services/job.service";
 import JobsClient from "./JobsClient";
 
+export const dynamic = 'force-dynamic';
+
 export default async function JobsPage() {
     try {
         // Lấy dữ liệu Trang 1 trực tiếp trên Server (12 bài/trang cho layout 3 cột)
