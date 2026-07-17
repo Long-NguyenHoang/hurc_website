@@ -45,6 +45,6 @@ async function bootstrap() {
   });
 
   // Bắt buộc lắng nghe trên 0.0.0.0 để các container Docker khác (như web) có thể gọi được API
-  await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
+  await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
