@@ -7,7 +7,8 @@ import { stationService, Station } from '@/services/station.service';
 import RichTextEditor from '@/components/RichTextEditor';
 import Modal from '@/components/Modal';
 import ImageLightbox from '@/components/ImageLightbox';
-import MediaPicker from '@/components/MediaPicker'; // IMPORT THÊM MEDIAPICKER
+import MediaPicker from '@/components/MediaPicker'; 
+import { clearCacheByPath } from '@/actions/revalidate';
 
 export default function StationsPage() {
     const [stations, setStations] = useState<Station[]>([]);
@@ -152,6 +153,11 @@ export default function StationsPage() {
                 toast.success('Thêm nhà ga mới thành công!');
             }
 
+            // Xoá cache trang chủ (hiển thị nội dung nhà ga)
+            await clearCacheByPath('/', 'page');
+            // Xoá cache trang lịch chạy tàu (hiển thị hình ảnh lịch trình)
+            await clearCacheByPath('/lich-chay-tau', 'page');
+
             setIsModalOpen(false);
             fetchStations();
         } catch (error: any) {
@@ -169,6 +175,10 @@ export default function StationsPage() {
         try {
             await stationService.delete(stationToDelete.id);
             setStationToDelete(null);
+
+            await clearCacheByPath('/', 'page');
+            await clearCacheByPath('/lich-chay-tau', 'page');
+
             fetchStations();
             toast.success('Xóa nhà ga thành công!');
         } catch (error: any) {

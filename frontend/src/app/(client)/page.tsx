@@ -3,10 +3,6 @@ import { bannerService } from "@/services/banner.service";
 import { stationService } from "@/services/station.service";
 import HomeClient from "./HomeClient";
 
-// SIÊU BÍ QUYẾT NEXT.JS ISR: Lệnh này quy định cứ 60 giây, Server sẽ đi gọi lại API 1 lần.
-// Trong suốt 60 giây đó, 10 triệu người truy cập cũng chỉ nhận file tĩnh siêu nhẹ, không load database!
-export const revalidate = 60;
-
 export default async function HomePage() {
   try {
     // 1. Fetch dữ liệu trực tiếp trên Server (Chạy đồng thời cả 3 API cho nhanh)

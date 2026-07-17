@@ -1,9 +1,7 @@
 import { stationService } from "@/services/station.service";
 import { ticketFareService } from "@/services/ticket-fare.service";
 import ScheduleClient from "./ScheduleClient";
-
-export const revalidate = 60; // 60 giây làm mới cache HTML 1 lần
-
+// Đã chuyển sang cơ chế On-Demand Revalidation
 export default async function SchedulePage() {
     try {
         // GỌI CÙNG LÚC 2 API TỪ BACKEND

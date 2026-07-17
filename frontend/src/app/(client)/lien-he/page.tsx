@@ -5,13 +5,13 @@ import { Mail, MapPin, Phone, Loader2, CheckCircle2 } from "lucide-react";
 import { contactService, Subject } from "@/services/contact.service";
 
 export default function ContactPage() {
-    // --- QUẢN LÝ TRẠNG THÁI FORM ---
     const [formData, setFormData] = useState({
         full_name: "",
         email: "",
         phone: "",
         subject: "FEEDBACK" as Subject,
         message: "",
+        website_url: "", // HONEYPOT FIELD
     });
 
     // State chứa các câu thông báo lỗi
@@ -82,6 +82,7 @@ export default function ContactPage() {
                 phone: "",
                 subject: "FEEDBACK",
                 message: "",
+                website_url: "",
             });
             setErrors({});
         } catch (error) {
@@ -141,6 +142,20 @@ export default function ContactPage() {
                         {/* CỘT PHẢI: FORM LIÊN HỆ */}
                         <div className="w-full bg-white rounded-xl border border-[#005596]/30 shadow-sm p-4 md:py-6 md:px-8 md:col-span-7">
                             <form onSubmit={handleSubmit} className="flex flex-col gap-2" noValidate>
+
+                                {/* TRƯỜNG HONEYPOT TÀNG HÌNH ĐỂ BẮT BOT (MẮT THƯỜNG KHÔNG THẤY) */}
+                                <div style={{ position: 'absolute', opacity: 0, top: -9999, left: -9999 }} aria-hidden="true">
+                                    <label htmlFor="website_url">Website URL</label>
+                                    <input
+                                        type="text"
+                                        id="website_url"
+                                        name="website_url"
+                                        value={formData.website_url}
+                                        onChange={handleChange}
+                                        tabIndex={-1}
+                                        autoComplete="off"
+                                    />
+                                </div>
 
                                 {/* Họ và tên */}
                                 <div className="flex flex-col gap-1.5">

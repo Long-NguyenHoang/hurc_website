@@ -7,6 +7,7 @@ import { Department, Job, jobService, JobStatus, JobType } from "@/services/job.
 import { AlertTriangle, Briefcase, Calendar, Edit2, Loader2, MapPin, Plus, Save, Search, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { clearCacheByPath } from "@/actions/revalidate";
 
 const DEPARTMENT_LABELS: Record<Department, string> = {
     HCTC: 'Hành chính - Tổ chức',
@@ -164,6 +165,9 @@ export default function JobSPage() {
                 toast.success('Thêm tin tuyển dụng mới thành công!');
             }
 
+            // Gọi Server Action để xoá Cache của toàn bộ trang Tuyển dụng (gồm cả danh sách và chi tiết)
+            await clearCacheByPath('/tuyen-dung', 'layout');
+
             setIsModalOpen(false);
             fetchJobs();
         } catch (error: any) {
@@ -180,6 +184,10 @@ export default function JobSPage() {
         try {
             await jobService.delete(jobToDelete.id);
             setJobToDelete(null);
+            
+            // Xoá Cache ngay lập tức
+            await clearCacheByPath('/tuyen-dung', 'layout');
+            
             fetchJobs();
             toast.success('Xoá tin tuyển dụng thành công!');
         } catch (error: any) {

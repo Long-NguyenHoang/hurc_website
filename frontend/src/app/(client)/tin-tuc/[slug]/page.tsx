@@ -2,11 +2,6 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { articleService } from "@/services/article.service";
 
-// Làm mới cache bài viết mỗi 60 giây
-export const revalidate = 60;
-
-
-
 // Hàm xử lý đường dẫn ảnh từ nội dung HTML của Editor
 const processContent = (content: string) => {
     if (!content) return "";

@@ -2,7 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  // allowedDevOrigins: ['192.168.0.55'],
+  // experimental: {
+  //   staleTimes: {
+  //     dynamic: 0,
+  //     static: 0,
+  //   },
+  // },
   images: {
     remotePatterns: [
       {
@@ -19,10 +24,10 @@ const nextConfig: NextConfig = {
     // Nếu là môi trường 'development' (npm run dev), trỏ về localhost.
     // Nếu là môi trường 'production' (next build trong Docker), trỏ về http://api:3000.
     const isDev = process.env.NODE_ENV === 'development';
-    const backendUrl = isDev 
+    const backendUrl = isDev
       ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000')
       : 'http://api:3000';
-    
+
     return [
       {
         source: '/uploads/:path*',

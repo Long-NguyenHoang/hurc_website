@@ -1,9 +1,6 @@
 import { articleService } from "@/services/article.service";
 import NewsClient from "./NewClient";
 
-// Làm mới bộ đệm (cache) mỗi 60 giây
-export const revalidate = 60;
-
 export default async function NewsPage() {
     try {
         // Fetch trực tiếp trên Server: Lấy Trang 1, giới hạn 8 bài viết

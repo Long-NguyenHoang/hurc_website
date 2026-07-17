@@ -2,11 +2,6 @@ import Link from "next/link";
 import { ArrowLeft, MapPin, Briefcase, Calendar, Clock, Send } from "lucide-react";
 import { jobService } from "@/services/job.service";
 
-// Làm mới cache bài viết mỗi 60 giây
-export const revalidate = 60;
-
-
-
 // Label Helpers
 const DEPARTMENT_LABELS: Record<string, string> = {
     HCTC: 'Hành chính - Tổ chức',
