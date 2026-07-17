@@ -8,7 +8,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { multerOptions } from "common/config/multer.config";
 import { CreateStationDto } from "./dto/create-station.dto";
 import { UpdateStationDto } from "./dto/update-station.dto";
-import { CacheInterceptor } from "@nestjs/cache-manager";
+
 
 @Controller('stations')
 export class StationsController {

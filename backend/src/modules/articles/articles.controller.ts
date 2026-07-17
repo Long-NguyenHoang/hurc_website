@@ -9,7 +9,7 @@ import { Roles } from 'common/decorators/roles.decorator';
 import { UserRole } from 'common/enums';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'common/config/multer.config';
-import { CacheInterceptor } from '@nestjs/cache-manager';
+
 
 @Controller('articles')
 export class ArticlesController {
