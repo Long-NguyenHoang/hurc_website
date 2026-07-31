@@ -1,6 +1,7 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { AbstractBaseEntity } from "./base.entity";
 import { Media } from "./media.entity";
+import { TicketFare } from "./ticket_fare.entity";
 
 @Entity('stations')
 export class Station extends AbstractBaseEntity {
@@ -21,4 +22,10 @@ export class Station extends AbstractBaseEntity {
     @ManyToOne(() => Media, { onDelete: 'SET NULL', nullable: true })
     @JoinColumn({ name: 'schedule_image_id' })
     schedule_image: Media | null;
+
+    @OneToMany(() => TicketFare, ticketFare => ticketFare.from_station)
+    ticket_fares_from: TicketFare[];
+
+    @OneToMany(() => TicketFare, ticketFare => ticketFare.to_station)
+    ticket_fares_to: TicketFare[];
 }

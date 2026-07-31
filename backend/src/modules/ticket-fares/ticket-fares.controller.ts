@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UploadedFile, UseGuards, UseInterceptors, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UploadedFile, UseGuards, UseInterceptors, Query, BadRequestException } from "@nestjs/common";
 import { TicketFaresService } from "./ticket-fares.service";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { RolesGuard } from "../auth/roles.guard";
@@ -16,47 +16,12 @@ export class TicketFaresController {
         private readonly ticketFaresService: TicketFaresService,
     ) { }
 
-
     @Get()
-    findAllPublic() {
-        return this.ticketFaresService.findAllPublic();
-    }
+    findPrice(@Query('from') from: string, @Query('to') to: string) {
+        if (!from || !to) {
+            throw new BadRequestException('Vui lòng chọn ga đi và ga đến');
+        }
 
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(UserRole.ADMIN, UserRole.EDITOR)
-    @Get('admin/all')
-    findAllAdmin(@Query('search') search?: string) {
-        return this.ticketFaresService.findAllAdmin(search);
-    }
-
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(UserRole.ADMIN, UserRole.EDITOR)
-    @Get('admin/:id')
-    findOne(@Param('id') id: string) {
-        return this.ticketFaresService.findOne(id);
-    }
-
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(UserRole.ADMIN, UserRole.EDITOR)
-    @Post()
-    @UseInterceptors(FileInterceptor('file', multerOptions))
-    create(@Request() req, @Body() createTicketFareDto: CreateTicketFareDto, @UploadedFile() file?: Express.Multer.File) {
-        return this.ticketFaresService.create(createTicketFareDto, req.user.id, file);
-    }
-
-
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(UserRole.ADMIN, UserRole.EDITOR)
-    @Patch(':id')
-    @UseInterceptors(FileInterceptor('file', multerOptions))
-    update(@Request() req, @Param('id') id: string, @Body() updateTicketFareDto: UpdateTicketFareDto, @UploadedFile() file?: Express.Multer.File) {
-        return this.ticketFaresService.update(id, updateTicketFareDto, req.user.id, file);
-    }
-
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(UserRole.ADMIN, UserRole.EDITOR)
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.ticketFaresService.remove(id);
+        return this.ticketFaresService.getTicketFare(from, to);
     }
 }
