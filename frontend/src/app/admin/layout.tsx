@@ -171,11 +171,6 @@ export default function AdminLayout({
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/admin/ticket-fares" className={`flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors ${isActive('/admin/ticket-fares') ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}`}>
-                                    <Ticket className="w-4 h-4" /> Bảng giá vé
-                                </Link>
-                            </li>
-                            <li>
                                 <Link href="/admin/media" className={`flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors ${isActive('/admin/media') ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}`}>
                                     <ImageIcon className="w-4 h-4" /> Thư viện Media
                                 </Link>

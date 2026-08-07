@@ -1,10 +1,7 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { TicketFare } from "common/entities/ticket_fare.entity";
-import { Repository, ILike } from "typeorm";
-import { MediaService } from "../media/media.service";
-import { CreateTicketFareDto } from "./dto/create-ticket-fare.dto";
-import { UpdateTicketFareDto } from "./dto/update-ticket-fare.dto";
+import { Repository } from "typeorm";
 import { StationsService } from "../stations/stations.service";
 
 @Injectable()

@@ -1,6 +1,5 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { AbstractBaseEntity } from "./base.entity";
-import { Media } from "./media.entity";
 import { Station } from "./stations.entity";
 
 @Entity('ticket_fares')
