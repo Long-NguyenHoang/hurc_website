@@ -105,12 +105,13 @@ export class MediaService {
       withDeleted: true
     });
 
-    const usedInTicketFares = await this.dataSource.getRepository(TicketFare).count({
-      where: { image: { id } },
-      withDeleted: true
-    });
+    // const usedInTicketFares = await this.dataSource.getRepository(TicketFare).count({
+    //   where: { image: { id } },
+    //   withDeleted: true
+    // });
 
-    const totalUses = usedInBanners + usedInArticles + usedInStations + usedInTicketFares;
+    // const totalUses = usedInBanners + usedInArticles + usedInStations + usedInTicketFares;
+    const totalUses = usedInBanners + usedInArticles + usedInStations;
 
     if (totalUses > 0) {
       throw new ConflictException(

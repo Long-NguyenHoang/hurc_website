@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Station } from "common/entities/stations.entity";
-import { Repository, ILike } from "typeorm";
+import { Repository, ILike, Between } from "typeorm";
 import { MediaService } from "../media/media.service";
 import { CreateStationDto } from "./dto/create-station.dto";
 import { UpdateStationDto } from "./dto/update-station.dto";
@@ -61,6 +61,21 @@ export class StationsService {
                 name: true,
                 code: true,
                 content: true
+            }
+        });
+    }
+
+    async findAllStationBetween(minOrder: number, maxOrder: number, isForward: boolean) {
+        return await this.stationsRepository.find({
+            where: {
+                display_order: Between(minOrder, maxOrder)
+            },
+            order: {
+                display_order: isForward ? 'ASC' : 'DESC'
+            },
+            select: {
+                name: true,
+                display_order: true
             }
         });
     }

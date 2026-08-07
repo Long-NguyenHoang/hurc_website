@@ -1,90 +1,51 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { TicketFare } from "common/entities/ticket_fare.entity";
-import { Repository, ILike } from "typeorm";
-import { MediaService } from "../media/media.service";
-import { CreateTicketFareDto } from "./dto/create-ticket-fare.dto";
-import { UpdateTicketFareDto } from "./dto/update-ticket-fare.dto";
+import { Repository } from "typeorm";
+import { StationsService } from "../stations/stations.service";
 
 @Injectable()
 export class TicketFaresService {
     constructor(
         @InjectRepository(TicketFare)
         private readonly ticketFaresRepository: Repository<TicketFare>,
-        private readonly mediaService: MediaService,
+        private readonly stationService: StationsService,
+        // private readonly mediaService: MediaService,
     ) { }
 
-    async create(createTicketFareDto: CreateTicketFareDto, userId: string, file?: Express.Multer.File) {
-        let finalImageId = createTicketFareDto.image_id;
+    async getTicketFare(fromId: string, toId: string) {
+        const fromStation = await this.stationService.findOne(fromId);
+        const toStation = await this.stationService.findOne(toId);
 
-        if (file) {
-            const newMedia = await this.mediaService.uploadSingleFile(file, userId);
-            finalImageId = newMedia.id;
+        if (!fromStation || !toStation) {
+            throw new NotFoundException('Không tìm thấy mã nhà ga hợp lệ');
         }
 
-        if (!finalImageId) {
-            throw new BadRequestException('Vui lòng cung cấp hình ảnh bảng giá vé');
+        if (fromId === toId) {
+            return {
+                price: 0,
+                path: [fromStation]
+            };
         }
 
-        const newTicketFare = this.ticketFaresRepository.create({
-            ...createTicketFareDto,
-            image: { id: finalImageId } as any,
+        const ticketInfo = await this.ticketFaresRepository.findOne({
+            where: [
+                { from_station: { id: fromId }, to_station: { id: toId } },
+                { from_station: { id: toId }, to_station: { id: fromId } },
+            ]
         });
+        const price = ticketInfo ? ticketInfo.price : 0;
 
-        return await this.ticketFaresRepository.save(newTicketFare);
+        const isForward = fromStation.display_order < toStation.display_order;
+        const minOrder = isForward ? fromStation.display_order : toStation.display_order;
+        const maxOrder = isForward ? toStation.display_order : fromStation.display_order;
+
+        const pathStations = await this.stationService.findAllStationBetween(minOrder, maxOrder, isForward);
+
+        return {
+            price,
+            pathStations
+        };
     }
 
-    async findAllPublic() {
-        return await this.ticketFaresRepository.find({
-            where: { is_active: true },
-            order: { display_order: 'ASC', created_at: 'DESC' },
-            relations: { image: true },
-            select: {
-                id: true,
-                title: true,
-                image: { id: true, url: true }
-            }
-        });
-    }
-
-    async findAllAdmin(search?: string) {
-        return await this.ticketFaresRepository.find({
-            where: search ? { title: ILike(`%${search}%`) } : undefined,
-            order: { display_order: 'ASC', created_at: 'DESC' },
-            relations: { image: true },
-        });
-    }
-
-    async findOne(id: string) {
-        const ticketFare = await this.ticketFaresRepository.findOne({
-            where: { id },
-            relations: { image: true }
-        });
-
-        if (!ticketFare) throw new NotFoundException('Không tìm thấy bảng giá này');
-        return ticketFare;
-    }
-
-    async update(id: string, updateTicketFareDto: UpdateTicketFareDto, userId: string, file?: Express.Multer.File) {
-        const ticketFare = await this.findOne(id);
-
-        Object.assign(ticketFare, updateTicketFareDto);
-
-        if (file) {
-            const newMedia = await this.mediaService.uploadSingleFile(file, userId);
-            ticketFare.image = { id: newMedia.id } as any;
-        } else if (updateTicketFareDto.image_id) {
-            ticketFare.image = { id: updateTicketFareDto.image_id } as any;
-        }
-
-        return await this.ticketFaresRepository.save(ticketFare);
-    }
-
-    async remove(id: string) {
-        const ticketFare = await this.findOne(id);
-        ticketFare.image = null;
-        await this.ticketFaresRepository.save(ticketFare);
-        await this.ticketFaresRepository.softRemove(ticketFare);
-        return { message: 'Đã xoá bảng giá thành công' };
-    }
 }
