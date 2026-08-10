@@ -52,7 +52,7 @@ export default function HomeClient({
     const activeStation = initialStations.find(s => s.id === activeStationId);
 
     return (
-        <div className="w-full bg-white py-4 lg:py-6">
+        <div className="w-full bg-white">
             <style dangerouslySetInnerHTML={{
                 __html: `
         .hide-scrollbar::-webkit-scrollbar { display: none; }
@@ -60,7 +60,7 @@ export default function HomeClient({
       `}} />
 
             {/* AREA 1: BANNER SLIDER */}
-            <section className="relative w-full aspect-[16/7] md:aspect-[21/9] lg:aspect-[2.5/1] group overflow-hidden">
+            <section className="relative w-full aspect-[16/7] md:aspect-[21/9] lg:aspect-[2.6/1] group overflow-hidden">
                 <div className="flex w-full h-full transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
                     {initialBanners.map((banner, index) => (
                         <div key={banner.id || index} className="w-full h-full shrink-0 relative">

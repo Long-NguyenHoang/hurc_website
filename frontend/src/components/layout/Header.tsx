@@ -63,7 +63,7 @@ export default function Header() {
 
                         {/* LOGO */}
                         <Link href="/" className="shrink-0 flex items-center">
-                            <img src="/logo.png" alt="HCMC Metro" className="h-16 lg:h-24 w-auto object-contain" />
+                            <img src="/logo.png" alt="HCMC Metro" className="h-16 lg:h-24 w-auto object-contain ml-2" />
                         </Link>
 
                         <div className="hidden lg:flex items-center gap-8 text-[18px] text-slate-800 font-medium">
@@ -102,7 +102,7 @@ export default function Header() {
                         className={`transition-colors hover:text-blue-200 ${pathname === '/' ? 'text-white' : 'text-slate-300'}`}
                         title="Trang chủ"
                     >
-                        <Home className="w-6 h-6 lg:w-8 lg:h-8 ml-5 lg:ml-25" strokeWidth={1} />
+                        <Home className="w-6 h-6 lg:w-8 lg:h-8 ml-3 lg:ml-25" strokeWidth={1} />
                     </Link>
 
                     {/* MENU DESKTOP */}
@@ -126,7 +126,7 @@ export default function Header() {
 
                     {/* NÚT TOGGLE MENU (MOBILE) */}
                     <button
-                        className="lg:hidden text-white hover:text-slate-200 p-1"
+                        className="lg:hidden text-white hover:text-slate-200 p-3"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         aria-label="Toggle menu"
                     >
