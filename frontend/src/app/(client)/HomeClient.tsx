@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, TrainFront } from "lucide-react";
 import Link from "next/link";
 import { Banner } from "@/services/banner.service";
@@ -23,6 +23,26 @@ export default function HomeClient({
     const [activeStationId, setActiveStationId] = useState<string | null>(
         initialStations.length > 0 ? initialStations[0].id : null
     );
+
+    const articlesScrollRef = useRef<HTMLDivElement>(null);
+    const [articlesScrollProgress, setArticlesScrollProgress] = useState(0);
+
+    const scrollArticles = (direction: 'left' | 'right') => {
+        if (articlesScrollRef.current) {
+            const { clientWidth } = articlesScrollRef.current;
+            const scrollAmount = direction === 'left' ? -clientWidth : clientWidth;
+            articlesScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+    };
+
+    const handleArticlesScroll = () => {
+        if (articlesScrollRef.current) {
+            const { scrollLeft, scrollWidth, clientWidth } = articlesScrollRef.current;
+            const maxScroll = scrollWidth - clientWidth;
+            const progress = maxScroll > 0 ? scrollLeft / maxScroll : 0;
+            setArticlesScrollProgress(progress);
+        }
+    };
 
     // TỰ ĐỘNG CHUYỂN SLIDE
     useEffect(() => {
@@ -177,27 +197,61 @@ export default function HomeClient({
             </section>
 
             {/* AREA 5: TIN TỨC MỚI */}
-            <section className="py-2 md:py-6 max-w-[120rem] mx-auto px-8 lg:px-[112px]">
-                <h2 className="text-[22px] md:text-[26px] lg:text-[28px] font-bold text-[#005596] text-center mb-6 md:mb-8">Tin tức mới</h2>
-                {initialArticles.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-                        {initialArticles.map((article) => (
-                            <ArticleCard key={article.id} article={article} />
-                        ))}
-                    </div>
-                ) : (
-                    <div className="text-center text-slate-500 py-6">Chưa có tin tức nào được cập nhật.</div>
-                )}
+            <section className="py-12 md:py-16 bg-[#eef4f9]">
+                <div className="max-w-[120rem] mx-auto px-8 lg:px-[112px] lg:ml-20 relative">
+                    <h2 className="text-[24px] md:text-[28px] lg:text-[32px] font-bold text-[#005596] mb-6 md:mb-8">Tin tức</h2>
+
+                    {initialArticles.length > 0 ? (
+                        <div className="relative group/slider">
+                            {/* Nút bấm Trái (Desktop) */}
+                            <button
+                                onClick={() => scrollArticles('left')}
+                                className="hidden md:flex absolute -left-5 top-[100px] z-10 w-10 h-10 bg-white/90 hover:bg-white text-slate-400 hover:text-[#e04a32] rounded-full items-center justify-center shadow-md transition-all opacity-0 group-hover/slider:opacity-100"
+                            >
+                                <ChevronLeft className="w-6 h-6" />
+                            </button>
+
+                            {/* Khung cuộn ngang (Swipeable) */}
+                            <div
+                                ref={articlesScrollRef}
+                                onScroll={handleArticlesScroll}
+                                className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-4"
+                            >
+                                {initialArticles.slice(0, 6).map((article) => (
+                                    <div key={article.id} className="w-[85vw] md:w-[calc(33.3333%-1rem)] shrink-0 snap-start bg-white rounded-2xl shadow-sm transition-transform duration-700 ease-in-out hover:shadow-md">
+                                        <ArticleCard article={article} />
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Nút bấm Phải (Desktop) */}
+                            <button
+                                onClick={() => scrollArticles('right')}
+                                className="hidden md:flex absolute -right-5 top-[100px] z-10 w-10 h-10 bg-white/90 hover:bg-white text-slate-400 hover:text-[#e04a32] rounded-full items-center justify-center shadow-md transition-all opacity-0 group-hover/slider:opacity-100"
+                            >
+                                <ChevronRight className="w-6 h-6" />
+                            </button>
+
+                            {/* Dấu chấm điều hướng (Pagination Dots) */}
+                            <div className="hidden md:flex justify-center items-center gap-2 mt-6">
+                                <div className={`w-2 h-2 rounded-full transition-all duration-300 ${articlesScrollProgress < 0.5 ? 'bg-[#e04a32]' : 'bg-slate-300'}`}></div>
+                                <div className={`w-2 h-2 rounded-full transition-all duration-300 ${articlesScrollProgress >= 0.5 ? 'bg-[#e04a32]' : 'bg-slate-300'}`}></div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="text-center text-slate-500 py-6">Chưa có tin tức nào được cập nhật.</div>
+                    )}
+                </div>
             </section>
 
             {/* AREA 6: ĐỐI TÁC */}
-            <section className="py-4 md:py-8 max-w-[120rem] mx-auto px-8 lg:px-[112px]">
-                <h2 className="text-[20px] md:text-[24px] lg:text-[28px] font-bold text-center text-[#005596] mb-8 md:mb-12">Đối tác thương hiệu</h2>
-                <div className="grid grid-cols-4 gap-4 sm:gap-8 md:gap-16 lg:gap-24 items-center justify-items-center max-w-8xl mx-auto">
-                    <div className="w-full flex justify-center"><img src="/hitachi.jpg" alt="Hitachi" className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block" /></div>
-                    <div className="w-full flex justify-center"><img src="/tokyoMetro.jpg" alt="TokyoMetro" className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block" /></div>
-                    <div className="w-full flex justify-center"><img src="/masterCard.jpg" alt="Mastercard" className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block" /></div>
-                    <div className="w-full flex justify-center"><img src="/Logo-FPT.png" alt="FPT" className="h-[80px] md:h-[140px] lg:h-[200px] w-auto object-contain block" /></div>
+            <section className="py-6 md:py-12 max-w-[120rem] mx-auto px-8 lg:px-[112px] lg:ml-20">
+                <h2 className="text-[24px] md:text-[28px] lg:text-[32px] font-bold text-[#005596] mb-8 md:mb-12">Đối tác thương hiệu</h2>
+                <div className="grid grid-cols-4 gap-2 sm:gap-4 md:gap-8 lg:gap-16 items-center justify-items-center max-w-8xl mx-auto">
+                    <div className="w-full flex justify-center"><img src="/hitachi.jpg" alt="Hitachi" className="h-[60px] md:h-[120px] lg:h-[180px] w-auto object-contain block" /></div>
+                    <div className="w-full flex justify-center"><img src="/tokyoMetro.jpg" alt="TokyoMetro" className="h-[60px] md:h-[120px] lg:h-[180px] w-auto object-contain block" /></div>
+                    <div className="w-full flex justify-center"><img src="/masterCard.jpg" alt="Mastercard" className="h-[60px] md:h-[120px] lg:h-[180px] w-auto object-contain block" /></div>
+                    <div className="w-full flex justify-center"><img src="/Logo-FPT.png" alt="FPT" className="h-[60px] md:h-[120px] lg:h-[180px] w-auto object-contain block" /></div>
                 </div>
             </section>
         </div>

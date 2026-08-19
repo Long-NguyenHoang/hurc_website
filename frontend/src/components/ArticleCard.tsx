@@ -41,7 +41,7 @@ export default function ArticleCard({
             className="group flex flex-col w-full space-y-3 cursor-pointer h-full"
         >
             {/* 1. KHUNG ẢNH THUMBNAIL */}
-            <div className="w-full aspect-[16/10] overflow-hidden rounded-xl bg-slate-50 shrink-0">
+            <div className="w-full aspect-[16/8] overflow-hidden bg-slate-50 shrink-0 rounded-t-2xl">
                 <img
                     src={getThumbnailUrl()}
                     alt={article.title}
@@ -54,18 +54,20 @@ export default function ArticleCard({
             </div>
 
             {/* KHUNG NỘI DUNG CHỮ */}
-            <div className="flex flex-col space-y-2 flex-grow">
+            <div className="flex flex-col space-y-2 flex-grow px-2 md:px-3">
 
-                {/* 2. NGÀY ĐĂNG (Chỉ hiển thị khi có yêu cầu) */}
-                {showDate && (
-                    <div className="flex items-center gap-1.5 text-slate-400 text-[13px]">
-                        <CalendarDays className="w-4 h-4 shrink-0" />
-                        <span>{formatDate(article.published_at || article.created_at)}</span>
-                    </div>
-                )}
+                {/* 2. TAG & NGÀY ĐĂNG */}
+                <div className="flex items-center justify-between pt-1">
+                    <span className="text-[#e04a32] font-semibold text-[14px]">
+                        Tin tức Metro
+                    </span>
+                    <span className="bg-[#e04a32] text-white text-[11px] font-bold px-2 py-1 rounded-full">
+                        {formatDate(article.published_at || article.created_at)}
+                    </span>
+                </div>
 
                 {/* 3. TIÊU ĐỀ */}
-                <h3 className="text-slate-900 font-bold text-[14px] md:text-[15px] leading-snug group-hover:text-[#005596] transition-colors line-clamp-2">
+                <h3 className="text-slate-900 font-bold text-[14px] md:text-[15px] leading-snug group-hover:text-[#005596] transition-colors line-clamp-2 py-3">
                     {article.title}
                 </h3>
 

@@ -11,7 +11,7 @@ export default async function HomePage() {
     const [bannersRes, stationsRes, articlesRes] = await Promise.all([
       bannerService.getAllPublic(),
       stationService.getContent(),
-      articleService.getAllPublic({ page: 1, limit: 8 })
+      articleService.getAllPublic({ page: 1, limit: 6 })
     ]);
 
     // 2. Trích xuất và sắp xếp Banner
@@ -28,11 +28,11 @@ export default async function HomePage() {
       initialStations = sData.sort((a: any, b: any) => a.display_order - b.display_order);
     }
 
-    // 4. Trích xuất Tin tức (tối đa 8 bài)
+    // 4. Trích xuất Tin tức
     let initialArticles = [];
     const aData = articlesRes.data ? articlesRes.data : articlesRes;
     initialArticles = Array.isArray(aData) ? aData : (aData.data || aData.items || []);
-    initialArticles = initialArticles.slice(0, 8);
+    initialArticles = initialArticles.slice(0, 6);
 
     // 5. Trả về Component Client và "mớm" sẵn dữ liệu vào
     return (
