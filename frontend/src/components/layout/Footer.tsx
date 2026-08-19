@@ -10,19 +10,19 @@ export default function Footer() {
                 <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 px-4">
 
                     {/* BÊN TRÁI: Nhóm Logo và Text Thông tin */}
-                    <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
+                    <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10 ml-2 lg:ml-30">
 
                         {/* Khối Logo nền trắng bo góc giống hình ảnh */}
-                        <div className="bg-white px-6 py-2 rounded-xl shrink-0 flex items-center justify-center h-[120px] w-[230px]">
+                        <div className="rounded-xl shrink-0 flex items-center justify-center h-[120px] w-[230px]">
                             <img
-                                src="/logo.png"
+                                src="/Footer_Logo.png"
                                 alt="HCMC Metro"
                                 className="max-h-full max-w-full object-contain block"
                             />
                         </div>
 
                         {/* Khối Text thông tin */}
-                        <div className="space-y-1 text-[14px] lg:text-[15px]">
+                        <div className="space-y-1 text-[12px] lg:text-[14px]">
                             <p className="font-medium">Công ty TNHH MTV Đường sắt Đô thị số 1</p>
                             <p>Mã số thuế: 0315818455</p>
                             <p>Giám đốc: Lê Minh Triết</p>
@@ -33,7 +33,7 @@ export default function Footer() {
                     </div>
 
                     {/* BÊN PHẢI: Icon Facebook đã thay bằng thẻ img */}
-                    <div className="shrink-0 lg:pr-10 flex items-center gap-4 md:gap-5">
+                    <div className="shrink-0 lg:pr-10 flex items-center gap-4 md:gap-5 mr-10">
                         <Link
                             href="https://www.facebook.com/HURC1HCMC"
                             target="_blank"
